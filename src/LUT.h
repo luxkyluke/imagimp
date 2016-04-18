@@ -10,8 +10,8 @@ typedef struct LUT{
 	LUT* next;
 }LUT;
 
-void MakeLUT(LUT* list);
-bool isListLutsEmpty(LUT* list);
+LUT* MakeLUT();
+bool LUTIsEmpty(LUT* list);
 void addNode(LUT* list, int lut[256]);
 
 #endif
