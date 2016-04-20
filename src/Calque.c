@@ -50,7 +50,7 @@ bool calqueIsEmpty(Calque* c) {
 }
 
 void addCalque(Calque* c) {
-	if (NULL == c)
+	if (c == NULL)
 		return;
 	if (calqueIsEmpty(c)) {
 		c->listLuts = initLUT();
@@ -81,50 +81,36 @@ void removeCalque(Calque* c) {
 	tmp->next = NULL;
 }
 
-Pixel getPixelFusionMult(Calque* c, int i, int j){
-	if(c->next == NULL){
-		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
-	}
-	return addPixel(c->pixels[i][j], multiPixelFloat(getPixelFusionMult(c->next, i, j), (1. - c->alpha)));
-}
-
-Pixel getPixelFusionAdd(Calque* c, int i, int j){
-	if(c->next == NULL){
-		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
-	}
-	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
-}
+//Pixel getPixelFusionMult(Calque* c, int i, int j){
+//	if(c->next == NULL){
+//		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
+//	}
+//	return addPixel(c->pixels[i][j], multiPixelFloat(getPixelFusionMult(c->next, i, j), (1. - c->alpha)));
+//}
+//
+//Pixel getPixelFusionAdd(Calque* c, int i, int j){
+//	if(c->next == NULL){
+//		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
+//	}
+//	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
+//}
 
 void fusionnerCalque(Calque* c) {
-	int i, j;
-	if(c->fusion == additive){
-		for (i = 0; i < c->height; i++) {
-			for (j = 0; j < c->width; j++) {
-				c->pixels[i][j] = getPixelFusionAdd(c, i, j);
-			}
-		}
-	} else{
-		for (i = 0; i < c->height; i++) {
-			for (j = 0; j < c->width; j++) {
-				c->pixels[i][j] = getPixelFusionMult(c, i, j);
-			}
-		}
-	}
 
-//	Calque* calque_resultat = c; // pas aussi simple que ça, il faut faire un for (dixit Anfray)
-//	Calque* calque_tmp = calque_tmp->next;// pas aussi simple que ça, il faut faire un for (dixit Anfray)
-//	while (calque_tmp != NULL) {
-//		int i, j;
-//		for (i=0; i < c->height ; i++) {
-//			for (j=0; j < c->width ; j++) {
-//				calque_resultat->pixels[i][j].r += calque_tmp->alpha * calque_tmp->pixels[i][j].r
-//											* calque_tmp->pixels[i][j].alpha;
-//				calque_resultat->pixels[i][j].g += calque_tmp->alpha * calque_tmp->pixels[i][j].g
-//											* calque_tmp->pixels[i][j].alpha;
-//				calque_resultat->pixels[i][j].b += calque_tmp->alpha * calque_tmp->pixels[i][j].b
-//											* calque_tmp->pixels[i][j].alpha;
-//			}
-//		}
-//		calque_tmp = calque_tmp->next;
-//	}
+	Calque* calque_resultat = c; // pas aussi simple que ça, il faut faire un for (dixit Anfray)
+	Calque* calque_tmp = c->next;// pas aussi simple que ça, il faut faire un for (dixit Anfray)
+	while (calque_tmp != NULL && calque_tmp != c) {
+		int i, j;
+		for (i=0; i < c->height ; i++) {
+			for (j=0; j < c->width ; j++) {
+				calque_resultat->pixels[i][j].r += calque_tmp->alpha * calque_tmp->pixels[i][j].r
+											* calque_tmp->pixels[i][j].alpha;
+				calque_resultat->pixels[i][j].g += calque_tmp->alpha * calque_tmp->pixels[i][j].g
+											* calque_tmp->pixels[i][j].alpha;
+				calque_resultat->pixels[i][j].b += calque_tmp->alpha * calque_tmp->pixels[i][j].b
+											* calque_tmp->pixels[i][j].alpha;
+			}
+		}
+		calque_tmp = calque_tmp->next;
+	}
 }
