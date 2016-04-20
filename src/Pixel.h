@@ -1,5 +1,5 @@
-#ifndef PIXEL_H_
-#define PIXEL_H_
+#ifndef _PIXEL_H_
+#define _PIXEL_H_
 
 typedef struct pixel{
 	int r;

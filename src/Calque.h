@@ -1,5 +1,5 @@
-#ifndef CALQUE_H_
-#define CALQUE_H_
+#ifndef _CALQUE_H_
+#define _CALQUE_H_
 
 #include "LUT.h"
 #include "Pixel.h"
@@ -10,8 +10,8 @@ typedef struct Calque{
 	Pixel** pixels;
 	LUT* listLuts;
 	float alpha;
-	Calque* next;
-	Calque* prev;
+	struct Calque* next;
+	struct Calque* prev;
 	int height, width;
 } Calque;
 
@@ -23,7 +23,7 @@ void setFusion(Calque* c, Fusion fusion);
 void emoveCalque(Calque* c);
 bool calqueIsEmpty(Calque* c);
 void addCalque(Calque* c);
-void fusionnerCalquer(Calque* c);
+void fusionnerCalque(Calque* c);
 
 
 #endif

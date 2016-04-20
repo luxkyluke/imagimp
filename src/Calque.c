@@ -12,7 +12,7 @@ Calque* makeCalque(int h, int w) {
 	int i, j;
 	for (i = 0; i < h; i++)
 		for (j = 0; j < w; j++) // h et w : variables globales
-			list->pixels[i][j] = createPixel(255, 255, 255, 1);
+			list->pixels[i][j] = makePixel(255, 255, 255, 1);
 
 	return list;
 }
@@ -50,8 +50,8 @@ bool calqueIsEmpty(Calque* c) {
 void addCalque(Calque* c) {
 	if (NULL == c)
 		return;
-	if (isListCalquesEmpty(c)) {
-		c->listLuts = initListLuts();
+	if (calqueIsEmpty(c)) {
+		c->listLuts = initLUT();
 		return;
 	}
 	Calque* tmp = c;
@@ -61,7 +61,7 @@ void addCalque(Calque* c) {
 	Calque* newCalque = makeCalque(c->height, c->width);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
-	newCalque->listLuts = initListLuts();
+	newCalque->listLuts = initLUT();
 }
 
 void removeCalque(Calque* c) {
@@ -79,20 +79,33 @@ void removeCalque(Calque* c) {
 	tmp->next = NULL;
 }
 
-Pixel getPixelFusionAdd(Calque* c, int i, int j){
-	if(c == NULL)
-		return ;
+Pixel getPixelFusionMult(Calque* c, int i, int j){
 	if(c->next == NULL){
-		return multiPixel(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha));
+		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
+	}
+	return addPixel(c->pixels[i][j], multiPixelFloat(getPixelFusionMult(c->next, i, j), (1. - c->alpha)));
+}
+
+Pixel getPixelFusionAdd(Calque* c, int i, int j){
+	if(c->next == NULL){
+		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
 	}
 	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
 }
 
 void fusionnerCalque(Calque* c) {
 	int i, j;
-	for (i = 0; i < c->height; i++) {
-		for (j = 0; j < c->width; j++) {
-			c->pixels[i][j] = getPixelFusionAdd(c, i, j);
+	if(c->fusion == additive){
+		for (i = 0; i < c->height; i++) {
+			for (j = 0; j < c->width; j++) {
+				c->pixels[i][j] = getPixelFusionAdd(c, i, j);
+			}
+		}
+	} else{
+		for (i = 0; i < c->height; i++) {
+			for (j = 0; j < c->width; j++) {
+				c->pixels[i][j] = getPixelFusionMult(c, i, j);
+			}
 		}
 	}
 
