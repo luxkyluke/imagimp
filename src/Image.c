@@ -1,9 +1,6 @@
 #include "Image.h"
 
 
-#define HEIGHT 1080
-#define WIDTH 1920
-
 void chargerImage(Image* img,char * pathImg){
 	img->listCalques = makeCalque(600, 400, additive);
 	addCalque(img->listCalques);

@@ -5,6 +5,9 @@
 #include <SDL/SDL.h>
 #include "sdl_tools.h"
 
+#define HEIGHT 1080
+#define WIDTH 1920
+
 typedef struct Image{
 	Calque* listCalques;
 } Image;

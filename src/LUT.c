@@ -104,33 +104,9 @@ int* DIMCON(LUT* L, int c){
 }
  
 
- 	/*FUSIONNER DEUX LUTS : équivalent à f(g(x));
- 	LUT3[i] = LUT2[LUT1[i]];
-
- 	APPLIQUER UN LUT : // LUT_2
- 	w = weight; h = height;
- 	int i, j;
- 	for (i = 0; i < h; i++)
- 	{
- 		for (j = 0; j < w; j++)
- 		{
- 			calque.Pixel[i][j].r = LUT[calque.Pixel[i][j].r];
- 			// pareil pour bleu et vert (pas l'alpha);
- 		}
- 	}
-
- 	LUT : int[256];
- 	Liste de LUTS : liste doublement chainée circulaire.
- 	trois cas : plusieurs luts, un seul lut, aucun lut.
-*/
  void fusionnerLut(LUT* L1, LUT* L2, int* lutC){
 	int i;
 	for(i=0; i < 256; i++){
 		lutC[i] = L2->lut[L1->lut[i]];
 	}
 }
-/*
-void appliquerLUT(LUT* L){
-	int i, j;
-	for(i=0; i<)
-}*/

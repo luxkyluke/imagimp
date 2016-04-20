@@ -114,3 +114,14 @@ void fusionnerCalque(Calque* c) {
 		calque_tmp = calque_tmp->next;
 	}
 }
+
+void appliquerLUT(LUT* L, Calque* calque){
+	int i, j;
+	for(i=0; i<calque->height; i++){
+		for(j=0; i<calque->width; j++){
+			calque->pixels[i][j].r = L->lut[calque->pixels[i][j].r];
+			calque->pixels[i][j].g = L->lut[calque->pixels[i][j].g];
+			calque->pixels[i][j].b = L->lut[calque->pixels[i][j].b];
+		}
+	}
+}
