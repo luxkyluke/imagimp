@@ -8,4 +8,9 @@ typedef struct pixel{
 	float alpha;
 }Pixel;
 
+Pixel makePixel(int r, int g, int b, float a);
+Pixel multiPixelFloat(Pixel p, float a);
+Pixel addPixel(Pixel p , Pixel p2);
+Pixel multiPixel(Pixel p , Pixel p2);
+
 #endif
