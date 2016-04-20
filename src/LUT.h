@@ -4,6 +4,8 @@
 #include "bool.h"
 #include <stdlib.h>
 
+
+
 typedef struct LUT{
 	int lut[256];
 	struct LUT* prev;
@@ -12,7 +14,14 @@ typedef struct LUT{
 
 
 LUT* initLUT();
-bool LUTIsEmpty(LUT* list);
-void addNode(LUT* list, int lut[256]);
+bool IsLUTEmpty(LUT* list);
+void addLUT(LUT* list, int lut[256]);
+void deleteLUT(LUT* list);
+
+int* INVERT(LUT* L);
+int* ADDLUM(LUT* L, int l);
+int* DIMLUM(LUT* L, int l);
+int* ADDCON(LUT* L, int c);
+int* DIMCON(LUT* L, int c);
 
 #endif
