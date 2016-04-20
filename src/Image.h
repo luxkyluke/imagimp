@@ -1,17 +1,17 @@
-#ifndef IMAGE_H_
-#define IMAGE_H_
+#ifndef _IMAGE_H_
+#define _IMAGE_H_
 
-#include "Claque.h"
+#include "Calque.h"
+#include <SDL/SDL.h>
+#include "sdl_tools.h"
 
 typedef struct Image{
-	Calque calque1;
-	Calque calque2;	// ICI LISTE DBT CHAINEE DE CALQUES
-	Calque calque3;
+	Calque* listCalques;
 } Image;
 
-void chargerImage(char * pathImg);
-void saveImage(char* savePath);
-Calque* getNextCalque(Image* img);
-Calque* getPrevCalque(Image* img);
+void chargerImage(Image* img, char * pathImg);
+void saveImage(Image* img, char* savePath);
+void printImage(Image* img, SDL_Surface* framebuffer);
+void freeImage(Image* img);
 
 #endif

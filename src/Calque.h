@@ -1,23 +1,29 @@
-#ifndef CALQUE_H_
-#define CALQUE_H_
+#ifndef _CALQUE_H_
+#define _CALQUE_H_
 
 #include "LUT.h"
 #include "Pixel.h"
+#include "Fusion.h"
 
 typedef struct Calque{
-	int fusion;
-	Pixel pixels[][];
-	Image image;
+	Fusion fusion;
+	Pixel** pixels;
 	LUT* listLuts;
 	float alpha;
-	Calque* next;
-	Calque* prev;
+	struct Calque* next;
+	struct Calque* prev;
+	int height, width;
 } Calque;
 
-void makeCalque(Calque* c);
-void setCalqueAlpha(float alpha);
-//- modifier fonction de mélange du calque
-//- supprimer le calque courant (impossible si un seul calque)
+Calque* makeCalque();
+Calque* getNextCalque(Calque* c);
+Calque* getPrevCalque(Calque* c);
+void setCalqueAlpha(Calque* c, float alpha);
+void setFusion(Calque* c, Fusion fusion);
+void emoveCalque(Calque* c);
+bool calqueIsEmpty(Calque* c);
+void addCalque(Calque* c);
+void fusionnerCalque(Calque* c);
 
 
 #endif

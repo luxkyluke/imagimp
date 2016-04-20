@@ -1,5 +1,5 @@
-#ifndef LUT_H_
-#define LUT_H_
+#ifndef _LUT_H_
+#define _LUT_H_
 
 #include "bool.h"
 #include <stdlib.h>
@@ -11,6 +11,7 @@ typedef struct LUT{
 	struct LUT* prev;
 	struct LUT* next;
 }LUT;
+
 
 LUT* initLUT();
 bool IsLUTEmpty(LUT* list);
