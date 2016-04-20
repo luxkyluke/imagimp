@@ -15,7 +15,7 @@ typedef struct Calque{
 	int height, width;
 } Calque;
 
-Calque* makeCalque();
+Calque* makeCalque(int h, int w, Fusion fusion);
 Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
 void setCalqueAlpha(Calque* c, float alpha);

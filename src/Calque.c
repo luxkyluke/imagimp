@@ -1,19 +1,21 @@
 #include "Calque.h"
 
-Calque* makeCalque(int h, int w) {
+Calque* makeCalque(int h, int w, Fusion fusion) {
 	Calque* list = malloc(sizeof(Calque));
 	list->next = NULL;
 	list->prev = NULL;
 	list->height = h;
 	list->width = w;
-	list->fusion = 0;
+	list->fusion = fusion;
 	list->alpha = 0;
 	list->listLuts = NULL; // changer les noms des variables des struct
+	list->pixels = (Pixel **) malloc(h*sizeof(Pixel*));
 	int i, j;
-	for (i = 0; i < h; i++)
-		for (j = 0; j < w; j++) // h et w : variables globales
+	for (i = 0; i < h; i++){
+		list->pixels[i] = (Pixel *) malloc(w*sizeof(Pixel));
+		for (j = 0; j < w; j++)
 			list->pixels[i][j] = makePixel(255, 255, 255, 1);
-
+	}
 	return list;
 }
 
@@ -58,7 +60,7 @@ void addCalque(Calque* c) {
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
-	Calque* newCalque = makeCalque(c->height, c->width);
+	Calque* newCalque = makeCalque(c->height, c->width, c->fusion);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
 	newCalque->listLuts = initLUT();

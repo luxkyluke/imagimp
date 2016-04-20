@@ -5,7 +5,8 @@
 #define WIDTH 1920
 
 void chargerImage(Image* img,char * pathImg){
-	//img->listCalques
+	img->listCalques = makeCalque(600, 400, additive);
+	addCalque(img->listCalques);
 }
 
 void printImage(Image* img, SDL_Surface* framebuffer){
