@@ -6,6 +6,9 @@
 #include "sdl_tools.h"
 #include "PPM.h"
 
+#define HEIGHT 1080
+#define WIDTH 1920
+
 typedef struct Image{
 	Calque* listCalques;
 } Image;

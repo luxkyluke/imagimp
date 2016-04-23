@@ -26,4 +26,5 @@ int* DIMCON(LUT* L, int c);
 
 void fusionnerLut(LUT* L1, LUT* L2, int* lutC);
 
+
 #endif

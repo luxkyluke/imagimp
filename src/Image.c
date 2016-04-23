@@ -1,8 +1,5 @@
 #include "Image.h"
 
-
-
-
 void chargerImage(Image* img, char * pathImg, int width, int height){
 	char *rgb = PPM_lire(pathImg, width, height);
 	if(rgb == NULL)
@@ -19,7 +16,6 @@ void chargerImage(Image* img, char * pathImg, int width, int height){
 			img->listCalques->pixels[i][j] = tmp;
 		}
 	}
-	addCalque(img->listCalques);
 }
 
 void printImage(Image* img, SDL_Surface* framebuffer){

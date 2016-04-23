@@ -25,5 +25,6 @@ bool calqueIsEmpty(Calque* c);
 void addCalque(Calque* c);
 void fusionnerCalque(Calque* c);
 
+void appliquerLUT(LUT* L, Calque* calque);
 
 #endif
