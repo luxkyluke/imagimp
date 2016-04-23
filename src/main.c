@@ -5,8 +5,8 @@
 #include "sdl_tools.h"
 #include "Image.h"
 
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 600;
+static unsigned int WINDOW_WIDTH = 1400;
+static unsigned int WINDOW_HEIGHT = 800;
 static const unsigned int BIT_PER_PIXEL = 32;
 
 int main(int argc, char** argv) {
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
-	SDL_WM_SetCaption("Raytracing powa :D", NULL);
+	SDL_WM_SetCaption("Imagimp", NULL);
 
 	/* Création d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	}
 
 	Image img;
-	chargerImage(&img, "");
+	chargerImage(&img, "images/Sylvan_Lake.ppm", 1920, 1080);
 
 	int loop = 1;
 	while (loop) {

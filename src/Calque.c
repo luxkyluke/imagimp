@@ -1,6 +1,6 @@
 #include "Calque.h"
 
-Calque* makeCalque(int h, int w, Fusion fusion) {
+Calque* makeCalque(int w, int h, Fusion fusion) {
 	Calque* list = malloc(sizeof(Calque));
 	list->next = NULL;
 	list->prev = NULL;
@@ -9,11 +9,11 @@ Calque* makeCalque(int h, int w, Fusion fusion) {
 	list->fusion = fusion;
 	list->alpha = 0;
 	list->listLuts = NULL; // changer les noms des variables des struct
-	list->pixels = (Pixel **) malloc(h*sizeof(Pixel*));
+	list->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
 	int i, j;
-	for (i = 0; i < h; i++){
-		list->pixels[i] = (Pixel *) malloc(w*sizeof(Pixel));
-		for (j = 0; j < w; j++)
+	for (i = 0; i < w; i++){
+		list->pixels[i] = (Pixel *) malloc(h*sizeof(Pixel));
+		for (j = 0; j < h; j++)
 			list->pixels[i][j] = makePixel(255, 255, 255, 1);
 	}
 	return list;
@@ -60,7 +60,7 @@ void addCalque(Calque* c) {
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
-	Calque* newCalque = makeCalque(c->height, c->width, c->fusion);
+	Calque* newCalque = makeCalque(c->width, c->height, multiplicative);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
 	newCalque->listLuts = initLUT();
@@ -96,7 +96,8 @@ void removeCalque(Calque* c) {
 //}
 
 void fusionnerCalque(Calque* c) {
-
+	if(c == NULL)
+		return;
 	Calque* calque_resultat = c; // pas aussi simple que ça, il faut faire un for (dixit Anfray)
 	Calque* calque_tmp = c->next;// pas aussi simple que ça, il faut faire un for (dixit Anfray)
 	while (calque_tmp != NULL && calque_tmp != c) {
