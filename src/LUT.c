@@ -111,10 +111,6 @@ int* DIMCON(LUT* L, int c){
 	}
 }
 
-	int lut[256];
-	struct LUT* prev;
-	struct LUT* next;
-}LUT;
 
 void FreeLUT(LUT* L){
 	free(L->prev);
