@@ -25,6 +25,6 @@ int* ADDCON(LUT* L, int c);
 int* DIMCON(LUT* L, int c);
 
 void fusionnerLut(LUT* L1, LUT* L2, int* lutC);
-
+void FreeLUT(LUT* L);
 
 #endif

@@ -110,3 +110,16 @@ int* DIMCON(LUT* L, int c){
 		lutC[i] = L2->lut[L1->lut[i]];
 	}
 }
+
+	int lut[256];
+	struct LUT* prev;
+	struct LUT* next;
+}LUT;
+
+void FreeLUT(LUT* L){
+	free(L->prev);
+	L->prev = NULL;
+	free(L->next);
+	L->next = NULL;
+	printf("FreeLUT OK\n");
+}
