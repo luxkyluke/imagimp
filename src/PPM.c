@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "PPM.h"
 
-/* D'après le standard http://netpbm.sourceforge.net/doc/ppm.html */
+/* D'aprï¿½s le standard http://netpbm.sourceforge.net/doc/ppm.html */
 char *PPM_lire(char *nom_fichier, int largeur, int hauteur) {
 
     FILE *fichier = fopen(nom_fichier, "rb");
@@ -64,7 +64,7 @@ char *PPM_lire(char *nom_fichier, int largeur, int hauteur) {
 bool PPM_ecrire(const char *nom_fichier, unsigned char *rvb, unsigned l, unsigned h) {
     FILE *fichier = fopen(nom_fichier, "wb");
     if(!fichier) {
-        fprintf(stderr, "%s: Ne peut pas ouvrir le fichier en écriture.\n", nom_fichier);
+        fprintf(stderr, "%s: Ne peut pas ouvrir le fichier en ï¿½criture.\n", nom_fichier);
         return false;
     }
     fprintf(fichier, "P6\n%u %u\n255\n", l, h);
