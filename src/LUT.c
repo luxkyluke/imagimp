@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 #include "LUT.h"
 
 LUT* initLUT(){

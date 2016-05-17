@@ -4,6 +4,7 @@
 #include "LUT.h"
 #include "Pixel.h"
 #include "Fusion.h"
+#include "PPM.h"
 
 typedef struct Calque{
 	Fusion fusion;
@@ -15,17 +16,16 @@ typedef struct Calque{
 	int height, width;
 } Calque;
 
-Calque* makeCalque(int w, int h, Fusion fusion);
+Calque* makeCalque(int w, int h);
 Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
-Calque* chargerImageCalque(char * pathImg, int width, int height);
+void chargerImageCalque(Calque* c, char * pathImg, int width, int height);
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void emoveCalque(Calque* c);
 bool calqueIsEmpty(Calque* c);
 void addCalque(Calque* c);
 void fusionnerCalque(Calque* c);
-
 void appliquerLUT(LUT* L, Calque* calque);
 
 #endif

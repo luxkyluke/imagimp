@@ -13,6 +13,7 @@ typedef struct Image{
 	Calque* listCalques;
 } Image;
 
+void makeImage(Image* img, int width, int height);
 void chargerImage(Image* img, char * pathImg, int width, int height);
 void saveImage(Image* img, char* savePath);
 void printImage(Image* img, SDL_Surface* framebuffer);

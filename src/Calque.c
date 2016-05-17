@@ -1,12 +1,13 @@
 #include "Calque.h"
+#define DEFAULT_FUSION 2
 
-Calque* makeCalque(int w, int h, Fusion fusion) {
+Calque* makeCalque(int w, int h) {
 	Calque* list = malloc(sizeof(Calque));
 	list->next = NULL;
 	list->prev = NULL;
 	list->height = h;
 	list->width = w;
-	list->fusion = fusion;
+	list->fusion = DEFAULT_FUSION;
 	list->alpha = 0;
 	list->listLuts = NULL; // changer les noms des variables des struct
 	list->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
@@ -60,7 +61,7 @@ void addCalque(Calque* c) {
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
-	Calque* newCalque = makeCalque(c->width, c->height, c->fusion);
+	Calque* newCalque = makeCalque(c->width, c->height);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
 	newCalque->listLuts = initLUT();
@@ -81,13 +82,13 @@ void removeCalque(Calque* c) {
 	tmp->next = NULL;
 }
 
-Calque* chargerImageCalque(char * pathImg, int width, int height){
+void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 	char *rgb = PPM_lire(pathImg, width, height);
 	if(rgb == NULL){
 		perror("Impossible de charger l'image\n");
-		return NULL;
+		return;
 	}
-	Calque* c = makeCalque(width, height, additive);
+	addCalque(c);
 	int i, j;
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
@@ -98,7 +99,6 @@ Calque* chargerImageCalque(char * pathImg, int width, int height){
 			c->pixels[j][i] = tmp;
 		}
 	}
-	return c;
 }
 
 //Pixel getPixelFusionMult(Calque* c, int i, int j){

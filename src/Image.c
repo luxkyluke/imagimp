@@ -1,9 +1,12 @@
 #include "Image.h"
 #include <math.h>
 
+void makeImage(Image* img, int width, int height){
+	img->listCalques = makeCalque(width, height);
+}
 
 void chargerImage(Image* img, char * pathImg, int width, int height){
-	//Calque* c = chargerImageCalque(pathImg, width, height);
+	chargerImageCalque(img->listCalques, pathImg, width, height);
 
 }
 
