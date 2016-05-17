@@ -25,6 +25,8 @@ int main(int argc, char** argv) {
 	}
 	SDL_WM_SetCaption("Imagimp", NULL);
 
+	printf("L'initialisation.\n");
+
 	/* Création d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (NULL
@@ -36,7 +38,9 @@ int main(int argc, char** argv) {
 	}
 
 	Image img;
-	chargerImage(&img, "images/Sylvan_Lake.ppm", 1920, 1080);
+	printf("Tada.\n");
+	chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
+	printf("Tada image.\n");
 
 	int loop = 1;
 	while (loop) {
