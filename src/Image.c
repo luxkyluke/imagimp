@@ -10,9 +10,9 @@ void chargerImage(Image* img, char * pathImg, int width, int height){
 	int i, j;
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
-			int r = (int) rgb[img->listCalques->width*3*i + j*3];
-			int g = (int) rgb[img->listCalques->width*3*i + j*3 + 1];
-			int b = (int) rgb[img->listCalques->width*3*i + j*3 + 2];
+			int g = (int) rgb[img->listCalques->width*3*i + j*3];
+			int b = (int) rgb[img->listCalques->width*3*i + j*3 + 1];
+			int r = (int) rgb[img->listCalques->width*3*i + j*3 + 2];
 			Pixel tmp = makePixel(r, g, b, 1);
 			img->listCalques->pixels[j][i] = tmp;
 		}

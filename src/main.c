@@ -5,9 +5,9 @@
 #include "sdl_tools.h"
 #include "Image.h"
 
-static unsigned int WINDOW_WIDTH = 1400;
-static unsigned int WINDOW_HEIGHT = 800;
-static const unsigned int BIT_PER_PIXEL = 32;
+static unsigned int WINDOW_WIDTH = 1600;
+static unsigned int WINDOW_HEIGHT = 1200;
+static const unsigned int BIT_PER_PIXEL = 24;
 
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 
 	Image img;
 	printf("Tada.\n");
-	chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
+	chargerImage(&img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
 	printf("Tada image.\n");
 
 	int loop = 1;
