@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 	SDL_Surface* framebuffer = NULL;
 	if (NULL
 			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
-					WINDOW_HEIGHT, BIT_PER_PIXEL, 0, 0, 0, 0))) {
+					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
 		fprintf(stderr,
 				"Erreur d'allocation pour le framebuffer. Fin du programme.\n");
 		return EXIT_FAILURE;
