@@ -18,6 +18,7 @@ typedef struct Calque{
 Calque* makeCalque(int w, int h, Fusion fusion);
 Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
+Calque* chargerImageCalque(char * pathImg, int width, int height);
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void emoveCalque(Calque* c);

@@ -60,7 +60,7 @@ void addCalque(Calque* c) {
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
-	Calque* newCalque = makeCalque(c->width, c->height, multiplicative);
+	Calque* newCalque = makeCalque(c->width, c->height, c->fusion);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
 	newCalque->listLuts = initLUT();
@@ -79,6 +79,26 @@ void removeCalque(Calque* c) {
 	}
 	free(tmp->next);
 	tmp->next = NULL;
+}
+
+Calque* chargerImageCalque(char * pathImg, int width, int height){
+	char *rgb = PPM_lire(pathImg, width, height);
+	if(rgb == NULL){
+		perror("Impossible de charger l'image\n");
+		return NULL;
+	}
+	Calque* c = makeCalque(width, height, additive);
+	int i, j;
+	for (i = 0; i < height; i++) {
+		for (j = 0; j < width; j++) {
+			int g = (int) rgb[c->width*3*i + j*3];
+			int b = (int) rgb[c->width*3*i + j*3 + 1];
+			int r = (int) rgb[c->width*3*i + j*3 + 2];
+			Pixel tmp = makePixel(r, g, b, 1);
+			c->pixels[j][i] = tmp;
+		}
+	}
+	return c;
 }
 
 //Pixel getPixelFusionMult(Calque* c, int i, int j){
