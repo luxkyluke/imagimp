@@ -1,6 +1,7 @@
 #include "Image.h"
 #include <math.h>
 
+
 void chargerImage(Image* img, char * pathImg, int width, int height){
 	char *rgb = PPM_lire(pathImg, width, height);
 	if(rgb == NULL)
@@ -27,17 +28,14 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 	Calque* c = img->listCalques;
 	fusionnerCalque(c);
 
-	// printf("c->width: %d, c->eight : %d\n",c->width,c->height);
-	printf("%d\n",c->width);
-	for (i = 0; i < c->width; i++) {
-		for (j = 0; j < c->height; j++) {
-			// printf("rouge : %d, vert : %d bleu : %d\n", c->pixels[i][j].r,c->pixels[i][j].g,c->pixels[i][j].b);
-			int r = c->pixels[i][j].r;
-			int g = c->pixels[i][j].g;
-			int b = c->pixels[i][j].b;
+	for (i = 0; i < c->height; i++) {
+		for (j = 0; j < c->width; j++) {
+			int r = c->pixels[j][i].r;
+			int g = c->pixels[j][i].g;
+			int b = c->pixels[j][i].b;
 			Uint32  color = SDL_MapRGB(framebuffer->format, r, g, b);
 			//Uint32  color = SDL_MapRGB(framebuffer->format, 0, 0, 0);
-			PutPixel(framebuffer, i, j, color);
+			PutPixel(framebuffer, j, i, color);
 		}
 	}
 }
