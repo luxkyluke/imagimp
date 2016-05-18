@@ -54,7 +54,7 @@ void addCalque(Calque* c) {
 	if (c == NULL)
 		return;
 	if (calqueIsEmpty(c)) {
-		c->listLuts = initLUT();
+		c->listLuts = makeLUT();
 		return;
 	}
 	Calque* tmp = c;
@@ -64,7 +64,7 @@ void addCalque(Calque* c) {
 	Calque* newCalque = makeCalque(c->width, c->height);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
-	newCalque->listLuts = initLUT();
+	newCalque->listLuts = makeLUT();
 }
 
 void removeCalque(Calque* c) {
