@@ -1,6 +1,8 @@
 #include "Calque.h"
 #define DEFAULT_FUSION 2
 
+static unsigned int indice_courant=0;
+
 Calque* makeCalque(int w, int h) {
 	Calque* list = malloc(sizeof(Calque));
 	list->next = NULL;
@@ -10,6 +12,7 @@ Calque* makeCalque(int w, int h) {
 	list->fusion = DEFAULT_FUSION;
 	list->alpha = 0;
 	list->listLuts = NULL; // changer les noms des variables des struct
+	list->ind = indice_courant++;
 	list->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
 	int i, j;
 	for (i = 0; i < w; i++){
@@ -57,7 +60,7 @@ void addCalque(Calque* c) {
 	if (c == NULL)
 		return;
 	if (calqueIsEmpty(c)) {
-		c->listLuts = initLUT();
+		c->listLuts = makeLUT();
 		return;
 	}
 	Calque* tmp = c;
@@ -67,7 +70,7 @@ void addCalque(Calque* c) {
 	Calque* newCalque = makeCalque(c->width, c->height);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
-	newCalque->listLuts = initLUT();
+	newCalque->listLuts = makeLUT();
 }
 
 void removeCalque(Calque* c) {
@@ -121,31 +124,55 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 void fusionnerCalque(Calque* c) {
 	if(c == NULL)
 		return;
-	Calque* calque_resultat = c; // pas aussi simple que ça, il faut faire un for (dixit Anfray)
-	Calque* calque_tmp = c->next;// pas aussi simple que ça, il faut faire un for (dixit Anfray)
+	Calque* calque_tmp = c->next;
 	while (calque_tmp != NULL && calque_tmp != c) {
 		int i, j;
 		for (i=0; i < c->height ; i++) {
 			for (j=0; j < c->width ; j++) {
-				calque_resultat->pixels[i][j].r += calque_tmp->alpha * calque_tmp->pixels[i][j].r
-											* calque_tmp->pixels[i][j].alpha;
-				calque_resultat->pixels[i][j].g += calque_tmp->alpha * calque_tmp->pixels[i][j].g
-											* calque_tmp->pixels[i][j].alpha;
-				calque_resultat->pixels[i][j].b += calque_tmp->alpha * calque_tmp->pixels[i][j].b
-											* calque_tmp->pixels[i][j].alpha;
+				c->pixels[j][i].r += calque_tmp->alpha * calque_tmp->pixels[j][i].r
+											* calque_tmp->pixels[j][i].alpha;
+				c->pixels[j][i].g += calque_tmp->alpha * calque_tmp->pixels[j][i].g
+											* calque_tmp->pixels[j][i].alpha;
+				c->pixels[j][i].b += calque_tmp->alpha * calque_tmp->pixels[j][i].b
+											* calque_tmp->pixels[j][i].alpha;
 			}
 		}
 		calque_tmp = calque_tmp->next;
 	}
+	suppCalque(c->next);
+	c->next = NULL;
 }
 
 void appliquerLUT(LUT* L, Calque* calque){
 	int i, j;
+	fusionnerLut(L);
 	for(i=0; i<calque->height; i++){
-		for(j=0; i<calque->width; j++){
-			calque->pixels[i][j].r = L->lut[calque->pixels[i][j].r];
-			calque->pixels[i][j].g = L->lut[calque->pixels[i][j].g];
-			calque->pixels[i][j].b = L->lut[calque->pixels[i][j].b];
+		for(j=0; j<calque->width; j++){
+			calque->pixels[j][i].r = L->lut[calque->pixels[j][i].r];
+			calque->pixels[j][i].g = L->lut[calque->pixels[j][i].g];
+			calque->pixels[j][i].b = L->lut[calque->pixels[j][i].b];
 		}
 	}
 }
+
+void freeCalque(Calque* c){
+	int i;
+	for(i=0; i<c->height; i++){
+		free(c->pixels[i]);
+	}
+	free(c->pixels);
+	c->pixels = NULL;
+	freeLUT(c->listLuts);
+	c->listLuts = NULL;
+}
+
+void suppCalque(Calque* c){
+	if(c == NULL){
+		return;
+	}
+	suppCalque(c->next);
+	freeCalque(c);
+	c = NULL;
+}
+
+

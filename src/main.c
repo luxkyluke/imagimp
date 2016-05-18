@@ -41,6 +41,10 @@ int main(int argc, char** argv) {
 	Image img;
 	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	LUT* LUT;
+	LUT = makeLUT();
+
+
 	printf("Tada.\n");
 	chargerImage(&img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
 	printf("Tada image.\n");

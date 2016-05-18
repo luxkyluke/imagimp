@@ -3,6 +3,7 @@
 
 #include "bool.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 
 
@@ -13,7 +14,7 @@ typedef struct LUT{
 }LUT;
 
 
-LUT* initLUT();
+LUT* makeLUT();
 bool IsLUTEmpty(LUT* list);
 void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
@@ -24,7 +25,7 @@ int* DIMLUM(LUT* L, int l);
 int* ADDCON(LUT* L, int c);
 int* DIMCON(LUT* L, int c);
 
-void fusionnerLut(LUT* L1, LUT* L2, int* lutC);
-void FreeLUT(LUT* L);
+void fusionnerLut(LUT* l);
+void freeLUT(LUT* L);
 
 #endif

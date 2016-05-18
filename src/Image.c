@@ -7,7 +7,6 @@ void makeImage(Image* img, int width, int height){
 
 void chargerImage(Image* img, char * pathImg, int width, int height){
 	chargerImageCalque(img->listCalques, pathImg, width, height);
-
 }
 
 void printImage(Image* img, SDL_Surface* framebuffer){

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "LUT.h"
 
-LUT* initLUT(){
+LUT* makeLUT(){
 	LUT* list = (LUT*) malloc(sizeof(LUT));
 	if(!list)
 		return NULL;
@@ -104,18 +104,22 @@ int* DIMCON(LUT* L, int c){
 }
  
 
- void fusionnerLut(LUT* L1, LUT* L2, int* lutC){
-	int i;
-	for(i=0; i < 256; i++){
-		lutC[i] = L2->lut[L1->lut[i]];
+ void fusionnerLut(LUT* l){
+ 	int i;
+	LUT * l_tmp = l->next;
+	while(l_tmp != NULL && l_tmp != l){
+		for(i=0; i < 256; i++){
+			l->lut[i] = l_tmp->lut[l->lut[i]];
+		}
+		l_tmp = l_tmp->next;
 	}
 }
 
-
-void FreeLUT(LUT* L){
-	free(L->prev);
-	L->prev = NULL;
-	free(L->next);
-	L->next = NULL;
+void freeLUT(LUT* L){
+	while(L != NULL){
+		free(L->prev);
+		L->prev = NULL;
+		L = L->next;
+	}
 	printf("FreeLUT OK\n");
 }
