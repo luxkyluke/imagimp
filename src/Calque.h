@@ -5,6 +5,7 @@
 #include "Pixel.h"
 #include "Fusion.h"
 #include "PPM.h"
+#include "Histogramme.h"
 
 typedef struct Calque{
 	Fusion fusion;
@@ -14,6 +15,7 @@ typedef struct Calque{
 	struct Calque* next;
 	struct Calque* prev;
 	int height, width;
+    Histogramme* histogramme;
 } Calque;
 
 Calque* makeCalque(int w, int h);

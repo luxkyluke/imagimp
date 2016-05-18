@@ -5,6 +5,8 @@
 #include <SDL/SDL.h>
 #include "sdl_tools.h"
 #include "PPM.h"
+#include "LUT.h"
+#include "Pixel.h"
 
 #define HEIGHT 1080
 #define WIDTH 1920

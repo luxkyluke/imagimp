@@ -4,6 +4,7 @@
 
 #include "sdl_tools.h"
 #include "Image.h"
+#include "Histogramme.h"
 
 static unsigned int WINDOW_WIDTH = 1600;
 static unsigned int WINDOW_HEIGHT = 1200;

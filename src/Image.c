@@ -1,5 +1,5 @@
 #include "Image.h"
-#include <math.h>
+#include "Histogramme.h"
 
 void makeImage(Image* img, int width, int height){
 	img->listCalques = makeCalque(width, height);
@@ -18,6 +18,8 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 	int i, j;
 	Calque* c = img->listCalques;
 	fusionnerCalque(c);
+
+	calculHistogramme(c);
 
 	for (i = 0; i < c->height; i++) {
 		for (j = 0; j < c->width; j++) {

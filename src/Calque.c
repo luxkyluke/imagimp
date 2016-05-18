@@ -17,6 +17,9 @@ Calque* makeCalque(int w, int h) {
 		for (j = 0; j < h; j++)
 			list->pixels[i][j] = makePixel(255, 255, 255, 1);
 	}
+
+	list->histogramme = malloc(sizeof(Histogramme));
+	calculHistogramme(list);
 	return list;
 }
 
