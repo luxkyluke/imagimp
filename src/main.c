@@ -43,6 +43,17 @@ int main(int argc, char** argv) {
 
 	LUT* LUT;
 	LUT = makeLUT();
+	
+	addLUT(LUT, LUT->lut);
+	ADDLUM(LUT, 10);
+		for(int i= 0; i<256; i++){
+		printf("lut[%d] = %d\n", i, LUT->lut[i]);
+	}
+
+	freeLUT(LUT);
+
+
+
 
 
 	printf("Tada.\n");
