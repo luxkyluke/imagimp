@@ -31,4 +31,5 @@ void fusionnerCalque(Calque* c);
 void appliquerLUT(LUT* L, Calque* calque);
 void suppCalque(Calque* c);
 
+
 #endif

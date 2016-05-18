@@ -152,6 +152,17 @@ void appliquerLUT(LUT* L, Calque* calque){
 	}
 }
 
+void freeCalque(Calque* c){
+	int i;
+	for(i=0; i<c->height; i++){
+		free(c->pixels[i]);
+	}
+	free(c->pixels);
+	c->pixels = NULL;
+	freeLUT(c->listLuts);
+	c->listLuts = NULL;
+}
+
 void suppCalque(Calque* c){
 	if(c == NULL){
 		return;
@@ -161,7 +172,4 @@ void suppCalque(Calque* c){
 	c = NULL;
 }
 
-void freeCalque(Calque* c){
-	freePixel(c->pixels);
-	freeLUT(c->listLuts);
-}
+
