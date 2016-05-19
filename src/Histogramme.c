@@ -89,6 +89,7 @@ void drawHistogramme(Histogramme* histogramme) {
             max = histogramme->valeursGreen[i];
     }
 
+
     // glPushMatrix();
         // glTranslatef(200,200,0);
     //     // for (i = 0; i < 255; i++){
