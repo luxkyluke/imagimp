@@ -10,6 +10,25 @@ static unsigned int WINDOW_WIDTH = 1600;
 static unsigned int WINDOW_HEIGHT = 1200;
 static const unsigned int BIT_PER_PIXEL = 24;
 
+
+//redimenssionne la fenetre SDL
+void reshape(unsigned int windowWidth, unsigned int windowHeight) {
+	glViewport(0, 0, windowWidth, windowHeight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-100., 100., -100. * (float) windowHeight / (float) windowWidth,
+			100. * (float) windowHeight / (float) windowWidth);
+}
+
+//Ouvre la fenetre SDL
+void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
+	if (NULL == SDL_SetVideoMode(windowWidth, windowHeight, BIT_PER_PIXEL,
+	SDL_OPENGL | SDL_GL_DOUBLEBUFFER | 1)) {
+		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
 		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
@@ -24,6 +43,8 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
+	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
+	reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -38,8 +59,16 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
+	/* Initialisation de la SDL */
+	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
+		fprintf(stderr,"Impossible d'initialiser la SDL. Fin du programme.\n");
+		return false;
+	}
+
+
 	Image img;
 	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
+
 
 //	LUT* LUT;
 //	LUT = makeLUT();
@@ -55,9 +84,17 @@ int main(int argc, char** argv) {
 
 	int loop = 1;
 
-int change = 0;
+	int change = 0;
 
+	printHistogramme(img.listCalques->histogramme);
 	while (loop) {
+
+		glClearColor(0, 0, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 		/* Nettoyage du framebuffer */
 		SDL_FillRect(framebuffer, NULL,
 				SDL_MapRGB(framebuffer->format, 0, 0, 0));
@@ -69,6 +106,7 @@ int change = 0;
 		//drawHistogramme(img.listCalques->histogramme);
 
 
+		SDL_GL_SwapBuffers();
 
 		/* On copie le framebuffer � l'�cran */
 		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
