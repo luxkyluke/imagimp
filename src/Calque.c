@@ -89,7 +89,7 @@ void removeCalque(Calque* c) {
 }
 
 void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
-	char *rgb = PPM_lire(pathImg, width, height);
+	char *rgb = PPM_lire(pathImg, &width, &height);
 	if(rgb == NULL){
 		perror("Impossible de charger l'image\n");
 		return;
@@ -98,9 +98,9 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 	int i, j;
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
-			int g = (int) rgb[c->width*3*i + j*3];
-			int b = (int) rgb[c->width*3*i + j*3 + 1];
-			int r = (int) rgb[c->width*3*i + j*3 + 2];
+			int r = (int) rgb[c->width*3*i + j*3];
+			int g = (int) rgb[c->width*3*i + j*3 + 1];
+			int b = (int) rgb[c->width*3*i + j*3 + 2];
 			Pixel tmp = makePixel(r, g, b, 1);
 			c->pixels[j][i] = tmp;
 		}

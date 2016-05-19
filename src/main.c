@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 	if (NULL
 			== (screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT,
 					BIT_PER_PIXEL,
-					SDL_DOUBLEBUF))) {
+					SDL_DOUBLEBUF | SDL_RESIZABLE))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
@@ -43,6 +43,17 @@ int main(int argc, char** argv) {
 
 	LUT* LUT;
 	LUT = makeLUT();
+	
+	addLUT(LUT, LUT->lut);
+	ADDLUM(LUT, 10);
+		for(int i= 0; i<256; i++){
+		printf("lut[%d] = %d\n", i, LUT->lut[i]);
+	}
+
+	freeLUT(LUT);
+
+
+
 
 
 	printf("Tada.\n");
