@@ -28,4 +28,7 @@ int* DIMCON(LUT* L, int c);
 void fusionnerLut(LUT* l);
 void freeLUT(LUT* L);
 
+void checkValue(int* value);
+
+
 #endif
