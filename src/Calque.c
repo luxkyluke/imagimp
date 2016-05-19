@@ -105,6 +105,8 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 			c->pixels[j][i] = tmp;
 		}
 	}
+
+	calculHistogramme(c);
 }
 
 //Pixel getPixelFusionMult(Calque* c, int i, int j){

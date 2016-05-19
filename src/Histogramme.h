@@ -15,5 +15,6 @@ void calculGreenHistogramme(int * green, Calque *c);
 void calculBlueHistogramme(int * blue, Calque *c);
 void calculLuminositeHistogramme(int* luminosite, Calque *c);
 void calculHistogramme(Calque *c);
+void drawHistogramme(Histogramme * histogramme);
 
 #endif

@@ -50,6 +50,9 @@ int main(int argc, char** argv) {
 	printf("Tada image.\n");
 
 	int loop = 1;
+
+int change = 0;
+
 	while (loop) {
 		/* Nettoyage du framebuffer */
 		SDL_FillRect(framebuffer, NULL,
@@ -59,6 +62,8 @@ int main(int argc, char** argv) {
 		//PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
 
 		printImage(&img, framebuffer);
+		drawHistogramme(img.listCalques->histogramme);
+
 
 
 		/* On copie le framebuffer à l'écran */

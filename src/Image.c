@@ -18,8 +18,6 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 	Calque* c = img->listCalques;
 	fusionnerCalque(c);
 
-	calculHistogramme(c);
-
 	for (i = 0; i < c->height; i++) {
 		for (j = 0; j < c->width; j++) {
 			int r = c->pixels[j][i].r;
