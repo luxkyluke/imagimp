@@ -159,7 +159,7 @@ void appliquerLUT(LUT* L, Calque* calque){
 
 void freeCalque(Calque* c){
 	int i;
-	for(i=0; i<c->height; i++){
+	for(i=0; i< c->height; i++){
 		free(c->pixels[i]);
 	}
 	free(c->pixels);

@@ -119,10 +119,11 @@ int* DIMCON(LUT* L, int c){
 }
 
 void freeLUT(LUT* L){
-	while(L != NULL){
-		free(L->prev);
-		L->prev = NULL;
-		L = L->next;
+	LUT* tmp = L->next;
+	while(tmp != NULL && tmp != L){
+		free(tmp->prev);
+		tmp->prev = NULL;
+		tmp = tmp->next;
 	}
 	printf("FreeLUT OK\n");
 }
