@@ -111,14 +111,12 @@ void drawHistogramme(Histogramme* histogramme) {
 	glPopMatrix();
 }
 
-void printTab(int *tab, float max) {
-	int i;
-	float j, res;
+void printTab(Histogramme *h, float max) {
+	int i, j;
 	for (i = 0; i < TAILLE_TAB; i++) {
-		printf("%9d%15d       ", i, tab[i]);
-		res = tab[i] / max;
-		res = res * 100;
-		for (j = 0; j < res; j++)
+		printf("%9d       ", i);
+		for (j = 0; j < (h->valeurMaxBlue[i] / max) * 100; j++)
+
 			printf("*");
 		printf("\n");
 	}
