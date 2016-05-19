@@ -4,26 +4,34 @@
 static unsigned int indice_courant=0;
 
 Calque* makeCalque(int w, int h) {
-	Calque* list = malloc(sizeof(Calque));
-	list->next = NULL;
-	list->prev = NULL;
-	list->height = h;
-	list->width = w;
-	list->fusion = DEFAULT_FUSION;
-	list->alpha = 0;
-	list->listLuts = NULL; // changer les noms des variables des struct
-	list->ind = indice_courant++;
-	list->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
+	Calque* calque = malloc(sizeof(Calque));
+	calque->next = NULL;
+	calque->prev = NULL;
+	calque->height = h;
+	calque->width = w;
+	calque->fusion = DEFAULT_FUSION;
+	calque->alpha = 0;
+	calque->listLuts = NULL; // changer les noms des variables des struct
+	calque->ind = indice_courant++;
+	calque->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
 	int i, j;
 	for (i = 0; i < w; i++){
-		list->pixels[i] = (Pixel *) malloc(h*sizeof(Pixel));
+		calque->pixels[i] = (Pixel *) malloc(h*sizeof(Pixel));
 		for (j = 0; j < h; j++)
-			list->pixels[i][j] = makePixel(255, 255, 255, 1);
+			calque->pixels[i][j] = makePixel(255, 255, 255, 1);
 	}
 
-	list->histogramme = malloc(sizeof(Histogramme));
-	calculHistogramme(list);
-	return list;
+	calque->histogramme = malloc(sizeof(Histogramme));
+	calculHistogramme(calque);
+	return calque;
+}
+
+Calque* getCalqueWithId(Calque* c, int id){
+	Calque *tmp;
+	for(tmp = c; tmp != NULL &&  tmp->ind != id; tmp=tmp->next);
+	if(tmp == NULL)
+		perror("Indice du calque introuvable\n");
+	return tmp;
 }
 
 Calque* getNextCalque(Calque* c) {

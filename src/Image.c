@@ -9,6 +9,11 @@ void chargerImage(Image* img, char * pathImg, int width, int height){
 	chargerImageCalque(img->listCalques, pathImg, width, height);
 }
 
+void appliqueLUTCalqueId(Image* img, int id, LUT* lut){
+	Calque* c = getCalqueWithId(img->listCalques, id);
+	appliquerLUT(lut, c);
+}
+
 void printImage(Image* img, SDL_Surface* framebuffer){
 	if(!img || !img->listCalques){
 		printf("Impossible d'afficher ! Image vide ou NULL\n");

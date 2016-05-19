@@ -23,6 +23,7 @@ typedef struct Calque{
 Calque* makeCalque(int w, int h);
 Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
+Calque* getCalqueWithId(Calque* c, int id);
 void chargerImageCalque(Calque* c, char * pathImg, int width, int height);
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
@@ -32,6 +33,7 @@ void addCalque(Calque* c);
 void fusionnerCalque(Calque* c);
 void appliquerLUT(LUT* L, Calque* calque);
 void suppCalque(Calque* c);
+
 
 
 #endif
