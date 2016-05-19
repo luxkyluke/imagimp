@@ -67,7 +67,9 @@ void deleteLUT(LUT* list){
 int* INVERT(LUT* L){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = 255 - i;
+ 		int value = 255 - i;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
  	return L->lut;
  }
@@ -75,7 +77,9 @@ int* INVERT(LUT* L){
 int* ADDLUM(LUT* L, int l){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = i + l;
+ 		int value = i + l;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
  	return L->lut;
  }
@@ -83,7 +87,9 @@ int* ADDLUM(LUT* L, int l){
 int* DIMLUM(LUT* L, int l){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = i - l;
+ 		int value = i - l;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
  	return L->lut;
 }
@@ -91,7 +97,9 @@ int* DIMLUM(LUT* L, int l){
 int* ADDCON(LUT* L, int c){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = (-(127 - i) * c) + 127;
+ 		int value = (-(127 - i) * c) + 127;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
  	return L->lut;
 }
@@ -100,7 +108,9 @@ int* DIMCON(LUT* L, int c){
  	int i;
  	if(c != 0){
 	 	for (i = 0; i < 256; i++){
-	 		L->lut[i] = (-(127 - i) * (1 / c)) + 127;
+	 		int value = (-(127 - i) * (1 / c)) + 127;
+	 		checkValue(&value);
+	 		L->lut[i] = value;
 	 	}
 	}
  	return L->lut;
@@ -112,6 +122,8 @@ int* DIMCON(LUT* L, int c){
 	LUT * l_tmp = l->next;
 	while(l_tmp != NULL && l_tmp != l){
 		for(i=0; i < 256; i++){
+			checkValue(&(l->lut[i]));
+			checkValue(&(l_tmp->lut[l->lut[i]]));
 			l->lut[i] = l_tmp->lut[l->lut[i]];
 		}
 		l_tmp = l_tmp->next;
@@ -126,4 +138,14 @@ void freeLUT(LUT* L){
 		tmp = tmp->next;
 	}
 	printf("FreeLUT OK\n");
+}
+
+
+void checkValue(int* value){
+	if(*value > 255)
+		*value = 255;
+		return;
+	if(*value < 0)
+		*value = 0;
+		return;
 }
