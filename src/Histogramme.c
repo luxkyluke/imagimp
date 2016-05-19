@@ -35,7 +35,7 @@ void calculGreenHistogramme(int* green, Calque *c) {
     }
 
     for (i = 0; i < c->height; i++){
-        for (j = 1; j < c->width; j++){
+        for (j = 0; j < c->width; j++){
             green[c->pixels[j][i].b]+=1;
         }
     }
@@ -49,7 +49,7 @@ void calculBlueHistogramme(int* blue, Calque *c) {
     }
 
     for (i = 0; i < c->height; i++){
-        for (j = 2; j < c->width; j++){
+        for (j = 0; j < c->width; j++){
             blue[c->pixels[j][i].b]+=1;
         }
     }
