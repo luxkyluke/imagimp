@@ -1,6 +1,6 @@
 #include "Pixel.h"
 
-Pixel makePixel(int r, int g, int b, float a){
+Pixel makePixel(unsigned int r, unsigned int g, unsigned int b, float a){
 	Pixel p;
 	p.r=r;
 	p.b=b;
@@ -20,4 +20,14 @@ Pixel addPixel(Pixel p , Pixel p2){
 
 Pixel multiPixel(Pixel p , Pixel p2){
 	return makePixel(p.r * p2.r, p.g * p2.g, p.b * p2.b, p.alpha * p2.alpha);
+}
+
+void checkValue(int* value){
+	if(*value > 255){
+		*value = 255;
+		return;
+	}
+	if(*value < 0){
+		*value = 0;
+	}
 }

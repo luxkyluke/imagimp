@@ -3,7 +3,7 @@
 
 #include "bool.h"
 
-char *PPM_lire(char *nom_fichier, int *largeur, int *hauteur);
+unsigned char *PPM_lire(char *nom_fichier, int *largeur, int *hauteur);
 bool PPM_ecrire(const char *nom_fichier, unsigned char *rvb, unsigned l, unsigned h);
 
 #endif

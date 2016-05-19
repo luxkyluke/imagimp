@@ -5,7 +5,7 @@
 #include "PPM.h"
 
 /* D'apr�s le standard http://netpbm.sourceforge.net/doc/ppm.html */
-char *PPM_lire(char *nom_fichier, int *width, int *height) {
+unsigned char *PPM_lire(char *nom_fichier, int *width, int *height) {
 
     FILE *fichier = fopen(nom_fichier, "rb");
     if(!fichier) {
@@ -65,7 +65,7 @@ char *PPM_lire(char *nom_fichier, int *width, int *height) {
         break;
     }
     fclose(fichier);
-    return rgb;
+    return (unsigned char*) rgb;
 }
 
 bool PPM_ecrire(const char *nom_fichier, unsigned char *rvb, unsigned l, unsigned h) {

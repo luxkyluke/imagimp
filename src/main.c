@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
 	printf("L'initialisation.\n");
 
-	/* Création d'une surface SDL dans laquelle le raytracer dessinera */
+	/* Crï¿½ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (NULL
 			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
@@ -41,24 +41,17 @@ int main(int argc, char** argv) {
 	Image img;
 	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	LUT* LUT;
-	LUT = makeLUT();
-	addLUT(LUT, LUT->lut);
+//	LUT* LUT;
+//	LUT = makeLUT();
+//	addLUT(LUT, LUT->lut);
 	/*ADDLUM(LUT, 10);
 		for(int i= 0; i<256; i++){
 		printf("lut[%d] = %d\n", i, LUT->lut[i]);
 	}*/
 
-	freeLUT(LUT);
+	//freeLUT(LUT);
 
-	printf("prout\n");
-
-
-
-
-	printf("Tada.\n");
 	chargerImage(&img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
-	printf("Tada image.\n");
 
 	int loop = 1;
 
@@ -73,11 +66,11 @@ int change = 0;
 		//PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
 
 		printImage(&img, framebuffer);
-		drawHistogramme(img.listCalques->histogramme);
+		//drawHistogramme(img.listCalques->histogramme);
 
 
 
-		/* On copie le framebuffer à l'écran */
+		/* On copie le framebuffer ï¿½ l'ï¿½cran */
 		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
 
 		SDL_Flip(screen);

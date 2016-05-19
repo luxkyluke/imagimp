@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "LUT.h"
+#include "Pixel.h"
 
 LUT* makeLUT(){
 	LUT* list = (LUT*) malloc(sizeof(LUT));
@@ -116,36 +117,32 @@ int* DIMCON(LUT* L, int c){
  	return L->lut;
 }
  
-
- void fusionnerLut(LUT* l){
+void fusionnerLut(LUT* l){
  	int i;
-	LUT * l_tmp = l->next;
+	LUT *next, *l_tmp= l->next;
 	while(l_tmp != NULL && l_tmp != l){
 		for(i=0; i < 256; i++){
 			checkValue(&(l->lut[i]));
 			checkValue(&(l_tmp->lut[l->lut[i]]));
 			l->lut[i] = l_tmp->lut[l->lut[i]];
 		}
-		l_tmp = l_tmp->next;
+		next = l_tmp->next;
+		deleteLUT(l_tmp);
+		l_tmp = next;
 	}
 }
 
+
 void freeLUT(LUT* L){
 	LUT* tmp = L->next;
+	LUT* next;
 	while(tmp != NULL && tmp != L){
-		free(tmp->prev);
-		tmp->prev = NULL;
-		tmp = tmp->next;
+		next = tmp->next;
+		free(tmp);
+		tmp = next;
 	}
 	printf("FreeLUT OK\n");
 }
 
 
-void checkValue(int* value){
-	if(*value > 255)
-		*value = 255;
-		return;
-	if(*value < 0)
-		*value = 0;
-		return;
-}
+
