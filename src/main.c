@@ -4,7 +4,12 @@
 
 #include "sdl_tools.h"
 #include "Image.h"
+<<<<<<< HEAD
 // #include "Histogramme.h"
+=======
+#include "Histogramme.h"
+#include "LUT.h"
+>>>>>>> 66d387202f911f4b000289f637fcb16875e24a02
 
 static unsigned int WINDOW_WIDTH = 512;
 static unsigned int WINDOW_HEIGHT = 512;
@@ -45,7 +50,11 @@ int main(int argc, char** argv) {
 	}
 	reshape(WINDOW_WIDTH,WINDOW_HEIGHT);
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
+<<<<<<< HEAD
 	// reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
+=======
+	//reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
+>>>>>>> 66d387202f911f4b000289f637fcb16875e24a02
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -71,13 +80,18 @@ int main(int argc, char** argv) {
 	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
-//	LUT* LUT;
-//	LUT = makeLUT();
-//	addLUT(LUT, LUT->lut);
-	/*ADDLUM(LUT, 10);
-		for(int i= 0; i<256; i++){
-		printf("lut[%d] = %d\n", i, LUT->lut[i]);
-	}*/
+	LUT* l = (LUT*) malloc(sizeof(LUT));
+	l = makeLUT();
+	//INVERT(l);
+	ADDLUM(l, 50);
+	addLUT(l, l->lut);
+
+
+	appliqueLUTCalqueId(&img, 0, l);
+
+//		for(int i= 0; i<256; i++){
+//		printf("lut[%d] = %d\n", i, LUT->lut[i]);
+//	}*/
 
 	//freeLUT(LUT);
 
