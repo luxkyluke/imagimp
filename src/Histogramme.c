@@ -96,43 +96,57 @@ void calculHistogramme(Calque *c) {
 void drawHistogramme(Histogramme* histogramme) {
 	int max = 0, i = 0;
 
-
+	glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glPushMatrix();
-	//glTranslatef(200,200,0);
+	// glTranslatef(200,200,0);
 	for (i = 0; i < TAILLE_TAB; i++) {
-		glColor3f(1., 0, 0.);
-		glLineWidth(3);
+		glColor4f(1., 0, 0.,0.33);
+		glLineWidth(1);
 		glBegin(GL_LINES);
 		glVertex3f(i, 0, 0);
-		glVertex3f(i, ((float) histogramme->valeursRed[i] / (float) max) * 100,
-				0);
+		glVertex3f(i, ((float) histogramme->valeursRed[i] / (float) histogramme->valeurMax) * 100,0);
+		glEnd();
+
+		glColor4f(0., 1, 0.,0.33);
+		glBegin(GL_LINES);
+		glVertex3f(i, 0, 0);
+		glVertex3f(i, ((float) histogramme->valeursBlue[i] / (float) histogramme->valeurMax) * 100,0);
+		glEnd();
+
+		glColor4f(0., 0, 1.,0.33);
+		glBegin(GL_LINES);
+		glVertex3f(i, 0, 0);
+		glVertex3f(i, ((float) histogramme->valeursGreen[i] / (float) histogramme->valeurMax) * 100,0);
 		glEnd();
 	}
+	glDisable(GL_BLEND);
 	glPopMatrix();
+
 }
 
 void printTab(Histogramme *h, float max) {
-	int i, j;
-	for (i = 0; i < TAILLE_TAB; i++) {
-		printf("%9d       ", i);
-		for (j = 0; j < (h->valeurMaxBlue[i] / max) * 100; j++)
+	// int i, j;
+	// for (i = 0; i < TAILLE_TAB; i++) {
+	// 	printf("%9d       ", i);
+	// 	for (j = 0; j < (h->valeurMaxBlue[i] / max) * 100; j++)
 
-			printf("*");
-		printf("\n");
-	}
+	// 		printf("*");
+	// 	printf("\n");
+	// }
 }
 
 void printHistogramme(Histogramme* h) {
-	printf("\n\n*********PIXELS ROUGES*********\n\n");
-	printTab(h->valeursRed, (float)h->valeurMax);
+	// printf("\n\n*********PIXELS ROUGES*********\n\n");
+	// printTab(h->valeursRed, (float)h->valeurMax);
 
-	printf("\n\n*********PIXELS VERTS*********\n\n");
-	printTab(h->valeursGreen, (float)h->valeurMax);
+	// printf("\n\n*********PIXELS VERTS*********\n\n");
+	// printTab(h->valeursGreen, (float)h->valeurMax);
 
-	printf("\n\n*********PIXELS BLEUS*********\n\n");
-	printTab(h->valeursBlue, (float)h->valeurMax);
+	// printf("\n\n*********PIXELS BLEUS*********\n\n");
+	// printTab(h->valeursBlue, (float)h->valeurMax);
 
-	printf("\n\n*********PIXELS BLEUS*********\n\n");
-	printTab(h->valeursLuminosite, (float)h->valeurMax);
+	// printf("\n\n*********PIXELS BLEUS*********\n\n");
+	// printTab(h->valeursLuminosite, (float)h->valeurMax);
 }
 
