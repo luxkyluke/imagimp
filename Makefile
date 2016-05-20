@@ -35,7 +35,7 @@ else
         CCFLAGS += -D LINUX
     endif
     ifeq ($(UNAME_S),Darwin)
-        LDFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/opt/local/include -L/usr/local/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -framework Cocoa -framework OpenGL -lSDL_image
+        LDFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_mixer.framework/Headers -I/opt/local/include -L/usr/local/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -framework Cocoa -framework OpenGL -lSDL_image -lSDL_mixer -framework GLUT -framework OpenGL
         CCFLAGS += -I/usr/local/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE
         CCFLAGS += -D OSX
     endif

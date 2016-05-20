@@ -7,8 +7,8 @@
 #include "Histogramme.h"
 #include "LUT.h"
 
-static unsigned int WINDOW_WIDTH = 1600;
-static unsigned int WINDOW_HEIGHT = 1200;
+static unsigned int WINDOW_WIDTH = 512;
+static unsigned int WINDOW_HEIGHT = 512;
 static const unsigned int BIT_PER_PIXEL = 24;
 
 
@@ -17,8 +17,9 @@ void reshape(unsigned int windowWidth, unsigned int windowHeight) {
 	glViewport(0, 0, windowWidth, windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-100., 100., -100. * (float) windowHeight / (float) windowWidth,
-			100. * (float) windowHeight / (float) windowWidth);
+	gluOrtho2D(0., 512., 512., 0.);
+	// GLKMatrix4 orthoMat = GLKMatrix4MakeOrtho(-1.0f, 1.0f,-1.0f, 1.0f,-1.0f, 1.0f);
+	// glLoadMatric(orthoMat.m);
 }
 
 //Ouvre la fenetre SDL
@@ -39,13 +40,12 @@ int main(int argc, char** argv) {
 	SDL_Surface* screen = NULL;
 	if (NULL
 			== (screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT,
-					BIT_PER_PIXEL,
-					SDL_DOUBLEBUF | SDL_RESIZABLE))) {
+					BIT_PER_PIXEL, SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
+	reshape(WINDOW_WIDTH,WINDOW_HEIGHT);
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
-	//reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -86,14 +86,14 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT);
 
-	chargerImage(&img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
+	chargerImage(&img, "images/Baboon.512.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	int loop = 1;
 
 	int change = 0;
 
-	//printHistogramme(img.listCalques->histogramme);
 	while (loop) {
+		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -101,23 +101,28 @@ int main(int argc, char** argv) {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		/* Nettoyage du framebuffer */
-		//SDL_FillRect(framebuffer, NULL,	SDL_MapRGB(framebuffer->format, 0, 0, 0));
-
-		/* Placer ici le code de dessin */
-		//PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
-
+		glPushMatrix();
+			glPushMatrix();
+				glTranslatef(00,0,0);
+				glBegin(GL_QUADS);
+				  glColor3f(1.,1., 0. );
+				  glVertex2f(-0.5*10,0.5*10); //point de depart
+				  glVertex2f(0.5*10,0.5*10); //point d’arrive
+				  glVertex2f(0.5*10,-0.5*10);
+				  glVertex2f(-0.5*10,-0.5*10);
+				glEnd();
+			glPopMatrix();
+		drawHistogramme(img.listCalques->histogramme);
+		glPopMatrix();
 		printImage(&img, framebuffer);
-		//drawHistogramme(img.listCalques->histogramme);
 
-
-		SDL_GL_SwapBuffers();
 
 		/* On copie le framebuffer � l'�cran */
 		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
 
 		SDL_Flip(screen);
 
+		SDL_GL_SwapBuffers();
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {

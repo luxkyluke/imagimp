@@ -30,6 +30,7 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 			int b = c->pixels[j][i].b;
 			Uint32  color = SDL_MapRGB(framebuffer->format, r, g, b);
 			//Uint32  color = SDL_MapRGB(framebuffer->format, 0, 0, 0);
+			printf("%d, %d\n",j,i );
 			PutPixel(framebuffer, j, i, color);
 		}
 	}
