@@ -22,7 +22,7 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 	int i, j;
 	Calque* c = img->listCalques;
 	fusionnerCalque(c);
-
+	glPushMatrix();
 	for (i = 0; i < c->height; i++) {
 		for (j = 0; j < c->width; j++) {
 			int r = c->pixels[j][i].r;
@@ -39,4 +39,5 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 
 		}
 	}
+	glPopMatrix();
 }

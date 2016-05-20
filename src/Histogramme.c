@@ -107,7 +107,6 @@ void drawHistogramme(Histogramme* histogramme) {
 		glVertex3f(i, 0, 0);
 		glVertex3f(i, ((float) histogramme->valeursRed[i] / (float) histogramme->valeurMax) * 100,0);
 		glEnd();
-
 		glColor4f(0., 1, 0.,0.33);
 		glBegin(GL_LINES);
 		glVertex3f(i, 0, 0);

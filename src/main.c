@@ -44,7 +44,6 @@ int main(int argc, char** argv) {
 	}
 	reshape(WINDOW_WIDTH,WINDOW_HEIGHT);
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
-	// reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -91,7 +90,6 @@ int main(int argc, char** argv) {
 
 	int change = 0;
 
-	// printHistogramme(img.listCalques->histogramme);
 	while (loop) {
 		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
@@ -101,25 +99,11 @@ int main(int argc, char** argv) {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glPushMatrix();
-		glTranslatef(00,0,0);
-		glBegin(GL_QUADS);
-		  glColor3f(1.,1., 0. );
-		  glVertex2f(-0.5*10,0.5*10); //point de depart
-		  glVertex2f(0.5*10,0.5*10); //point d’arrive
-		  glVertex2f(0.5*10,-0.5*10);
-		  glVertex2f(-0.5*10,-0.5*10);
-		glEnd();
-		glPopMatrix();
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		/* Placer ici le code de dessin */
-		// PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
 		printImage(&img, framebuffer);
-		glPushMatrix();
 		drawHistogramme(img.listCalques->histogramme);
-		glPopMatrix();
 
 
 		/* On copie le framebuffer � l'�cran */
