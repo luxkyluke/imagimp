@@ -1,16 +1,20 @@
 #include "Image.h"
 #include "Histogramme.h"
 
-void makeImage(Image* img, int width, int height){
-	img->listCalques = makeCalque(width, height);
+Image*  makeImage(int width, int height, float op){
+	Image* img = (Image*) malloc(sizeof(Image));
+	img->listCalques = makeCalque(width, height, op);
+	return img;
 }
 
-void chargerImage(Image* img, char * pathImg, int width, int height){
-	chargerImageCalque(img->listCalques, pathImg, width, height);
+void chargerImage(Image* img, char * pathImg, int width, int height, float op){
+	chargerImageCalque(img->listCalques, pathImg, width, height, op);
 }
 
 void appliqueLUTCalqueId(Image* img, int id, LUT* lut){
-	Calque* c = getCalqueWithId(img->listCalques, id);
+	if(LUTIsEmpty(lut) || !img)
+		return;
+	Calque* c = getCalqueById(img->listCalques, id);
 	appliquerLUT(lut, c);
 }
 
@@ -28,12 +32,12 @@ void printImage(Image* img, SDL_Surface* framebuffer){
 			int r = c->pixels[j][i].r;
 			int g = c->pixels[j][i].g;
 			int b = c->pixels[j][i].b;
-			Uint32  color = SDL_MapRGB(framebuffer->format, r, g, b);
+			//Uint32  color = SDL_MapRGB(framebuffer->format, r, g, b);
 			//Uint32  color = SDL_MapRGB(framebuffer->format, 0, 0, 0);
 			// PutPixel(framebuffer, j, i, color);
 
 			glBegin(GL_POINTS);
-				glColor3f((float)r/255., (float)g/255., (float)b/255.);
+				glColor3f(r/255., g/255., b/255.);
 				glVertex2i(j,i);
 			glEnd();
 

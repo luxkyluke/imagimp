@@ -3,14 +3,14 @@
 
 static unsigned int indice_courant=0;
 
-Calque* makeCalque(int w, int h) {
+Calque* makeCalque(int w, int h, float op) {
 	Calque* calque = malloc(sizeof(Calque));
 	calque->next = NULL;
 	calque->prev = NULL;
 	calque->height = h;
 	calque->width = w;
 	calque->fusion = DEFAULT_FUSION;
-	calque->alpha = 0;
+	calque->alpha = op;
 	calque->listLuts = NULL; // changer les noms des variables des struct
 	calque->ind = indice_courant++;
 	calque->pixels = (Pixel **) malloc(w*sizeof(Pixel*));
@@ -18,14 +18,16 @@ Calque* makeCalque(int w, int h) {
 	for (i = 0; i < w; i++){
 		calque->pixels[i] = (Pixel *) malloc(h*sizeof(Pixel));
 		for (j = 0; j < h; j++)
-			calque->pixels[i][j] = makePixel(255, 255, 255, 1);
+			calque->pixels[i][j] = makePixel(255, 255, 255);
 	}
 
 	calque->histogramme = makeHistogramme();
 	return calque;
 }
 
-Calque* getCalqueWithId(Calque* c, int id){
+Calque* getCalqueById(Calque* c, int id){
+	if(!c)
+		return NULL;
 	Calque *tmp;
 	for(tmp = c; tmp != NULL &&  tmp->ind != id; tmp=tmp->next);
 	if(tmp == NULL)
@@ -63,7 +65,7 @@ bool calqueIsEmpty(Calque* c) {
 	return (c->listLuts == NULL);
 }
 
-void addCalque(Calque* c) {
+void addCalque(Calque* c, float op) {
 	if (c == NULL)
 		return;
 	if (calqueIsEmpty(c)) {
@@ -74,7 +76,7 @@ void addCalque(Calque* c) {
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
-	Calque* newCalque = makeCalque(c->width, c->height);
+	Calque* newCalque = makeCalque(c->width, c->height, op);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
 	newCalque->listLuts = makeLUT();
@@ -95,20 +97,20 @@ void removeCalque(Calque* c) {
 	tmp->next = NULL;
 }
 
-void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
+void chargerImageCalque(Calque* c, char * pathImg, int width, int height, float op){
 	unsigned char *rgb = PPM_lire(pathImg, &width, &height);
 	if(rgb == NULL){
 		perror("Impossible de charger l'image\n");
 		return;
 	}
-	addCalque(c);
+	addCalque(c, op);
 	int i, j;
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
 			unsigned int r = (unsigned int) rgb[c->width*3*i + j*3];
 			unsigned int g = (unsigned int) rgb[c->width*3*i + j*3 + 1];
 			unsigned int b = (unsigned int) rgb[c->width*3*i + j*3 + 2];
-			Pixel tmp = makePixel(r, g, b, 1);
+			Pixel tmp = makePixel(r, g, b);
 			c->pixels[j][i] = tmp;
 		}
 	}
@@ -137,12 +139,9 @@ void fusionnerCalque(Calque* c) {
 		int i, j;
 		for (i=0; i < c->height ; i++) {
 			for (j=0; j < c->width ; j++) {
-				c->pixels[j][i].r += calque_tmp->alpha * calque_tmp->pixels[j][i].r
-											* calque_tmp->pixels[j][i].alpha;
-				c->pixels[j][i].g += calque_tmp->alpha * calque_tmp->pixels[j][i].g
-											* calque_tmp->pixels[j][i].alpha;
-				c->pixels[j][i].b += calque_tmp->alpha * calque_tmp->pixels[j][i].b
-											* calque_tmp->pixels[j][i].alpha;
+				c->pixels[j][i].r += calque_tmp->alpha * calque_tmp->pixels[j][i].r;
+				c->pixels[j][i].g += calque_tmp->alpha * calque_tmp->pixels[j][i].g;
+				c->pixels[j][i].b += calque_tmp->alpha * calque_tmp->pixels[j][i].b;
 			}
 		}
 		calque_tmp = calque_tmp->next;

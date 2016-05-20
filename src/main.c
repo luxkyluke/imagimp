@@ -8,11 +8,16 @@
 #include "LUT.h"
 #include "Color3f.h"
 
+<<<<<<< HEAD
 static unsigned int WINDOW_WIDTH = 512;
 static unsigned int WINDOW_HEIGHT = 512;
 
 static unsigned int WINDOW_WIDTH_PARAM = 200;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
+=======
+static unsigned int WINDOW_WIDTH = 1600;
+static unsigned int WINDOW_HEIGHT = 1200;
+>>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
 static const unsigned int BIT_PER_PIXEL = 24;
 
 
@@ -90,27 +95,29 @@ int main(int argc, char** argv) {
 		return false;
 	}
 
+	Image* img = makeImage(WINDOW_WIDTH, WINDOW_HEIGHT, 0.);
 
+<<<<<<< HEAD
 	Image img;
 	makeImage(&img, 512, 512);
+=======
+	chargerImage(img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT, 1.);
+>>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
 
-
-	LUT* l = (LUT*) malloc(sizeof(LUT));
-	l = makeLUT();
+	LUT* l = makeLUT();
 	//INVERT(l);
-	ADDLUM(l, 50);
-	addLUT(l, l->lut);
+	//ADDLUM(l, 50);
+	//addLUT(l, l->lut);
 
-
-	appliqueLUTCalqueId(&img, 0, l);
+	appliqueLUTCalqueId(img, 0, l);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
 //	}*/
 
 	//freeLUT(LUT);
-
 	chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
+
 
 	int loop = 1;
 
@@ -136,11 +143,16 @@ int main(int argc, char** argv) {
 		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
+<<<<<<< HEAD
 
 		printImage(&img, framebuffer);
 
 		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT_FILTER);
 		drawHistogramme(img.listCalques->histogramme);
+=======
+		printImage(img, framebuffer);
+		drawHistogramme(img->listCalques->histogramme);
+>>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
 
 
 		/* On copie le framebuffer � l'�cran */

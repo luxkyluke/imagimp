@@ -15,7 +15,7 @@ typedef struct LUT{
 
 
 LUT* makeLUT();
-bool IsLUTEmpty(LUT* list);
+bool LUTIsEmpty(LUT* list);
 void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
 

@@ -52,6 +52,7 @@ void calculBlueHistogramme(int* bleu, Calque *c) {
 	unsigned int i = 0, j = 0;
 	for (i = 0; i < c->height; i++) {
 		for (j = 0; j < c->width; j++) {
+			//printf("%d\n", c->pixels[j][i].b);
 			bleu[c->pixels[j][i].b] += 1;
 		}
 	}
