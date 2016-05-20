@@ -4,12 +4,8 @@
 
 #include "sdl_tools.h"
 #include "Image.h"
-<<<<<<< HEAD
-// #include "Histogramme.h"
-=======
 #include "Histogramme.h"
 #include "LUT.h"
->>>>>>> 66d387202f911f4b000289f637fcb16875e24a02
 
 static unsigned int WINDOW_WIDTH = 512;
 static unsigned int WINDOW_HEIGHT = 512;
@@ -21,9 +17,7 @@ void reshape(unsigned int windowWidth, unsigned int windowHeight) {
 	glViewport(0, 0, windowWidth, windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0., 512., 512., 0.);
-	// GLKMatrix4 orthoMat = GLKMatrix4MakeOrtho(-1.0f, 1.0f,-1.0f, 1.0f,-1.0f, 1.0f);
-	// glLoadMatric(orthoMat.m);
+	gluOrtho2D(0., WINDOW_WIDTH, WINDOW_HEIGHT, 0.);
 }
 
 //Ouvre la fenetre SDL
@@ -50,11 +44,7 @@ int main(int argc, char** argv) {
 	}
 	reshape(WINDOW_WIDTH,WINDOW_HEIGHT);
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
-<<<<<<< HEAD
 	// reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
-=======
-	//reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
->>>>>>> 66d387202f911f4b000289f637fcb16875e24a02
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -126,10 +116,10 @@ int main(int argc, char** argv) {
 
 		/* Placer ici le code de dessin */
 		// PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
+		printImage(&img, framebuffer);
 		glPushMatrix();
 		drawHistogramme(img.listCalques->histogramme);
 		glPopMatrix();
-		printImage(&img, framebuffer);
 
 
 		/* On copie le framebuffer � l'�cran */
