@@ -99,6 +99,7 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 			c->pixels[j][i] = tmp;
 		}
 	}
+	printf("%d\n", r);
 }
 
 //Pixel getPixelFusionMult(Calque* c, int i, int j){
@@ -118,8 +119,8 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height){
 void fusionnerCalque(Calque* c) {
 	if(c == NULL)
 		return;
-	Calque* calque_resultat = c; // pas aussi simple que ça, il faut faire un for (dixit Anfray)
-	Calque* calque_tmp = c->next;// pas aussi simple que ça, il faut faire un for (dixit Anfray)
+	Calque* calque_resultat = c; // pas aussi simple que ï¿½a, il faut faire un for (dixit Anfray)
+	Calque* calque_tmp = c->next;// pas aussi simple que ï¿½a, il faut faire un for (dixit Anfray)
 	while (calque_tmp != NULL && calque_tmp != c) {
 		int i, j;
 		for (i=0; i < c->height ; i++) {
@@ -145,4 +146,17 @@ void appliquerLUT(LUT* L, Calque* calque){
 			calque->pixels[i][j].b = L->lut[calque->pixels[i][j].b];
 		}
 	}
+}
+
+void saveCalque(Calque* c, char * pathImg){
+		unsigned char *rgb = malloc(width*height*3 * sizeof(unsigned char));
+		int i, j;
+		for (i = 0; i < c->height; i++) {
+			for (j = 0; j < c->width; j++) {
+				rgb[c->width*3*i + j*3] = atoi(c->pixels[j][i].g);
+				rgb[c->width*3*i + j*3 + 1]= atoi(c->pixels[j][i].b);
+				rgb[c->width*3*i + j*3 + 2] = atoi(c->pixels[j][i].r);
+			}
+		}
+		PPM_ecrire(pathImg, rgb, c->width, c->height)
 }
