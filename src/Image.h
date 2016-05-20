@@ -20,5 +20,6 @@ void chargerImage(Image* img, char * pathImg, int width, int height);
 void saveImage(Image* img, char* savePath);
 void printImage(Image* img, SDL_Surface* framebuffer);
 void freeImage(Image* img);
+void appliqueLUTCalqueId(Image* img, int id, LUT* lut);
 
 #endif

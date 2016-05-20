@@ -111,28 +111,27 @@ void drawHistogramme(Histogramme* histogramme) {
 	glPopMatrix();
 }
 
-void printTab(Histogramme *h, float max) {
-	int i, j;
-	for (i = 0; i < TAILLE_TAB; i++) {
-		printf("%9d       ", i);
-		for (j = 0; j < (h->valeurMaxBlue[i] / max) * 100; j++)
-
-			printf("*");
-		printf("\n");
-	}
-}
-
-void printHistogramme(Histogramme* h) {
-	printf("\n\n*********PIXELS ROUGES*********\n\n");
-	printTab(h->valeursRed, (float)h->valeurMax);
-
-	printf("\n\n*********PIXELS VERTS*********\n\n");
-	printTab(h->valeursGreen, (float)h->valeurMax);
-
-	printf("\n\n*********PIXELS BLEUS*********\n\n");
-	printTab(h->valeursBlue, (float)h->valeurMax);
-
-	printf("\n\n*********PIXELS BLEUS*********\n\n");
-	printTab(h->valeursLuminosite, (float)h->valeurMax);
-}
+//void printTab(Histogramme *h, float max) {
+//	int i, j;
+//	for (i = 0; i < TAILLE_TAB; i++) {
+//		printf("%9d       ", i);
+//
+//			printf("*");
+//		printf("\n");
+//	}
+//}
+//
+//void printHistogramme(Histogramme* h) {
+//	printf("\n\n*********PIXELS ROUGES*********\n\n");
+//	printTab(h->valeursRed, (float)h->valeurMax);
+//
+//	printf("\n\n*********PIXELS VERTS*********\n\n");
+//	printTab(h->valeursGreen, (float)h->valeurMax);
+//
+//	printf("\n\n*********PIXELS BLEUS*********\n\n");
+//	printTab(h->valeursBlue, (float)h->valeurMax);
+//
+//	printf("\n\n*********PIXELS BLEUS*********\n\n");
+//	printTab(h->valeursLuminosite, (float)h->valeurMax);
+//}
 

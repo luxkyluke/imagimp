@@ -5,6 +5,7 @@
 #include "sdl_tools.h"
 #include "Image.h"
 #include "Histogramme.h"
+#include "LUT.h"
 
 static unsigned int WINDOW_WIDTH = 1600;
 static unsigned int WINDOW_HEIGHT = 1200;
@@ -44,7 +45,7 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
-	reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
+	//reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
@@ -70,13 +71,18 @@ int main(int argc, char** argv) {
 	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
-//	LUT* LUT;
-//	LUT = makeLUT();
-//	addLUT(LUT, LUT->lut);
-	/*ADDLUM(LUT, 10);
-		for(int i= 0; i<256; i++){
-		printf("lut[%d] = %d\n", i, LUT->lut[i]);
-	}*/
+	LUT* l = (LUT*) malloc(sizeof(LUT));
+	l = makeLUT();
+	//INVERT(l);
+	ADDLUM(l, 50);
+	addLUT(l, l->lut);
+
+
+	appliqueLUTCalqueId(&img, 0, l);
+
+//		for(int i= 0; i<256; i++){
+//		printf("lut[%d] = %d\n", i, LUT->lut[i]);
+//	}*/
 
 	//freeLUT(LUT);
 
@@ -86,7 +92,7 @@ int main(int argc, char** argv) {
 
 	int change = 0;
 
-	printHistogramme(img.listCalques->histogramme);
+	//printHistogramme(img.listCalques->histogramme);
 	while (loop) {
 
 		glClearColor(0, 0, 0, 1);
@@ -96,8 +102,7 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		/* Nettoyage du framebuffer */
-		SDL_FillRect(framebuffer, NULL,
-				SDL_MapRGB(framebuffer->format, 0, 0, 0));
+		//SDL_FillRect(framebuffer, NULL,	SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
 		/* Placer ici le code de dessin */
 		//PutPixel(framebuffer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, SDL_MapRGB(framebuffer->format, 255, 255, 255));
