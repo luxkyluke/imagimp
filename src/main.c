@@ -6,18 +6,43 @@
 #include "Image.h"
 #include "Histogramme.h"
 #include "LUT.h"
+#include "Color3f.h"
 
 static unsigned int WINDOW_WIDTH = 512;
 static unsigned int WINDOW_HEIGHT = 512;
+
+static unsigned int WINDOW_WIDTH_PARAM = 200;
+static unsigned int WINDOW_HEIGHT_FILTER = 200;
 static const unsigned int BIT_PER_PIXEL = 24;
 
 
 //redimenssionne la fenetre SDL
-void reshape(unsigned int windowWidth, unsigned int windowHeight) {
-	glViewport(0, 0, windowWidth, windowHeight);
+void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport, int yViewport) {
+	glViewport(xViewport, yViewport, windowWidth, windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0., WINDOW_WIDTH, WINDOW_HEIGHT, 0.);
+	gluOrtho2D(0., windowWidth, windowHeight, 0.);
+}
+
+void dessinCarre(int fill, Color3f color){
+  if (fill == 1){
+    glBegin(GL_QUADS);
+      glColor3f(color.r,color.g, color.b);
+      glVertex2f(0,1); //point de depart
+      glVertex2f(1,1); //point d’arrive
+      glVertex2f(1,0);
+      glVertex2f(0,0);
+    glEnd();
+  }
+  else{
+    glBegin(GL_LINE_LOOP);
+      glColor3f(color.r,color.g, color.b);
+      glVertex2f(-0.5,0.5); //point de depart
+      glVertex2f(0.5,0.5); //point d’arrive
+      glVertex2f(0.5,-0.5);
+      glVertex2f(-0.5,-0.5);
+    glEnd();
+  }
 }
 
 //Ouvre la fenetre SDL
@@ -37,12 +62,13 @@ int main(int argc, char** argv) {
 
 	SDL_Surface* screen = NULL;
 	if (NULL
-			== (screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT,
+			== (screen = SDL_SetVideoMode(WINDOW_WIDTH+WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,
 					BIT_PER_PIXEL, SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
-	reshape(WINDOW_WIDTH,WINDOW_HEIGHT);
+	// reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0);
+	// reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH);
 	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
 	SDL_WM_SetCaption("Imagimp", NULL);
 
@@ -66,7 +92,7 @@ int main(int argc, char** argv) {
 
 
 	Image img;
-	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
+	makeImage(&img, 512, 512);
 
 
 	LUT* l = (LUT*) malloc(sizeof(LUT));
@@ -84,7 +110,7 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT);
 
-	chargerImage(&img, "images/Baboon.512.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
+	chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
 
 	int loop = 1;
 
@@ -99,10 +125,21 @@ int main(int argc, char** argv) {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+
+		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT_FILTER,0,0);
+		glPushMatrix();
+			glTranslatef(100,0,0);
+			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,100);
+			dessinCarre(1, ColorRGB(1,1,1));
+		glPopMatrix();
+
+		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
 		printImage(&img, framebuffer);
+
+		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT_FILTER);
 		drawHistogramme(img.listCalques->histogramme);
 
 
