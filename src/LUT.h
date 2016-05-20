@@ -19,11 +19,11 @@ bool IsLUTEmpty(LUT* list);
 void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
 
-int* INVERT(LUT* L);
-int* ADDLUM(LUT* L, int l);
-int* DIMLUM(LUT* L, int l);
-int* ADDCON(LUT* L, int c);
-int* DIMCON(LUT* L, int c);
+void INVERT(LUT* L);
+void ADDLUM(LUT* L, int l);
+void DIMLUM(LUT* L, int l);
+void ADDCON(LUT* L, int c);
+void DIMCON(LUT* L, int c);
 
 void fusionnerLut(LUT* l);
 void freeLUT(LUT* L);

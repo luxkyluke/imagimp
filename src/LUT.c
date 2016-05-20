@@ -65,47 +65,43 @@ void deleteLUT(LUT* list){
 
 
 
-int* INVERT(LUT* L){
+void INVERT(LUT* L){
  	int i;
  	for (i = 0; i < 256; i++){
  		int value = 255 - i;
  		checkValue(&value);
  		L->lut[i] = value;
  	}
- 	return L->lut;
  }
 
-int* ADDLUM(LUT* L, int l){
+void ADDLUM(LUT* L, int l){
  	int i;
  	for (i = 0; i < 256; i++){
  		int value = i + l;
  		checkValue(&value);
  		L->lut[i] = value;
  	}
- 	return L->lut;
  }
 
-int* DIMLUM(LUT* L, int l){
+void DIMLUM(LUT* L, int l){
  	int i;
  	for (i = 0; i < 256; i++){
  		int value = i - l;
  		checkValue(&value);
  		L->lut[i] = value;
  	}
- 	return L->lut;
 }
 
-int* ADDCON(LUT* L, int c){
+void ADDCON(LUT* L, int c){
  	int i;
  	for (i = 0; i < 256; i++){
  		int value = (-(127 - i) * c) + 127;
  		checkValue(&value);
  		L->lut[i] = value;
  	}
- 	return L->lut;
 }
 
-int* DIMCON(LUT* L, int c){
+void DIMCON(LUT* L, int c){
  	int i;
  	if(c != 0){
 	 	for (i = 0; i < 256; i++){
@@ -114,7 +110,6 @@ int* DIMCON(LUT* L, int c){
 	 		L->lut[i] = value;
 	 	}
 	}
- 	return L->lut;
 }
  
 void fusionnerLut(LUT* l){
