@@ -11,7 +11,7 @@ LUT* makeLUT(){
 	return list;
 }
 
-bool IsLUTEmpty(LUT* list){
+bool LUTIsEmpty(LUT* list){
 	if(list->next == NULL)
 		return true;
 	return false;
@@ -21,7 +21,7 @@ void addLUT(LUT* list, int lut[256]){
 	int i;
 	if (list == NULL) 
 		return;
-	if (IsLUTEmpty(list) == true){
+	if (LUTIsEmpty(list) == true){
 		list->next = list;
 		list->prev = list;
 		for (i = 0; i < 256; i++)
@@ -50,7 +50,7 @@ void addLUT(LUT* list, int lut[256]){
 void deleteLUT(LUT* list){
 	if (list == NULL) 
 		return;
-	if (IsLUTEmpty(list) == true) 
+	if (LUTIsEmpty(list) == true) 
 		return;
 	if (list->next == list){
 		list->next = NULL;

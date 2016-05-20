@@ -7,8 +7,8 @@
 #include "Histogramme.h"
 #include "LUT.h"
 
-static unsigned int WINDOW_WIDTH = 512;
-static unsigned int WINDOW_HEIGHT = 512;
+static unsigned int WINDOW_WIDTH = 1600;
+static unsigned int WINDOW_HEIGHT = 1200;
 static const unsigned int BIT_PER_PIXEL = 24;
 
 
@@ -64,19 +64,16 @@ int main(int argc, char** argv) {
 		return false;
 	}
 
+	Image* img = makeImage(WINDOW_WIDTH, WINDOW_HEIGHT, 0.);
 
-	Image img;
-	makeImage(&img, WINDOW_WIDTH, WINDOW_HEIGHT);
+	chargerImage(img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT, 1.);
 
-
-	LUT* l = (LUT*) malloc(sizeof(LUT));
-	l = makeLUT();
+	LUT* l = makeLUT();
 	//INVERT(l);
-	ADDLUM(l, 50);
-	addLUT(l, l->lut);
+	//ADDLUM(l, 50);
+	//addLUT(l, l->lut);
 
-
-	appliqueLUTCalqueId(&img, 0, l);
+	appliqueLUTCalqueId(img, 0, l);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
@@ -84,7 +81,7 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT);
 
-	chargerImage(&img, "images/Baboon.512.ppm", WINDOW_WIDTH, WINDOW_HEIGHT);
+
 
 	int loop = 1;
 
@@ -101,9 +98,8 @@ int main(int argc, char** argv) {
 		glLoadIdentity();
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-
-		printImage(&img, framebuffer);
-		drawHistogramme(img.listCalques->histogramme);
+		printImage(img, framebuffer);
+		drawHistogramme(img->listCalques->histogramme);
 
 
 		/* On copie le framebuffer � l'�cran */

@@ -20,16 +20,16 @@ typedef struct Calque{
 	unsigned int ind;
 } Calque;
 
-Calque* makeCalque(int w, int h);
+Calque* makeCalque(int w, int h, float op);
 Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
-Calque* getCalqueWithId(Calque* c, int id);
-void chargerImageCalque(Calque* c, char * pathImg, int width, int height);
+Calque* getCalqueById(Calque* c, int id);
+void chargerImageCalque(Calque* c, char * pathImg, int width, int height, float op);
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
 bool calqueIsEmpty(Calque* c);
-void addCalque(Calque* c);
+void addCalque(Calque* c, float op);
 void fusionnerCalque(Calque* c);
 void appliquerLUT(LUT* L, Calque* calque);
 void suppCalque(Calque* c);
