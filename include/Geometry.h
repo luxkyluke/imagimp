@@ -11,5 +11,5 @@
 
 
 int IsZero(float x);
-
+void dessinCercle(int n, int fill);
 #endif

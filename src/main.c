@@ -7,17 +7,15 @@
 #include "Histogramme.h"
 #include "LUT.h"
 #include "Color3f.h"
+#include "Geometry.h"
 
-<<<<<<< HEAD
-static unsigned int WINDOW_WIDTH = 512;
-static unsigned int WINDOW_HEIGHT = 512;
+#include "IHM.h"
 
-static unsigned int WINDOW_WIDTH_PARAM = 200;
+static unsigned int WINDOW_WIDTH = 800;
+static unsigned int WINDOW_HEIGHT = 600;
+
+static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
-=======
-static unsigned int WINDOW_WIDTH = 1600;
-static unsigned int WINDOW_HEIGHT = 1200;
->>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
 static const unsigned int BIT_PER_PIXEL = 24;
 
 
@@ -27,27 +25,6 @@ void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(0., windowWidth, windowHeight, 0.);
-}
-
-void dessinCarre(int fill, Color3f color){
-  if (fill == 1){
-    glBegin(GL_QUADS);
-      glColor3f(color.r,color.g, color.b);
-      glVertex2f(0,1); //point de depart
-      glVertex2f(1,1); //point d’arrive
-      glVertex2f(1,0);
-      glVertex2f(0,0);
-    glEnd();
-  }
-  else{
-    glBegin(GL_LINE_LOOP);
-      glColor3f(color.r,color.g, color.b);
-      glVertex2f(-0.5,0.5); //point de depart
-      glVertex2f(0.5,0.5); //point d’arrive
-      glVertex2f(0.5,-0.5);
-      glVertex2f(-0.5,-0.5);
-    glEnd();
-  }
 }
 
 //Ouvre la fenetre SDL
@@ -95,14 +72,11 @@ int main(int argc, char** argv) {
 		return false;
 	}
 
-	Image* img = makeImage(WINDOW_WIDTH, WINDOW_HEIGHT, 0.);
+	Image* img = makeImage(512, 512, 0.);
 
-<<<<<<< HEAD
-	Image img;
-	makeImage(&img, 512, 512);
-=======
-	chargerImage(img, "images/Sylvan_Lake.ppm", WINDOW_WIDTH, WINDOW_HEIGHT, 1.);
->>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
+	// Image *img;
+	// makeImage(img, 512, 512);
+	chargerImage(img, "images/Baboon.512.ppm", 512, 512, 1.);
 
 	LUT* l = makeLUT();
 	//INVERT(l);
@@ -116,7 +90,7 @@ int main(int argc, char** argv) {
 //	}*/
 
 	//freeLUT(LUT);
-	chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
+	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
 
 
 	int loop = 1;
@@ -133,26 +107,26 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT_FILTER,0,0);
+		reshape(WINDOW_WIDTH,WINDOW_HEIGHT_FILTER,0,0);
 		glPushMatrix();
-			glTranslatef(100,0,0);
-			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,100);
+			// glTranslatef(1,0,0);
+			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,1);
 			dessinCarre(1, ColorRGB(1,1,1));
 		glPopMatrix();
 
 		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-<<<<<<< HEAD
 
-		printImage(&img, framebuffer);
+		// printImage(&img, framebuffer);
 
-		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT_FILTER);
-		drawHistogramme(img.listCalques->histogramme);
-=======
-		printImage(img, framebuffer);
+		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
+		glPushMatrix();
+			glScalef(WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,1);
+			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
+		glPopMatrix();
 		drawHistogramme(img->listCalques->histogramme);
->>>>>>> f75c2157425f769a7b23d3695718d27583abaceb
+		dessinIHM(img->listCalques);
 
 
 		/* On copie le framebuffer � l'�cran */

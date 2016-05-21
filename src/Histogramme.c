@@ -100,6 +100,8 @@ void drawHistogramme(Histogramme* histogramme) {
 	glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glPushMatrix();
+	glTranslatef(270,120,0);
+	glRotatef(180,0,0,1);
 	// glTranslatef(200,200,0);
 	for (i = 0; i < TAILLE_TAB; i++) {
 		glColor4f(1., 1., 1.,0.4);
