@@ -9,6 +9,7 @@
 #include "LUT.h"
 #include "Color3f.h"
 #include "../include/Geometry.h"
+#include "LutOption.h"
 
 #include "IHM.h"
 
@@ -82,12 +83,12 @@ int main(int argc, char** argv) {
 	// makeImage(img, 512, 512);
 	chargerImage(img, "images/Baboon.512.ppm", 512, 512, 1.);
 
-	LUT* l = makeLUT();
-	INVERT(l);
-	//ADDLUM(l, 50);
-	addLUT(l, l->lut);
+//	LUT* l = makeLUT();
+//	INVERT(l);
+//	//ADDLUM(l, 50);
+//	addLUT(l, l->lut);
 
-	appliqueLUTCalqueId(img, 1, l);
+	//addLUTCalqueById(img, 1, invert, 0);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
