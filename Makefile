@@ -10,12 +10,13 @@ LIB_PATH = lib
 MKDIR_CMD = mkdir
 TEST_DIR = if
 
+
 SRC_FILES = $(wildcard src/*.c) $(wildcard src/*/*.c)
 OBJ_FILES = $(patsubst $(SRC_PATH)/%.c,$(OBJ_PATH)/%.o, $(SRC_FILES))
 
 ifeq ($(OS),Windows_NT)
     CCFLAGS += -D WIN32
-		LDFLAGS += -lSDL -lSDL_image
+		LDFLAGS += -lSDL -lSDL_image -lfreeglut
 		W_OBJ_FILES = $(subst /,\,$(OBJ_FILES))
 		RM_CMD = for %%x in ($(W_OBJ_FILES)) do (if exist %%x (del /q %%x))
 		LDFLAGS += -lmingw32 -lSDLmain  -lSDL_image -lopengl32 -lglu32
@@ -30,8 +31,8 @@ else
 		RM_CMD = rm $(OBJ_FILES) $(BIN_PATH)/$(APP_BIN)
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
-				LDFLAGS += -lGL -lGLU
-				LDFLAGS += -lSDL -lSDL_image
+				LDFLAGS += -lGL -lGLU 
+				LDFLAGS += -lSDL -lSDL_image -lglut 
         CCFLAGS += -D LINUX
     endif
     ifeq ($(UNAME_S),Darwin)

@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 
 #include "sdl_tools.h"
+#include "glut_tools.h"
 #include "Image.h"
 #include "Histogramme.h"
 #include "LUT.h"
@@ -42,6 +43,7 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
+
 	SDL_Surface* screen = NULL;
 	if (NULL
 			== (screen = SDL_SetVideoMode(WINDOW_WIDTH+WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,
@@ -72,18 +74,20 @@ int main(int argc, char** argv) {
 		return false;
 	}
 
-	Image* img = makeImage(512, 512, 0.);
+	initGlut(argc,argv);
+
+	Image* img = makeImage(512, 512);
 
 	// Image *img;
 	// makeImage(img, 512, 512);
 	chargerImage(img, "images/Baboon.512.ppm", 512, 512, 1.);
 
 	LUT* l = makeLUT();
-	//INVERT(l);
+	INVERT(l);
 	//ADDLUM(l, 50);
-	//addLUT(l, l->lut);
+	addLUT(l, l->lut);
 
-	appliqueLUTCalqueId(img, 0, l);
+	appliqueLUTCalqueId(img, 1, l);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
@@ -96,7 +100,7 @@ int main(int argc, char** argv) {
 	int loop = 1;
 	int posX = 0, posY = 0;
 
-	int change = 0;
+	//int change = 0;
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0;
 
 	while (loop) {
@@ -120,15 +124,23 @@ int main(int argc, char** argv) {
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		// printImage(&img, framebuffer);
+		printImage(img, framebuffer);
 
 		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
 		glPushMatrix();
 			glScalef(WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,1);
 			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
 		glPopMatrix();
-		drawHistogramme(img->listCalques->histogramme);
+		drawImageHistogramme(img);
 		dessinIHM(img->listCalques, xLuminosite,xContraste,xSaturation);
+
+
+
+		//if modif de l'utilisateur
+//		if()
+//		updateImage(img);
+
+
 
 
 
@@ -186,6 +198,8 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
+
+	freeImage(img);
 
 	SDL_Quit();
 

@@ -82,9 +82,11 @@ void calculHistogramme(Calque *c) {
 		calculRedHistogramme(c->histogramme->valeursRed, c);
 		calculGreenHistogramme(c->histogramme->valeursGreen, c);
 		calculLuminositeHistogramme(c->histogramme->valeursLuminosite, c);
+
 		c->histogramme->valeurMaxBlue = calculMaxTab(c->histogramme->valeursBlue);
 		c->histogramme->valeurMaxRed = calculMaxTab(c->histogramme->valeursRed);
 		c->histogramme->valeurMaxGreen = calculMaxTab(c->histogramme->valeursGreen);
+
 		if( c->histogramme->valeurMaxBlue > c->histogramme->valeurMax)
 				c->histogramme->valeurMax = c->histogramme->valeurMaxBlue;
 		if( c->histogramme->valeurMaxRed > c->histogramme->valeurMax)

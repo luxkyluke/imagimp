@@ -50,7 +50,7 @@ void addLUT(LUT* list, int lut[256]){
 void deleteLUT(LUT* list){
 	if (list == NULL) 
 		return;
-	if (LUTIsEmpty(list) == true) 
+	if (LUTIsEmpty(list) == true)
 		return;
 	if (list->next == list){
 		list->next = NULL;

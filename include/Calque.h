@@ -6,6 +6,7 @@
 #include "Fusion.h"
 #include "PPM.h"
 #include "Histogramme.h"
+#include "sdl_tools.h"
 
 
 typedef struct Calque{
@@ -17,7 +18,7 @@ typedef struct Calque{
 	struct Calque* prev;
 	int height, width;
     Histogramme* histogramme;
-	unsigned int ind;
+	unsigned int id;
 } Calque;
 
 Calque* makeCalque(int w, int h, float op);
@@ -29,10 +30,15 @@ void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
 bool calqueIsEmpty(Calque* c);
+void addLUTCalque(Calque *c, LUT* l);
 void addCalque(Calque* c, float op);
-void fusionnerCalque(Calque* c);
+void drawCalqueHistogramme(Calque* c);
+Calque* fusionnerCalque(Calque* c);
 void appliquerLUT(LUT* L, Calque* calque);
+void drawCalque(Calque* c);
 void suppCalque(Calque* c);
+void freeCalque_r(Calque* c);
+void freeCalque(Calque* c);
 
 
 
