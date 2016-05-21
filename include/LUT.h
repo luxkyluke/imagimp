@@ -11,6 +11,7 @@ typedef struct LUT{
 	int lut[256];
 	struct LUT* prev;
 	struct LUT* next;
+	unsigned int id;
 }LUT;
 
 
@@ -18,6 +19,7 @@ LUT* makeLUT();
 bool LUTIsEmpty(LUT* list);
 void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
+LUT* getLUTById(LUT* l, int id);
 
 void INVERT(LUT* L);
 void ADDLUM(LUT* L, int l);

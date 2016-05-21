@@ -2,12 +2,16 @@
 #include "LUT.h"
 #include "Pixel.h"
 
+static unsigned int indice_courant = 0;
+
+
 LUT* makeLUT(){
 	LUT* list = (LUT*) malloc(sizeof(LUT));
 	if(!list)
 		return NULL;
 	list->prev = NULL;
 	list->next = NULL;
+	list->id = indice_courant++;
 	return list;
 }
 
@@ -15,6 +19,20 @@ bool LUTIsEmpty(LUT* list){
 	if(list->next == NULL)
 		return true;
 	return false;
+}
+
+LUT* getLUTById(LUT* l, int id){
+	if (!l)
+		return NULL;
+	LUT *tmp = l;
+	while (tmp != NULL) {
+		if (tmp->id == id)
+			return tmp;
+		tmp = tmp->next;
+	}
+	fprintf(stderr, "Indice du LUT introuvable\n");
+	fflush(stdin);
+	return NULL;
 }
 
 void addLUT(LUT* list, int lut[256]){
@@ -84,12 +102,7 @@ void ADDLUM(LUT* L, int l){
  }
 
 void DIMLUM(LUT* L, int l){
- 	int i;
- 	for (i = 0; i < 256; i++){
- 		int value = i - l;
- 		checkValue(&value);
- 		L->lut[i] = value;
- 	}
+ 	ADDLUM(L, -l);
 }
 
 void ADDCON(LUT* L, int c){
@@ -102,14 +115,7 @@ void ADDCON(LUT* L, int c){
 }
 
 void DIMCON(LUT* L, int c){
- 	int i;
- 	if(c != 0){
-	 	for (i = 0; i < 256; i++){
-	 		int value = (-(127 - i) * (1 / c)) + 127;
-	 		checkValue(&value);
-	 		L->lut[i] = value;
-	 	}
-	}
+	ADDCON(L, -c);
 }
  
 void fusionnerLut(LUT* l){
@@ -129,6 +135,8 @@ void fusionnerLut(LUT* l){
 
 
 void freeLUT(LUT* L){
+	if(!L)
+		return;
 	LUT* tmp = L->next;
 	LUT* next;
 	while(tmp != NULL && tmp != L){

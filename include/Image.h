@@ -7,6 +7,7 @@
 #include "PPM.h"
 #include "LUT.h"
 #include "Pixel.h"
+#include "LutOption.h"
 
 
 #define HEIGHT 1080
@@ -22,7 +23,8 @@ void chargerImage(Image* img, char * pathImg, int width, int height, float op);
 void saveImage(Image* img, char* savePath);
 void printImage(Image* img, SDL_Surface* framebuffer);
 void freeImage(Image* img);
-void appliqueLUTCalqueId(Image* img, int id, LUT* lut);
+void appliqueLUTCalqueId(Image* img, int id);
+void addLUTCalqueById(Image* img, int id, LutOption lut, int val);
 void updateImage(Image* img);
 void drawImageHistogramme(Image* img);
 
