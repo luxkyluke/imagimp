@@ -77,11 +77,11 @@ int main(int argc, char** argv) {
 
 	initGlut(argc,argv);
 
-	Image* img = makeImage(512, 512);
+	Image* img = makeImage(1600, 1200);
 
 	// Image *img;
 	// makeImage(img, 512, 512);
-	chargerImage(img, "images/Baboon.512.ppm", 512, 512, 1.);
+	chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);

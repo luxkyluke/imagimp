@@ -1,6 +1,9 @@
 #include "Calque.h"
 #define DEFAULT_FUSION 2
 
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
 static unsigned int indice_courant = 0;
 
 void remplirCalqueCouleur(Calque* calque, Pixel p) {
@@ -300,7 +303,10 @@ void drawCalque(Calque *c) {
 
 			glBegin(GL_POINTS);
 			glColor3f(r / 255., g / 255., b / 255.);
-			glVertex2i(j, i);
+			if(c->width>WINDOW_WIDTH || c->height>WINDOW_HEIGHT)
+				glVertex2f(j*WINDOW_WIDTH/c->width, i*WINDOW_HEIGHT/c->height);
+			else
+				glVertex2f(j, i);
 			glEnd();
 
 		}
