@@ -41,11 +41,12 @@ Calque* getCalqueById(Calque* c, int id) {
 		return NULL;
 	Calque *tmp = c;
 	while (tmp != NULL){
-		if(tmp->id != id)
+		if(tmp->id == id)
 			return tmp;
 		tmp = tmp->next;
 	}
-	perror("Indice du calque introuvable\n");
+	fprintf(stderr, "Indice du calque introuvable\n");
+	fflush(stdin);
 	return NULL;
 }
 
@@ -171,6 +172,9 @@ Calque* fusionnerCalque(Calque* c) {
 }
 
 void appliquerLUT(LUT* L, Calque* calque) {
+	if(!calque || !L){
+		return ;
+	}
 	int i, j;
 	fusionnerLut(L);
 	for (i = 0; i < calque->height; i++) {

@@ -48,5 +48,7 @@ void freeImage(Image* img) {
 }
 
 void updateImage(Image* img) {
+	if(!img)
+		return;
 	img->calque_resultat = fusionnerCalque(img->listCalques);
 }
