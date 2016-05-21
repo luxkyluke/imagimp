@@ -118,3 +118,17 @@ int isOnSaturation(int posX, int posY, int xSaturation) {
     else
         return 0;
 }
+
+int isOnChargerImage(int posX, int posY) {
+   if(posX >= 855 && posX <= 1045 && posY>=520 && posY <= 560)
+        return 1;
+   else
+        return 0;
+}
+
+int isOnNouveauCalque(int posX, int posY) {
+   if(posX >= 855 && posX <= 1045 && posY>=460 && posY <= 500)
+        return 1;
+   else
+        return 0;
+}

@@ -175,7 +175,6 @@ int main(int argc, char** argv) {
 						xSaturation = WINDOW_WIDTH + 150 - posX;
 					}
 
-
 					break;
 
 				case SDL_MOUSEBUTTONDOWN:
@@ -188,6 +187,12 @@ int main(int argc, char** argv) {
 
 					if(isOnSaturation(posX,posY,xSaturation) == 1)
 						saturationCheck = 1;
+
+					if(isOnNouveauCalque(posX, posY) == 1)
+						printf("Il est sur le calque.\n");
+
+					if(isOnChargerImage(posX, posY) == 1)
+						printf("Il est sur le chargement.\n");
 
 					break;
 
