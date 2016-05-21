@@ -11,5 +11,6 @@
 
 
 int IsZero(float x);
+void dessinCarre(int fill, Color3f color);
 void dessinCercle(int n, int fill);
 #endif

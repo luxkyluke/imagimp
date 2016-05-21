@@ -2,6 +2,8 @@
 #include "glut_tools.h"
 #include "Geometry.h"
 
+#define WIDTH_SLIDER 200
+
 void DessinButton(char *text) {
     glScalef(190,40,1);
     glColor3f(1,1,0);
@@ -15,7 +17,10 @@ void DessinButton(char *text) {
     glPopMatrix();
 }
 
-void dessinIHM(Calque* c) {
+void dessinIHM(Calque* c, int xLuminosite, int xContraste, int xSaturation) {
+    // printf("%d xLuminosite\n", xLuminosite);
+    float valueSliderLuminosite = -xLuminosite;
+    float valueSliderContraste= -xContraste;
     char luminosite[] = "Luminosite", contraste[] = "Contraste", saturation[] = "Saturation", calque[] = "Nouveau calque", image[] = "Charger image";
 
     // Luminosité.
@@ -24,13 +29,14 @@ void dessinIHM(Calque* c) {
     glColor3f(149./255., 165./255., 166./255.);
     glBegin(GL_LINES);
     glVertex3f(0, 0, 0);
-    glVertex3f(200, 0, 0);
+    glVertex3f(WIDTH_SLIDER, 0, 0);
     glEnd();
-    glTranslatef(90,0,0);
+    glTranslatef(100 - xLuminosite ,0,0);
     glColor3f(1,1,1);
     glScalef(20,20,0);
     dessinCercle(10,1);
     glPopMatrix();
+
 
     glPushMatrix();
     glTranslatef(100, 160, 0);
@@ -47,7 +53,7 @@ void dessinIHM(Calque* c) {
     glVertex3f(0, 0, 0);
     glVertex3f(200, 0, 0);
     glEnd();
-    glTranslatef(90,0,0);
+    glTranslatef(100 - xContraste,0,0);
     glColor3f(1,1,1);
     glScalef(20,20,0);
     dessinCercle(10,1);
@@ -59,7 +65,7 @@ void dessinIHM(Calque* c) {
     vBitmapOutput(-2, 45, contraste, GLUT_BITMAP_HELVETICA_18);
     glPopMatrix();
 
-    // Contraste.
+    // Saturation.
     glPushMatrix();
     glTranslatef(50, 360, 0);
     glColor3f(149./255., 165./255., 166./255.);
@@ -67,7 +73,7 @@ void dessinIHM(Calque* c) {
     glVertex3f(0, 0, 0);
     glVertex3f(200, 0, 0);
     glEnd();
-    glTranslatef(90,0,0);
+    glTranslatef(100 - xSaturation,0,0);
     glColor3f(1,1,1);
     glScalef(20,20,0);
     dessinCercle(10,1);
@@ -90,4 +96,25 @@ void dessinIHM(Calque* c) {
     glPopMatrix();
 
 
+}
+
+int isOnLuminosite(int posX, int posY, int xLuminosite) {
+    if(posX >= 931 - xLuminosite && posX <= 950 - xLuminosite && posY>=151 && posY <= 172)
+        return 1;
+    else
+        return 0;
+}
+
+int isOnContraste(int posX, int posY, int xContraste) {
+    if(posX >= 931 - xContraste && posX <= 950 - xContraste && posY>=250 && posY <= 270)
+        return 1;
+    else
+        return 0;
+}
+
+int isOnSaturation(int posX, int posY, int xSaturation) {
+    if(posX >= 931 - xSaturation && posX <= 950 - xSaturation && posY>=350 && posY <= 370)
+        return 1;
+    else
+        return 0;
 }

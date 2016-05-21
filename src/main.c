@@ -7,7 +7,7 @@
 #include "Histogramme.h"
 #include "LUT.h"
 #include "Color3f.h"
-#include "Geometry.h"
+#include "../include/Geometry.h"
 
 #include "IHM.h"
 
@@ -94,8 +94,10 @@ int main(int argc, char** argv) {
 
 
 	int loop = 1;
+	int posX = 0, posY = 0;
 
 	int change = 0;
+	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0;
 
 	while (loop) {
 		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
@@ -126,7 +128,8 @@ int main(int argc, char** argv) {
 			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
 		glPopMatrix();
 		drawHistogramme(img->listCalques->histogramme);
-		dessinIHM(img->listCalques);
+		dessinIHM(img->listCalques, xLuminosite,xContraste,xSaturation);
+
 
 
 		/* On copie le framebuffer � l'�cran */
@@ -140,6 +143,46 @@ int main(int argc, char** argv) {
 			if (e.type == SDL_QUIT) {
 				loop = 0;
 				break;
+			}
+
+
+			switch(e.type) {
+				case SDL_MOUSEMOTION:
+					posX = e.button.x;
+					posY = e.button.y;
+					if(luminositeCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xLuminosite = WINDOW_WIDTH + 150 - posX;
+					}
+
+					if(contrasteCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xContraste = WINDOW_WIDTH + 150 - posX;
+					}
+
+					if(saturationCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xSaturation = WINDOW_WIDTH + 150 - posX;
+					}
+
+
+					break;
+
+				case SDL_MOUSEBUTTONDOWN:
+				printf("posX : %d posY : %d\n", posX,posY);
+					if(isOnLuminosite(posX,posY,xLuminosite) == 1)
+						luminositeCheck = 1;
+
+					if(isOnContraste(posX,posY,xContraste) == 1)
+						contrasteCheck = 1;
+
+					if(isOnSaturation(posX,posY,xSaturation) == 1)
+						saturationCheck = 1;
+
+					break;
+
+				case SDL_MOUSEBUTTONUP:
+					luminositeCheck = 0;
+					contrasteCheck  = 0;
+					saturationCheck = 0;
+					break;
 			}
 		}
 	}

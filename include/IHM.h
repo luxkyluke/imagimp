@@ -6,6 +6,9 @@
 #include "sdl_tools.h"
 #include "LUT.h"
 
-void dessinIHM(Calque* c);
+void dessinIHM(Calque* c, int xLuminosite, int xContraste, int xSaturation);
+int isOnLuminosite(int posX, int posY, int xLuminosite);
+int isOnContraste(int posX, int posY, int xContraste);
+int isOnSaturation(int posX, int posY, int xSaturation);
 
 #endif
