@@ -292,14 +292,16 @@ void saveCalque(Calque* c, char * pathImg) {
 	unsigned char *rgb = malloc(
 			c->width * c->height * 3 * sizeof(unsigned char));
 	int i, j;
+
 	for (i = 0; i < c->height; i++) {
 		for (j = 0; j < c->width; j++) {
-			rgb[c->width * 3 * i + j * 3] = c->pixels[j][i].g;
-			rgb[c->width * 3 * i + j * 3 + 1] = c->pixels[j][i].b;
-			rgb[c->width * 3 * i + j * 3 + 2] = c->pixels[j][i].r;
+			rgb[c->width * 3 * i + j * 3] = c->pixels[j][i].r;
+			rgb[c->width * 3 * i + j * 3 + 1] = c->pixels[j][i].g;
+			rgb[c->width * 3 * i + j * 3 + 2] = c->pixels[j][i].b;
 		}
 	}
 	PPM_ecrire(pathImg, rgb, c->width, c->height);
+	printf("Sauvegarde Calque %d OK\n", c->id);
 }
 
 void drawCalque(Calque *c) {

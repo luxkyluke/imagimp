@@ -1,6 +1,9 @@
 #include "Image.h"
 //#include "Histogramme.h"
 
+
+
+
 Image* makeImage(int width, int height) {
 	Image* img = (Image*) malloc(sizeof(Image));
 	img->listCalques = makeCalque(width, height, 0.);
@@ -61,6 +64,10 @@ void printImage(Image* img, SDL_Surface* framebuffer) {
 
 void freeImage(Image* img) {
 	freeCalque_r(img->listCalques);
+}
+
+void saveImage(Image* img, char* savePath){
+	saveCalque(img->calque_resultat, savePath);
 }
 
 void updateImage(Image* img) {

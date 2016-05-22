@@ -13,6 +13,8 @@
 
 #include "IHM.h"
 
+#define SAVE_PATH "images/save.ppm"
+
 static unsigned int WINDOW_WIDTH = 800;
 static unsigned int WINDOW_HEIGHT = 600;
 
@@ -209,6 +211,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
+	//saveImage(img, SAVE_PATH);
 	freeImage(img);
 
 	SDL_Quit();
