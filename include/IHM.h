@@ -6,11 +6,36 @@
 #include "sdl_tools.h"
 #include "LUT.h"
 
-void dessinIHM(Calque* c, int xLuminosite, int xContraste, int xSaturation);
+typedef enum _sliderName {contraste, luminosite, saturation} SliderName;
+
+typedef struct Slider{
+    int width;
+    int posSlider;
+    int posY;
+    int startPos;
+    SliderName name;
+    char* title;
+} Slider;
+
+typedef struct IHM{
+    int windowWidth,
+        windowHeight,
+        paramWidth,
+        filterHeight;
+    Slider* sliderContraste;
+    Slider* sliderLuminosite;
+    Slider* sliderSaturation;
+} IHM;
+
+void dessinIHM(IHM* ihm);
 int isOnLuminosite(int posX, int posY, int xLuminosite);
 int isOnContraste(int posX, int posY, int xContraste);
 int isOnSaturation(int posX, int posY, int xSaturation);
 int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
+
+Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
+IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
+void drawSlider(Slider* slider);
 
 #endif

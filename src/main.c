@@ -46,10 +46,11 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
+	IHM* ihm = makeIHM(800,600,300,200);
 
 	SDL_Surface* screen = NULL;
 	if (NULL
-			== (screen = SDL_SetVideoMode(WINDOW_WIDTH+WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,
+			== (screen = SDL_SetVideoMode(ihm->windowWidth + ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,
 					BIT_PER_PIXEL, SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
@@ -64,8 +65,8 @@ int main(int argc, char** argv) {
 	/* Cr�ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (NULL
-			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
-					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
+			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, ihm->windowWidth,
+					ihm->windowHeight, 24, 0, 0, 0, 0))) {
 		fprintf(stderr,
 				"Erreur d'allocation pour le framebuffer. Fin du programme.\n");
 		return EXIT_FAILURE;
@@ -120,26 +121,26 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		reshape(WINDOW_WIDTH,WINDOW_HEIGHT_FILTER,0,0);
+		reshape(ihm->windowWidth,ihm->filterHeight,0,0);
 		glPushMatrix();
 			// glTranslatef(1,0,0);
-			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,1);
+			glScalef(ihm->windowWidth, ihm->filterHeight,1);
 			dessinCarre(1, ColorRGB(1,1,1));
 		glPopMatrix();
 
-		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
+		reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
 		printImage(img, framebuffer);
 
-		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
+		reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
 		glPushMatrix();
-			glScalef(WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,1);
+			glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,1);
 			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
 		glPopMatrix();
 		drawImageHistogramme(img);
-		dessinIHM(img->listCalques, xLuminosite,xContraste,xSaturation);
+		dessinIHM(ihm);
 
 
 
@@ -169,16 +170,19 @@ int main(int argc, char** argv) {
 				case SDL_MOUSEMOTION:
 					posX = e.button.x;
 					posY = e.button.y;
-					if(luminositeCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xLuminosite = WINDOW_WIDTH + 150 - posX;
+					if(luminositeCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
+						xLuminosite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
+						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos-xLuminosite;
 					}
 
-					if(contrasteCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xContraste = WINDOW_WIDTH + 150 - posX;
+					if(contrasteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
+						xContraste = WINDOW_WIDTH + (ihm->paramWidth/2) - posX;
+						ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos-xContraste;
 					}
 
-					if(saturationCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xSaturation = WINDOW_WIDTH + 150 - posX;
+					if(saturationCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
+						xSaturation = ihm->windowWidth + (ihm->paramWidth/2) - posX;
+						ihm->sliderSaturation->posSlider = ihm->sliderSaturation->startPos-xSaturation;
 					}
 
 					break;
