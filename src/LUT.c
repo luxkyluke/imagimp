@@ -37,7 +37,7 @@ LUT* getLUTById(LUT* l, int id){
 
 void addLUT(LUT* list, int lut[256]){
 	int i;
-	if (list == NULL) 
+	if (list == NULL)
 		return;
 	if (LUTIsEmpty(list) == true){
 		list->next = list;
@@ -66,7 +66,7 @@ void addLUT(LUT* list, int lut[256]){
 }
 
 void deleteLUT(LUT* list){
-	if (list == NULL) 
+	if (list == NULL)
 		return;
 	if (LUTIsEmpty(list) == true)
 		return;
@@ -117,7 +117,7 @@ void ADDCON(LUT* L, int c){
 void DIMCON(LUT* L, int c){
 	ADDCON(L, -c);
 }
- 
+
 void fusionnerLut(LUT* l){
  	int i;
 	LUT *next, *l_tmp= l->next;
@@ -146,6 +146,24 @@ void freeLUT(LUT* L){
 	}
 	printf("FreeLUT OK\n");
 }
+
+/*
+
+Pour les filtres instagram :
+1. Nashville :
+   - 60 luminosité
+   - 12 Contraste
+   - Rajouter calque jaune #f4eabd et baisser l'opacité
+
+   Brannan :
+   - 100 contraste
+   - 6 luminosité
+   - Rajouter calque jaune #eddd9e avec 59 opacité
+
+   Faire filtre noir et blanc (enlever un max de saturation)
+
+   Faire filtre Négatif
+*/
 
 
 
