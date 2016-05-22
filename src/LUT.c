@@ -2,7 +2,7 @@
 #include "LUT.h"
 #include "Pixel.h"
 
-static unsigned int indice_courant = 0;
+static unsigned int indice_courant = 1;
 
 
 LUT* makeLUT(){
@@ -35,34 +35,35 @@ LUT* getLUTById(LUT* l, int id){
 	return NULL;
 }
 
-void addLUT(LUT* list, int lut[256]){
+int addLUT(LUT* list, int lut[256]){
 	int i;
 	if (list == NULL)
-		return;
+		return 0;
 	if (LUTIsEmpty(list) == true){
 		list->next = list;
 		list->prev = list;
 		for (i = 0; i < 256; i++)
 			list->lut[i] = lut[i];
-		return;
+		return list->id;
 	}
 	if (list->next == list)	{
-		LUT* newNode = (LUT*) malloc(sizeof(LUT));
+		LUT* newNode = makeLUT();
 		newNode->prev = list;
 		newNode->next = list;
 		list->next = newNode;
 		list->prev = newNode;
 		for (i = 0; i < 256; i++)
 			newNode->lut[i] = lut[i];
-		return;
+		return newNode->id;
 	}
-	LUT* newNode = (LUT*) malloc(sizeof(LUT));
+	LUT* newNode = makeLUT();
 	newNode->next = list;
 	newNode->prev = list->prev;
 	list->prev->next = newNode;
 	list->prev = newNode;
 	for (i = 0; i < 256; i++)
 		newNode->lut[i] = lut[i];
+	return newNode->id;
 }
 
 void deleteLUT(LUT* list){

@@ -4,7 +4,7 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-static unsigned int indice_courant = 0;
+static unsigned int indice_courant = 1;
 
 void remplirCalqueCouleur(Calque* calque, Pixel p) {
 	if (!calque)
@@ -18,6 +18,10 @@ void remplirCalqueCouleur(Calque* calque, Pixel p) {
 
 Calque* makeCalque(int w, int h, float op) {
 	Calque* calque = malloc(sizeof(Calque));
+	if(!calque){
+		fprintf(stderr, "Probleme Allocation Calque\n");
+		return NULL;
+	}
 	calque->next = NULL;
 	calque->prev = NULL;
 	calque->height = h;
@@ -61,8 +65,8 @@ Calque* copyCalque(Calque *c){
 					c->pixels[j][i].g, c->pixels[j][i].b);
 		}
 	}
+	copie->listLuts = c->listLuts;
 	return copie;
-
 }
 
 Calque* getNextCalque(Calque* c) {
@@ -95,9 +99,9 @@ bool calqueIsEmpty(Calque* c) {
 	return (c->listLuts == NULL);
 }
 
-void addCalque(Calque* c, float op) {
+int addCalque(Calque* c, float op) {
 	if (c == NULL)
-		return;
+		return 0;
 
 	Calque* tmp = c;
 	while (tmp->next != NULL) {
@@ -106,11 +110,13 @@ void addCalque(Calque* c, float op) {
 	Calque* newCalque = makeCalque(c->width, c->height, op);
 	newCalque->prev = tmp;
 	tmp->next = newCalque;
+	return newCalque->id;
 }
 
-void addLUTCalque(Calque *c, LutOption lut, int val) {
+int addLUTCalque(Calque *c, LutOption lut, int val) {
 	if (!c)
-		return;
+		return 0;
+
 	LUT l;
 
 	switch(lut){
@@ -130,7 +136,9 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 			DIMCON(&l, val);
 			break;
 	}
-	addLUT(c->listLuts, l.lut);
+	if(!c->listLuts)
+		c->listLuts = makeLUT();
+	return addLUT(c->listLuts, l.lut);
 }
 
 void removeCalque(Calque* c) {
@@ -148,14 +156,14 @@ void removeCalque(Calque* c) {
 	c = NULL;
 }
 
-void chargerImageCalque(Calque* c, char * pathImg, int width, int height,
+int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 		float op) {
 	unsigned char *rgb = PPM_lire(pathImg, &width, &height);
 	if (rgb == NULL) {
 		perror("Impossible de charger l'image\n");
-		return;
+		return 0;
 	}
-	addCalque(c, op);
+	int id = addCalque(c, op);
 	int i, j;
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
@@ -166,6 +174,7 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 			c->next->pixels[j][i] = tmp;
 		}
 	}
+	return id;
 	//calculHistogramme(c->next);
 }
 
@@ -182,6 +191,12 @@ void chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 //	}
 //	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
 //}
+
+void fusionCalqueDefinitive(Calque *calque){
+	Calque *next = calque->next;
+	calque = fusionnerCalque(calque);
+	freeCalque_r(next);
+}
 
 Calque* fusionnerCalque(Calque* c) {
 	if (c == NULL)
@@ -201,9 +216,7 @@ Calque* fusionnerCalque(Calque* c) {
 						* calque_tmp->pixels[j][i].b;
 			}
 		}
-		next = calque_tmp->next;
-		removeCalque(calque_tmp);
-		calque_tmp = next;
+		calque_tmp = calque_tmp->next;
 	}
 	calculHistogramme(test);
 	return test;

@@ -19,12 +19,14 @@ typedef struct Image{
 } Image;
 
 Image* makeImage(int width, int height);
-void chargerImage(Image* img, char * pathImg, int width, int height, float op);
+int chargerImage(Image* img, char * pathImg, int width, int height, float op);
 void saveImage(Image* img, char* savePath);
 void printImage(Image* img, SDL_Surface* framebuffer);
 void freeImage(Image* img);
 void appliqueLUTCalqueId(Image* img, int id);
-void addLUTCalqueById(Image* img, int id, LutOption lut, int val);
+void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id);
+void appliqueAllLUTCalqueById(Image* img, int id);
+int addLUTCalqueById(Image* img, int id, LutOption lut, int val);
 void updateImage(Image* img);
 void drawImageHistogramme(Image* img);
 

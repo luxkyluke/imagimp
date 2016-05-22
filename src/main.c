@@ -78,17 +78,21 @@ int main(int argc, char** argv) {
 	initGlut(argc,argv);
 
 	Image* img = makeImage(1600, 1200);
-
+	int idCalqueImg, idLut2, idLut1;
 	// Image *img;
 	// makeImage(img, 512, 512);
-	chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
+	idCalqueImg = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	//addLUTCalqueById(img, 1, invert, 0);
+
+	idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
+//	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
+//	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
+	appliqueAllLUTCalqueById(img, idCalqueImg);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);

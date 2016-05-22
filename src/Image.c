@@ -8,9 +8,10 @@ Image* makeImage(int width, int height) {
 	return img;
 }
 
-void chargerImage(Image* img, char * pathImg, int width, int height, float op) {
-	chargerImageCalque(img->listCalques, pathImg, width, height, op);
+int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
+	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	updateImage(img);
+	return id;
 }
 
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
@@ -21,7 +22,7 @@ void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
 	img->calque_resultat = c;
 }
 
-void appliqueAllLUTCalqueId(Image* img, int id) {
+void appliqueAllLUTCalqueById(Image* img, int id) {
 	if (!img)
 		return;
 	Calque* c = copyCalque(getCalqueById(img->listCalques, id));
@@ -40,11 +41,11 @@ void drawImageHistogramme(Image* img) {
 	drawCalqueHistogramme(img->calque_resultat);
 }
 
-void addLUTCalqueById(Image* img, int id, LutOption lut, int val){
+int addLUTCalqueById(Image* img, int id, LutOption lut, int val){
 	if (!img)
-			return;
+			return 0;
 	Calque* c = getCalqueById(img->listCalques, id);
-	addLUTCalque(c, lut, val);
+	return addLUTCalque(c, lut, val);
 }
 
 void printImage(Image* img, SDL_Surface* framebuffer) {

@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "Geometry.h"
 #ifdef __APPLE__
     #include <OpenGL/gl.h>
