@@ -24,23 +24,30 @@ void dessinIHM(IHM* ihm) {
     drawSlider(ihm->sliderLuminosite);
     drawSlider(ihm->sliderContraste);
     drawSlider(ihm->sliderSaturation);
+    drawSlider(ihm->sliderOpacite);
 
     glPushMatrix();
-    glTranslatef(55, 460,0);
+    glTranslatef(55, 560,0);
     DessinButton(calque);
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(55, 520,0);
+    glTranslatef(55, 620,0);
     DessinButton(image);
     glPopMatrix();
-
-
 }
 
 int isOnLuminosite(int posX, int posY, int xLuminosite) {
     if(posX >= 931 - xLuminosite && posX <= 950 - xLuminosite && posY>=151 && posY <= 172)
         return 1;
+    else
+        return 0;
+}
+
+int isOnOpacite(int posX, int posY, int xOpacite) {
+    if(posX >= 940 - xOpacite && posX <= 960 - xOpacite && posY>=453 && posY <= 468) {
+        return 1;
+    }
     else
         return 0;
 }
@@ -60,14 +67,14 @@ int isOnSaturation(int posX, int posY, int xSaturation) {
 }
 
 int isOnChargerImage(int posX, int posY) {
-   if(posX >= 855 && posX <= 1045 && posY>=520 && posY <= 560)
+   if(posX >= 855 && posX <= 1045 && posY>=620 && posY <= 660)
         return 1;
    else
         return 0;
 }
 
 int isOnNouveauCalque(int posX, int posY) {
-   if(posX >= 855 && posX <= 1045 && posY>=460 && posY <= 500)
+   if(posX >= 855 && posX <= 1045 && posY>=560 && posY <= 600)
         return 1;
    else
         return 0;
@@ -102,6 +109,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderLuminosite   = makeSlider(200,160,100,luminosite,"luminosite");
     ihm->sliderContraste    = makeSlider(200,260,100,contraste,"contraste");
     ihm->sliderSaturation   = makeSlider(200,360,100,saturation,"saturation");
+    ihm->sliderOpacite      = makeSlider(100,460,100,opacite,"opacite");
     return ihm;
 }
 
@@ -113,7 +121,11 @@ void drawSlider(Slider* slider) {
             glVertex3f(0, 0, 0);
             glVertex3f(slider->width, 0, 0);
         glEnd();
-        glTranslatef(slider->posSlider,0,0);
+        // if(slider->name == opacite){
+        //     glTranslatef((slider->posSlider+100),0,0);
+        // }
+        // else
+            glTranslatef(slider->posSlider,0,0);
         glColor3f(1,1,1);
         glScalef(20,20,0);
         dessinCercle(10,1);

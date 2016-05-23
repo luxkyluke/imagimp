@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 	int posX = 0, posY = 0;
 
 	//int change = 0;
-	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0;
+	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite = 0, opaciteCheck = 0;
 
 	while (loop) {
 		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
@@ -126,7 +126,33 @@ int main(int argc, char** argv) {
 			// glTranslatef(1,0,0);
 			glScalef(ihm->windowWidth, ihm->filterHeight,1);
 			dessinCarre(1, ColorRGB(1,1,1));
+
+
+			// glTranslatef(50,-10,0);
+			// glScalef(50,50,1);
+			// dessinCarre(1,ColorRGB(50, 10,10));
+			// printf("L'id du calque : %d\n",imgCalque->id);
+
 		glPopMatrix();
+		Calque* imgCalque = img->listCalques;
+		while(imgCalque!=NULL) {
+			glPushMatrix();
+			printf("yo %d\n",imgCalque->id);
+			glTranslatef(imgCalque->id*100,0,0);
+			glScalef(50,50,1);
+			dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+			glPopMatrix();
+			if(imgCalque->next!=NULL)
+				imgCalque=imgCalque->next;
+			else
+				break;
+		}
+		freeCalque(imgCalque);
+
+
+		// glTranslatef(0,0,0);
+		// 	glScalef(50,50,1);
+		// 	dessinCarre(1,ColorRGB(0,0,0));
 
 		reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
 		/* Nettoyage du framebuffer */
@@ -185,6 +211,11 @@ int main(int argc, char** argv) {
 						ihm->sliderSaturation->posSlider = ihm->sliderSaturation->startPos-xSaturation;
 					}
 
+					if(opaciteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+150) {
+						xOpacite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
+						ihm->sliderOpacite->posSlider = ((ihm->sliderOpacite->startPos) - xOpacite);
+					}
+
 					break;
 
 				case SDL_MOUSEBUTTONDOWN:
@@ -198,6 +229,9 @@ int main(int argc, char** argv) {
 					if(isOnSaturation(posX,posY,xSaturation) == 1)
 						saturationCheck = 1;
 
+					if(isOnOpacite(posX,posY,xOpacite) == 1)
+						opaciteCheck = 1;
+
 					if(isOnNouveauCalque(posX, posY) == 1)
 						printf("Il est sur le calque.\n");
 
@@ -210,6 +244,7 @@ int main(int argc, char** argv) {
 					luminositeCheck = 0;
 					contrasteCheck  = 0;
 					saturationCheck = 0;
+					opaciteCheck    = 0;
 					break;
 			}
 		}

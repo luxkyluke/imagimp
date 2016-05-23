@@ -20,6 +20,7 @@ typedef struct Calque{
 	int height, width;
     Histogramme* histogramme;
 	unsigned int id;
+    int isSelected;
 } Calque;
 
 Calque* makeCalque(int w, int h, float op);

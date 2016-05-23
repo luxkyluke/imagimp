@@ -22,16 +22,17 @@ Calque* makeCalque(int w, int h, float op) {
 		fprintf(stderr, "Probleme Allocation Calque\n");
 		return NULL;
 	}
-	calque->next = NULL;
-	calque->prev = NULL;
-	calque->height = h;
-	calque->width = w;
-	calque->fusion = DEFAULT_FUSION;
-	calque->alpha = op;
-	calque->listLuts = NULL; // changer les noms des variables des struct
-	calque->id = indice_courant++;
-	calque->listLuts = makeLUT();
-	calque->pixels = (Pixel **) malloc(calque->width * sizeof(Pixel*));
+	calque->next       = NULL;
+	calque->prev       = NULL;
+	calque->height     = h;
+	calque->width      = w;
+	calque->fusion     = DEFAULT_FUSION;
+	calque->alpha      = op;
+	calque->isSelected = 1;
+	calque->listLuts   = NULL; // changer les noms des variables des struct
+	calque->id         = indice_courant++;
+	calque->listLuts   = makeLUT();
+	calque->pixels     = (Pixel **) malloc(calque->width * sizeof(Pixel*));
 	int i;
 	for (i = 0; i < calque->width; i++) {
 		calque->pixels[i] = (Pixel *) malloc(calque->height * sizeof(Pixel));
