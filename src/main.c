@@ -80,22 +80,18 @@ int main(int argc, char** argv) {
 
 	initGlut(argc,argv);
 
-	Image* img = makeImage(1600, 1200);
-	int idCalqueImg, idLut2, idLut1;
+	Image* img = makeImage(512, 512);
+	int idCalqueImg2, idCalqueImg1, idLut2, idLut1;
 	// Image *img;
 	// makeImage(img, 512, 512);
-	idCalqueImg = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
+	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
+	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.5);
+	fusionnerCalquesImage(img);
 
-//	LUT* l = makeLUT();
-//	INVERT(l);
-//	//ADDLUM(l, 50);
-//	addLUT(l, l->lut);
-
-
-	idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
-//	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
+//	idLut2 = addLUTCalqueById(img, idCalqueImg2, dimlum, 100);
+//	idLut1 = addLUTCalqueById(img, idCalqueImg2, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
-	appliqueAllLUTCalqueById(img, idCalqueImg);
+//	appliqueAllLUTCalqueById(img, idCalqueImg2);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
@@ -132,7 +128,7 @@ int main(int argc, char** argv) {
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		printImage(img, framebuffer);
+		drawImage(img, framebuffer);
 
 		reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
 		glPushMatrix();
