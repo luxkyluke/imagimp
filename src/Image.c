@@ -100,9 +100,8 @@ void afficheCalqueById(Image* img, int calque_id) {
 	Calque* calque = getCalqueById(img->listCalques, calque_id);
 	if(calque==NULL)
 		return;
-	printf("L'id du calque %d\n",calque->id);
 	if(img->calque_resultat)
 		freeCalque(img->calque_resultat);
-	img->calque_resultat = appliquerAllLUT(calque);
-
+	calque->alpha=1;
+	img->calque_resultat = calque;
 }

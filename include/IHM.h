@@ -7,6 +7,7 @@
 #include "LUT.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
+typedef enum _btnName {calque, charger} BtnName;
 
 typedef struct Slider{
     int width;
@@ -22,6 +23,8 @@ typedef struct Button{
         height,
         posX,
         isSelected;
+    char* title;
+    BtnName name;
 } Button;
 
 typedef struct IHM{
@@ -33,6 +36,8 @@ typedef struct IHM{
     Slider* sliderLuminosite;
     Slider* sliderSaturation;
     Slider* sliderOpacite;
+    Button* btnCalque;
+    Button* btnImage;
 } IHM;
 
 void dessinIHM(IHM* ihm);
@@ -44,7 +49,7 @@ int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
-Button* makeButton(int width, int height, int posX, int isSelected);
+Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
 
