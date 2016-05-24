@@ -46,6 +46,8 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
+	IHM*ihm = makeIHM(800,600,300,200);
+
 
 	SDL_Surface* screen = NULL;
 	if (NULL
@@ -80,7 +82,7 @@ int main(int argc, char** argv) {
 	initGlut(argc,argv);
 
 	Image* img = makeImage(1600, 1200);
-	int idCalqueImg, idLut2, idLut1;
+	int idCalqueImg1, idCalqueImg2, idLut2, idLut1;
 	// Image *img;
 	// makeImage(img, 512, 512);
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
@@ -149,7 +151,7 @@ int main(int argc, char** argv) {
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		printImage(img, framebuffer);
+		drawImage(img, framebuffer);
 
 		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
 		glPushMatrix();
@@ -157,7 +159,7 @@ int main(int argc, char** argv) {
 			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
 		glPopMatrix();
 		drawImageHistogramme(img);
-		dessinIHM(img->listCalques, xLuminosite,xContraste,xSaturation);
+		dessinIHM(ihm);
 
 
 

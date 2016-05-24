@@ -14,7 +14,7 @@ typedef struct LUT{
 	unsigned int id;
 }LUT;
 
-
+void initLUT(int* lut);
 LUT* makeLUT();
 bool LUTIsEmpty(LUT* list);
 int addLUT(LUT* list, int lut[256]);
