@@ -100,17 +100,18 @@ void drawHistogramme(Histogramme* histogramme) {
 	int max = 0, i = 0;
 
 	glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glPushMatrix();
-	glTranslatef(270,120,0);
+	glTranslatef(20,120,0);
 	glRotatef(180,0,0,1);
+	glScalef(-1,1,1);
 	// glTranslatef(200,200,0);
 	for (i = 0; i < TAILLE_TAB; i++) {
-		glColor4f(1., 1., 1.,0.4);
+		glColor4f(0., 0., 0.,1);
 		glLineWidth(1);
 		glBegin(GL_LINES);
 		glVertex3f(i, 0, 0);
-		glVertex3f(i, ((0.3*(float)histogramme->valeursRed[i] + 0.6*(float)histogramme->valeursGreen[i] + 0.1*(float)histogramme->valeursBlue[i]) / ((float)histogramme->valeurMax)) * 100,0);
+		glVertex3f(i, ((0.3*(float)histogramme->valeursLuminosite[i] + 0.6*(float)histogramme->valeursGreen[i] + 0.1*(float)histogramme->valeursBlue[i]) / ((float)histogramme->valeurMax)) * 100,0);
 		glEnd();
 
 		glColor4f(1., 0, 0.,0.33);

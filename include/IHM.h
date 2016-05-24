@@ -6,7 +6,7 @@
 #include "sdl_tools.h"
 #include "LUT.h"
 
-typedef enum _sliderName {contraste, luminosite, saturation} SliderName;
+typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
 
 typedef struct Slider{
     int width;
@@ -17,6 +17,13 @@ typedef struct Slider{
     char* title;
 } Slider;
 
+typedef struct Button{
+    int width,
+        height,
+        posX,
+        isSelected;
+} Button;
+
 typedef struct IHM{
     int windowWidth,
         windowHeight,
@@ -25,16 +32,19 @@ typedef struct IHM{
     Slider* sliderContraste;
     Slider* sliderLuminosite;
     Slider* sliderSaturation;
+    Slider* sliderOpacite;
 } IHM;
 
 void dessinIHM(IHM* ihm);
 int isOnLuminosite(int posX, int posY, int xLuminosite);
 int isOnContraste(int posX, int posY, int xContraste);
 int isOnSaturation(int posX, int posY, int xSaturation);
+int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
+Button* makeButton(int width, int height, int posX, int isSelected);
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
 
