@@ -12,7 +12,15 @@ LUT* makeLUT(){
 	list->prev = NULL;
 	list->next = NULL;
 	list->id = indice_courant++;
+	initLUT(list->lut);
 	return list;
+}
+
+void initLUT(int* lut){
+	int i;
+	for(i=0; i<256; ++i){
+		lut[i]=i;
+	}
 }
 
 bool LUTIsEmpty(LUT* list){

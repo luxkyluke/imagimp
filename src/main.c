@@ -87,10 +87,15 @@ int main(int argc, char** argv) {
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
 	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.5);
 
-//	idLut2 = addLUTCalqueById(img, idCalqueImg2, dimlum, 100);
-//	idLut1 = addLUTCalqueById(img, idCalqueImg2, addlum, 100);
-//	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
+
+//	idLut2 = addLUTCalqueById(img, idCalqueImg1, invert, 0);
+//	idLut1 = addLUTCalqueById(img, idCalqueImg2, addlum, 200);
+
+	fusionnerCalquesImage(img);
+//	appliqueLUTCalqueByIds(img, idCalqueImg2, idLut1);
 //	appliqueAllLUTCalqueById(img, idCalqueImg2);
+
+//	appliqueAllLUTCalqueById(img, idLut1);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
