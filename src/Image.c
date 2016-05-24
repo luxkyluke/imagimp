@@ -18,6 +18,7 @@ void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
 		return;
 	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
 	appliquerLUTById(c, lut_id);
+	freeCalque(img->calque_resultat);
 	img->calque_resultat = c;
 }
 
@@ -89,6 +90,8 @@ void fusionnerCalquesImage(Image* img) {
 	if (!img)
 		return;
 //	img->calque_resultat = fusionnerCalque(img->listCalques);
+	if(img->calque_resultat)
+		freeCalque(img->calque_resultat);
 	img->calque_resultat = fusionnerCalque(img->listCalques);
 	//printf("%d, %d, %d\n", img->calque_resultat->pixels[50][50].r, img->calque_resultat->pixels[50][50].g, img->calque_resultat->pixels[50][50].b);
 }

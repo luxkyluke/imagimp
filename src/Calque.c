@@ -181,8 +181,12 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 			calque_tmp->pixels[j][i] = tmp;
 		}
 	}
+<<<<<<< HEAD
+	printf("%d\n", r);
+=======
 	return calque_tmp->id;
 	//calculHistogramme(c->next);
+>>>>>>> master
 }
 
 //Pixel getPixelFusionMult(Calque* c, int i, int j){
@@ -199,6 +203,14 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 //	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
 //}
 
+<<<<<<< HEAD
+void fusionnerCalque(Calque* c) {
+	if(c == NULL)
+		return;
+	Calque* calque_resultat = c; // pas aussi simple que �a, il faut faire un for (dixit Anfray)
+	Calque* calque_tmp = c->next;// pas aussi simple que �a, il faut faire un for (dixit Anfray)
+	while (calque_tmp != NULL && calque_tmp != c) {
+=======
 void fusionCalqueDefinitive(Calque **calque){
 	Calque *next = (*calque)->next;
 	*calque = fusionnerCalque(*calque);
@@ -215,6 +227,7 @@ Calque* fusionnerCalque(Calque* c) {
 //		test->listLuts=fusionnerLut(calque_tmp->listLuts);
 		//printf("%d, %d, %d\n", test->pixels[50][50].r, test->pixels[50][50].g, test->pixels[50][50].b);
 		printf("%d, %d, %d\n", calque_tmp->pixels[50][50].r, calque_tmp->pixels[50][50].g, calque_tmp->pixels[50][50].b);
+>>>>>>> master
 		int i, j;
 		for (i = 0; i < c->height; i++) {
 			for (j = 0; j < c->width; j++) {
@@ -235,35 +248,55 @@ Calque* fusionnerCalque(Calque* c) {
 	return test;
 }
 
-void appliqueLUT(Calque* calque, LUT* L) {
+Calque* appliqueLUT(Calque* calque, LUT* L) {
 	if (!calque || !L)
-		return;
+		return NULL;
 	int i, j;
+	Calque *ret = makeCalque(calque->width, calque->height, 1.);
 	for (i = 0; i < calque->height; i++) {
 		for (j = 0; j < calque->width; j++) {
-			calque->pixels[j][i].r = L->lut[calque->pixels[j][i].r];
-			calque->pixels[j][i].g = L->lut[calque->pixels[j][i].g];
-			calque->pixels[j][i].b = L->lut[calque->pixels[j][i].b];
+			ret->pixels[j][i].r = L->lut[calque->pixels[j][i].r];
+			ret->pixels[j][i].g = L->lut[calque->pixels[j][i].g];
+			ret->pixels[j][i].b = L->lut[calque->pixels[j][i].b];
 		}
 	}
+	return ret;
 }
 
-void appliquerLUTById(Calque* calque, int id) {
+Calque* appliquerLUTById(Calque* calque, int id) {
 	if (!calque)
-		return;
+		return NULL;
 	LUT* l = getLUTById(calque->listLuts, id);
-	appliqueLUT(calque, l);
+	Calque *c = appliqueLUT(calque, l);
+	return c;
 }
 
-void appliquerAllLUT(Calque* calque) {
+Calque* appliquerAllLUT(Calque* calque) {
 	if (!calque) {
-		return;
+		return NULL;
 	}
-	//fusionnerLut(calque->listLuts);
-	appliqueLUT(calque, calque->listLuts);
+	LUT * l = fusionnerLut(calque->listLuts);
+	Calque *c = appliqueLUT(calque, l);
+	return c;
 }
 
+<<<<<<< HEAD
+void saveCalque(Calque* c, char * pathImg){
+		unsigned char *rgb = malloc(width*height*3 * sizeof(unsigned char));
+		int i, j;
+		for (i = 0; i < c->height; i++) {
+			for (j = 0; j < c->width; j++) {
+				rgb[c->width*3*i + j*3] = atoi(c->pixels[j][i].g);
+				rgb[c->width*3*i + j*3 + 1]= atoi(c->pixels[j][i].b);
+				rgb[c->width*3*i + j*3 + 2] = atoi(c->pixels[j][i].r);
+			}
+		}
+		PPM_ecrire(pathImg, rgb, c->width, c->height)
+}
+=======
 void freeCalque(Calque* c) {
+	if(!c)
+		return;
 	int i;
 	if(c->pixels){
 		for (i = 0; i < c->width; i++) {
@@ -344,3 +377,4 @@ void drawCalque(Calque *c) {
 	glPopMatrix();
 }
 
+>>>>>>> master
