@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 #include "PPM.h"
 
 /* D'apr�s le standard http://netpbm.sourceforge.net/doc/ppm.html */
-char *PPM_lire(char *nom_fichier, int largeur, int hauteur) {
+unsigned char *PPM_lire(char *nom_fichier, int *width, int *height) {
 
     FILE *fichier = fopen(nom_fichier, "rb");
     if(!fichier) {
@@ -12,53 +13,59 @@ char *PPM_lire(char *nom_fichier, int largeur, int hauteur) {
         return NULL;
     }
 
-    char car;
     unsigned variante, valeur_max;
-    unsigned etape;
-    for(etape=0 ; etape < 3 ; )  {
-        car = fgetc(fichier);
-        if(car == EOF)
+    unsigned etape=0;
+    char* buffer = malloc(sizeof(char)*BUFSIZ);
+    while(etape<3){
+        memset(buffer,0,BUFSIZ);
+        fgets(buffer,BUFSIZ,fichier);
+        if(!buffer[0])
             return NULL;
-        if(car == '#') {
-            do car = fgetc(fichier); while(car != '\n' && car!=EOF);
-            if(car == EOF)
-                return NULL;
+        if(buffer[0] == '#') {
+            printf("commentaire :%s\n",buffer+1);
             continue;
         }
-        if(!isdigit(car))
-            continue;
-        fseek(fichier, -1, SEEK_CUR);
         switch(etape) {
-        case 0: if(fscanf(fichier, "%u", &variante)   <= 0) return NULL; ++etape; break;
-        case 1: if(fscanf(fichier, "%u", &largeur)     <= 0) return NULL; ++etape; break;
-        case 2: if(fscanf(fichier, "%u", &hauteur)     <= 0) return NULL; ++etape; break;
-        case 3: if(fscanf(fichier, "%u", &valeur_max) <= 0) return NULL; fgetc(fichier); break;
+        case 0: if(sscanf(buffer, "P%u", &variante)<1)
+                    return NULL;
+                etape++;
+                break;
+        case 1: if(sscanf(buffer, "%u %u", width, height)<2)
+                    return NULL;
+                etape++;
+                break;
+        case 2: if(sscanf(buffer, "%u", &valeur_max)<1)
+                    return NULL;
+                etape++;
+                break;
         }
     }
 
-    char *gris, *rvb = malloc(3*(largeur)*(hauteur));
-    if(!rvb) {
+    char *rgb = malloc(3*(*width)*(*height)), *gris;
+    if(!rgb) {
         fprintf(stderr, "%s: Pas de place pour allouer les pixels.\n", nom_fichier);
         return NULL;
     }
-    int i;
+    size_t i;
     switch(variante) {
-    case 6: fread(rvb, 1, 3*(largeur)*(hauteur), fichier); break;
+    case 6:
+        fread(rgb, 1, 3*(*width)*(*height), fichier);
+        break;
     case 5:
-        gris = malloc((largeur)*(hauteur));
+        gris = malloc((*width)*(*height));
         if(!gris) {
             fprintf(stderr, "%s: Pas de place pour allouer le gris.\n", nom_fichier);
-            free(rvb);
+            free(rgb);
             return NULL;
         }
-        fread(gris, 1, largeur*hauteur, fichier);
-        for(i=0 ; i<largeur*hauteur ; ++i)
-            rvb[3*i] = rvb[3*i+1] = rvb[3*i+2] = gris[i];
+        fread(gris, 1, (*width)*(*height), fichier);
+        for(i=0 ; i<(*width)*(*height) ; i++)
+            rgb[3*i] = rgb[3*i+1] = rgb[3*i+2] = gris[i];
         free(gris);
         break;
     }
     fclose(fichier);
-    return rvb;
+    return (unsigned char*) rgb;
 }
 
 bool PPM_ecrire(const char *nom_fichier, unsigned char *rvb, unsigned l, unsigned h) {

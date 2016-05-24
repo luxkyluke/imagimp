@@ -1,57 +1,80 @@
 #include <stdio.h>
 #include "LUT.h"
+#include "Pixel.h"
 
-LUT* initLUT(){
+static unsigned int indice_courant = 1;
+
+
+LUT* makeLUT(){
 	LUT* list = (LUT*) malloc(sizeof(LUT));
 	if(!list)
 		return NULL;
 	list->prev = NULL;
 	list->next = NULL;
+	list->id = indice_courant++;
 	return list;
 }
 
-bool IsLUTEmpty(LUT* list){
-	return (list->next == NULL);
+bool LUTIsEmpty(LUT* list){
+	if(list->next == NULL)
+		return true;
+	return false;
 }
 
-void addLUT(LUT* list, int lut[256]){
+LUT* getLUTById(LUT* l, int id){
+	if (!l)
+		return NULL;
+	LUT *tmp = l;
+	while (tmp != NULL) {
+		if (tmp->id == id)
+			return tmp;
+		tmp = tmp->next;
+	}
+	fprintf(stderr, "Indice du LUT introuvable\n");
+	fflush(stdin);
+	return NULL;
+}
+
+int addLUT(LUT* list, int lut[256]){
 	int i;
-	if (list == NULL) 
-		return;
-	if (IsLUTEmpty(list)){
+	if (list == NULL)
+		return 0;
+	if (LUTIsEmpty(list) == true){
 		list->next = list;
 		list->prev = list;
 		for (i = 0; i < 256; i++)
 			list->lut[i] = lut[i];
-		return;
+		return list->id;
 	}
 	if (list->next == list)	{
-		LUT* newNode = (LUT*) malloc(sizeof(LUT));
+		LUT* newNode = makeLUT();
 		newNode->prev = list;
 		newNode->next = list;
 		list->next = newNode;
 		list->prev = newNode;
 		for (i = 0; i < 256; i++)
 			newNode->lut[i] = lut[i];
-		return;
+		return newNode->id;
 	}
-	LUT* newNode = (LUT*) malloc(sizeof(LUT));
+	LUT* newNode = makeLUT();
 	newNode->next = list;
 	newNode->prev = list->prev;
 	list->prev->next = newNode;
 	list->prev = newNode;
 	for (i = 0; i < 256; i++)
 		newNode->lut[i] = lut[i];
+	return newNode->id;
 }
 
 void deleteLUT(LUT* list){
-	if (list == NULL) 
+	if (list == NULL)
 		return;
-	if (IsLUTEmpty(list) == true) 
+	if (LUTIsEmpty(list) == true)
 		return;
 	if (list->next == list){
 		list->next = NULL;
 		list->prev = NULL;
+		return;
 	}
 	LUT* old_last = list->prev;
 	list->prev->prev = list;
@@ -61,61 +84,87 @@ void deleteLUT(LUT* list){
 
 
 
-int* INVERT(LUT* L){
+void INVERT(LUT* L){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = 255 - i;
+ 		int value = 255 - i;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
- 	return L->lut;
  }
 
-int* ADDLUM(LUT* L, int l){
+void ADDLUM(LUT* L, int l){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = i + l;
+ 		int value = i + l;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
- 	return L->lut;
  }
 
-int* DIMLUM(LUT* L, int l){
+void DIMLUM(LUT* L, int l){
+ 	ADDLUM(L, -l);
+}
+
+void ADDCON(LUT* L, int c){
  	int i;
  	for (i = 0; i < 256; i++){
- 		L->lut[i] = i - l;
+ 		int value = (-(127 - i) * c) + 127;
+ 		checkValue(&value);
+ 		L->lut[i] = value;
  	}
- 	return L->lut;
 }
 
-int* ADDCON(LUT* L, int c){
+void DIMCON(LUT* L, int c){
+	ADDCON(L, -c);
+}
+
+LUT* fusionnerLut(LUT* l){
  	int i;
- 	for (i = 0; i < 256; i++){
- 		L->lut[i] = (-(127 - i) * c) + 127;
- 	}
- 	return L->lut;
-}
-
-int* DIMCON(LUT* L, int c){
- 	int i;
- 	if(c != 0){
-	 	for (i = 0; i < 256; i++){
-	 		L->lut[i] = (-(127 - i) * (1 / c)) + 127;
-	 	}
+	LUT *ret= makeLUT();
+	LUT *l_tmp= l->next;
+	while(l_tmp != NULL && l_tmp != l){
+		for(i=0; i < 256; i++){
+			checkValue(&(l->lut[i]));
+			checkValue(&(l_tmp->lut[l->lut[i]]));
+			ret->lut[i] = l_tmp->lut[l->lut[i]];
+		}
+		l_tmp = l_tmp->next;
 	}
- 	return L->lut;
+	return ret;
 }
- 
 
- void fusionnerLut(LUT* L1, LUT* L2, int* lutC){
-	int i;
-	for(i=0; i < 256; i++){
-		lutC[i] = L2->lut[L1->lut[i]];
+
+void freeLUT(LUT* L){
+	if(!L)
+		return;
+	LUT* tmp = L->next;
+	LUT* next;
+	while(tmp != NULL && tmp != L){
+		next = tmp->next;
+		free(tmp);
+		tmp = next;
 	}
-}
-
-
-void FreeLUT(LUT* L){
-	free(L->prev);
-	L->prev = NULL;
-	free(L->next);
-	L->next = NULL;
 	printf("FreeLUT OK\n");
 }
+
+/*
+
+Pour les filtres instagram :
+1. Nashville :
+   - 60 luminosité
+   - 12 Contraste
+   - Rajouter calque jaune #f4eabd et baisser l'opacité
+
+   Brannan :
+   - 100 contraste
+   - 6 luminosité
+   - Rajouter calque jaune #eddd9e avec 59 opacité
+
+   Faire filtre noir et blanc (enlever un max de saturation)
+
+   Faire filtre Négatif
+*/
+
+
+
