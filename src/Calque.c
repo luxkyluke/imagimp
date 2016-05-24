@@ -234,35 +234,41 @@ Calque* fusionnerCalque(Calque* c) {
 	return test;
 }
 
-void appliqueLUT(Calque* calque, LUT* L) {
+Calque* appliqueLUT(Calque* calque, LUT* L) {
 	if (!calque || !L)
-		return;
+		return NULL;
 	int i, j;
+	Calque *ret = makeCalque(calque->width, calque->height, 1.);
 	for (i = 0; i < calque->height; i++) {
 		for (j = 0; j < calque->width; j++) {
-			calque->pixels[j][i].r = L->lut[calque->pixels[j][i].r];
-			calque->pixels[j][i].g = L->lut[calque->pixels[j][i].g];
-			calque->pixels[j][i].b = L->lut[calque->pixels[j][i].b];
+			ret->pixels[j][i].r = L->lut[calque->pixels[j][i].r];
+			ret->pixels[j][i].g = L->lut[calque->pixels[j][i].g];
+			ret->pixels[j][i].b = L->lut[calque->pixels[j][i].b];
 		}
 	}
+	return ret;
 }
 
-void appliquerLUTById(Calque* calque, int id) {
+Calque* appliquerLUTById(Calque* calque, int id) {
 	if (!calque)
-		return;
+		return NULL;
 	LUT* l = getLUTById(calque->listLuts, id);
-	appliqueLUT(calque, l);
+	Calque *c = appliqueLUT(calque, l);
+	return c;
 }
 
-void appliquerAllLUT(Calque* calque) {
+Calque* appliquerAllLUT(Calque* calque) {
 	if (!calque) {
-		return;
+		return NULL;
 	}
-	//fusionnerLut(calque->listLuts);
-	appliqueLUT(calque, calque->listLuts);
+	LUT * l = fusionnerLut(calque->listLuts);
+	Calque *c = appliqueLUT(calque, l);
+	return c;
 }
 
 void freeCalque(Calque* c) {
+	if(!c)
+		return;
 	int i;
 	if(c->pixels){
 		for (i = 0; i < c->width; i++) {
