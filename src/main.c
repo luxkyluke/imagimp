@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
 
 	initGlut(argc,argv);
 
-	Image* img = makeImage(1600, 1200);
+	Image* img = makeImage(512, 512);
 	int idCalqueImg1, idCalqueImg2, idLut2, idLut1;
 	// Image *img;
 	// makeImage(img, 512, 512);
