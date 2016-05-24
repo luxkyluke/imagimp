@@ -11,7 +11,7 @@ Image* makeImage(int width, int height) {
 int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
 	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	return id;
-}
+} 
 
 void addEffetCalqueById(Image* img, int id, Effet effet) {
 	if (!img)
@@ -113,5 +113,6 @@ void afficheCalqueById(Image* img, int calque_id) {
 		return;
 	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
-	img->calque_resultat = appliquerAllLUT(calque);
+	calque->alpha = 1;
+	img->calque_resultat = calque;
 }

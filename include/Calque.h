@@ -8,6 +8,7 @@
 #include "Histogramme.h"
 #include "sdl_tools.h"
 #include "LutOption.h"
+#include "Effet.h"
 
 
 typedef struct Calque{
@@ -21,6 +22,7 @@ typedef struct Calque{
     Histogramme* histogramme;
 	unsigned int id;
     int isSelected;
+    Effet effet;
 } Calque;
 
 Calque* makeCalque(int w, int h, float op);
@@ -32,6 +34,7 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height, float o
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
+Calque* appliquerEffet(Calque* c);
 bool calqueIsEmpty(Calque* c);
 int addLUTCalque(Calque *c, LutOption l, int val);
 Calque* addNewCalque(Calque* c, float op);
@@ -48,7 +51,7 @@ void freeCalque(Calque* c);
 void saveCalque(Calque* c, char * pathImg);
 
 Calque* noirEtBlanc(Calque* C);
-
+Calque* appliquerSepia(Calque* C);
 
 
 #endif

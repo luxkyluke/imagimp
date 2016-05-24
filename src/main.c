@@ -86,14 +86,15 @@ int main(int argc, char** argv) {
 	// Image *img;
 	// makeImage(img, 512, 512);
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
-	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.2);
+	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 1.);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	noirEtBlanc(img->calque_resultat);
+	addEffetCalqueById(img, idCalqueImg2, noir_et_blanc);
+//	noirEtBlanc(img->calque_resultat);
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);

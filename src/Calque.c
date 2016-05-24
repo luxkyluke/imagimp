@@ -31,6 +31,7 @@ Calque* makeCalque(int w, int h, float op) {
 	calque->isSelected = 1;
 	calque->listLuts   = NULL; // changer les noms des variables des struct
 	calque->id         = indice_courant++;
+	calque->effet 	   = none;
 	calque->listLuts   = makeLUT();
 	calque->pixels     = (Pixel **) malloc(calque->width * sizeof(Pixel*));
 	int i;
@@ -199,6 +200,22 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 //	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
 //}
 
+Calque* appliquerEffet(Calque* c){
+	if(!c)
+		return NULL;
+	Calque* ret = NULL;
+	switch(c->effet){
+		case noir_et_blanc:
+			ret = noirEtBlanc(c);
+			break;
+		case sepia:
+			ret = appliquerSepia(c);
+			break;
+	}
+	ret->next = c->next;
+	ret->prev = c->prev;
+	return ret;
+}
 
 void fusionCalqueDefinitive(Calque **calque){
 	Calque *next = (*calque)->next;
@@ -214,9 +231,9 @@ Calque* fusionnerCalque(Calque* c) {
 	Calque *calque_tmp = c->next;
 	while (calque_tmp != NULL) {
 		test->listLuts = fusionnerLut(calque_tmp->listLuts);
-		//printf("%d, %d, %d\n", test->pixels[50][50].r, test->pixels[50][50].g, test->pixels[50][50].b);
-		//printf("%d, %d, %d\n", calque_tmp->pixels[50][50].r, calque_tmp->pixels[50][50].g, calque_tmp->pixels[50][50].b);
-
+		printf("effet %d\n", calque_tmp->effet);
+		if(calque_tmp->effet != none)
+			calque_tmp = appliquerEffet(calque_tmp);
 		int i, j;
 		for (i = 0; i < c->height; i++) {
 			for (j = 0; j < c->width; j++) {
@@ -366,7 +383,7 @@ Calque* noirEtBlanc(Calque* C){
 	if (C == NULL)
 		return NULL;
 	int i, j, val;
-	Calque* filtre = C;
+	Calque* filtre = copyCalque(C);
 	for (i = 0; i < C->height; i++){
 		for (j = 0; j < C->width; j++){
 			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
@@ -378,9 +395,52 @@ Calque* noirEtBlanc(Calque* C){
 	return filtre;
 }
 
-/*Calque* sepia(Filtre* F){
+Calque* appliquerSepia(Calque* C){
+  if (C == NULL)
+    return NULL;
+  int i, j;
+  int seuil = 123;
+  Calque* filtre = copyCalque(C);
+  for (i = 0; i < C->height; i++){
+    for (j = 0; j < C->width; j++){
+    	moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
+    	if(moyenne < seuil){
+    		filtre->pixels[j][i].r -= filtre->pixels[j][i] - 10;
+			filtre->pixels[j][i].g -= filtre->pixels[j][i] - 10;
+			filtre->pixels[j][i].b -= filtre->pixels[j][i] - 10;
+    	}
+    	if(moyenne > seuil){
+    		filtre->pixels[j][i].r -= filtre->pixels[j][i] + 10;
+			filtre->pixels[j][i].g -= filtre->pixels[j][i] + 10;
+			filtre->pixels[j][i].b -= filtre->pixels[j][i] + 10;
+    	}
+    }
+  }
+  return filtre;
+}
 
-}*/
+Calque* Nashville(Calque* C){
+	if (C == NULL)
+		return NULL;
+	int i, j;
+	Calque* filtre = copyCalque(C);
+	for (i = 0; i < C->height; i++){
+		for (j = 0; j < C->width; j++){
+			if(C->pixels[j][i].r > 94)
+				filtre->pixels[j][i].r = 94;
+			if(C->pixels[j][i].r > 38)
+				filtre->pixels[j][i].r = 38;
+			if(C->pixels[j][i].r > 18)
+				filtre->pixels[j][i].r = 18;
+			else{
+				filtre->pixels[j][i].r = C->pixels[j][i].r;
+				filtre->pixels[j][i].g = C->pixels[j][i].g;
+				filtre->pixels[j][i].b = C->pixels[j][i].b;
+			}
+		}
+	}
+	return filtre;
+}
 
 /*
 
