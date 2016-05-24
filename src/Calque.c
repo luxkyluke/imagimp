@@ -402,7 +402,7 @@ Calque* appliquerSepia(Calque* C){
 
 }
 
-/*Calque* Nashville(Calque* C){
+Calque* Nashville(Calque* C){
 	if (C == NULL)
 		return NULL;
 	int i, j;
@@ -425,7 +425,6 @@ Calque* appliquerSepia(Calque* C){
 	return filtre;
 
 }
-*/
 
 /*
 

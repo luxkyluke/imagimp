@@ -11,7 +11,7 @@ Image* makeImage(int width, int height) {
 int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
 	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	return id;
-}
+} 
 
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
 	if (!img)
