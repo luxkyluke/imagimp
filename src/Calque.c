@@ -211,21 +211,34 @@ Calque* fusionnerCalque(Calque* c) {
 	remplirCalqueCouleur(test, makePixel(0, 0, 0));
 	Calque *calque_tmp = c->next;
 	while (calque_tmp != NULL) {
-//		test->listLuts=fusionnerLut(calque_tmp->listLuts);
+		test->listLuts = fusionnerLut(calque_tmp->listLuts);
 		//printf("%d, %d, %d\n", test->pixels[50][50].r, test->pixels[50][50].g, test->pixels[50][50].b);
-		printf("%d, %d, %d\n", calque_tmp->pixels[50][50].r, calque_tmp->pixels[50][50].g, calque_tmp->pixels[50][50].b);
+		//printf("%d, %d, %d\n", calque_tmp->pixels[50][50].r, calque_tmp->pixels[50][50].g, calque_tmp->pixels[50][50].b);
+
 		int i, j;
+		for(i=0; i < 256; i++){
+			printf("%d\n", test->listLuts->lut[i]);
+		}
 		for (i = 0; i < c->height; i++) {
 			for (j = 0; j < c->width; j++) {
+				int r = calque_tmp->pixels[j][i].r;
+				int g = calque_tmp->pixels[j][i].g;
+				int b = calque_tmp->pixels[j][i].b;
+//				checkValue(&r);
+//				checkValue(&g);
+//				checkValue(&b);
 				//printf("%d, %d, %d\n", test->pixels[450][250].r, test->pixels[450][250].g, test->pixels[450][250].b);
 				//printf("%d, %d, %d\n", calque_tmp->pixels[j][i].r, calque_tmp->pixels[j][i].g, calque_tmp->pixels[j][i].b);
 				test->pixels[j][i].r = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						calque_tmp->pixels[j][i].r * calque_tmp->alpha;
+						test->listLuts->lut[r] * calque_tmp->alpha;
 				test->pixels[j][i].g = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						calque_tmp->alpha* calque_tmp->pixels[j][i].g;
+						calque_tmp->alpha* test->listLuts->lut[g];
 				test->pixels[j][i].b = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						calque_tmp->alpha * calque_tmp->pixels[j][i].b;
+						calque_tmp->alpha * test->listLuts->lut[b];
 				//printf("%d, %d, %d\n", calque_tmp->pixels[j][i].r, calque_tmp->pixels[j][i].g, calque_tmp->pixels[j][i].b);
+				checkValue(&(test->pixels[j][i].r));
+				checkValue(&(test->pixels[j][i].g));
+				checkValue(&(test->pixels[j][i].b));
 			}
 		}
 		calque_tmp = calque_tmp->next;
