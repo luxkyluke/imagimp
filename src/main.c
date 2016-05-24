@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-
+	afficheCalqueById(img, 2);
 
 	int loop = 1;
 	int posX = 0, posY = 0;
@@ -119,16 +119,8 @@ int main(int argc, char** argv) {
 
 		reshape(ihm->windowWidth,ihm->filterHeight,0,0);
 		glPushMatrix();
-			// glTranslatef(1,0,0);
 			glScalef(ihm->windowWidth, ihm->filterHeight,1);
 			dessinCarre(1, ColorRGB(1,1,1));
-
-
-			// glTranslatef(50,-10,0);
-			// glScalef(50,50,1);
-			// dessinCarre(1,ColorRGB(50, 10,10));
-			// printf("L'id du calque : %d\n",imgCalque->id);
-
 		glPopMatrix();
 		Calque* imgCalque = img->listCalques;
 		while(imgCalque!=NULL) {
@@ -145,15 +137,7 @@ int main(int argc, char** argv) {
 		}
 		freeCalque(imgCalque);
 
-
-		// glTranslatef(0,0,0);
-		// 	glScalef(50,50,1);
-		// 	dessinCarre(1,ColorRGB(0,0,0));
-
 		reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
-		/* Nettoyage du framebuffer */
-		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-
 		drawImage(img, framebuffer);
 
 		reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);

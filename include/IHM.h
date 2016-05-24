@@ -17,6 +17,13 @@ typedef struct Slider{
     char* title;
 } Slider;
 
+typedef struct Button{
+    int width,
+        height,
+        posX,
+        isSelected;
+} Button;
+
 typedef struct IHM{
     int windowWidth,
         windowHeight,
@@ -37,6 +44,7 @@ int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
+Button* makeButton(int width, int height, int posX, int isSelected);
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
 

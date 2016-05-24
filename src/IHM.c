@@ -137,3 +137,16 @@ void drawSlider(Slider* slider) {
     vBitmapOutput(-2, 45, slider->title, GLUT_BITMAP_HELVETICA_18);
     glPopMatrix();
 }
+
+// Button* makeButton(int width, int height, int posX, int isSelected) {
+//     Button* button = malloc(sizeof(Button));
+//     if(!button){
+//         fprintf(stderr, "Probleme Allocation Button\n");
+//         return NULL;
+//     }
+//     button->width      = width;
+//     button->height     = height;
+//     button->posX       = posX;
+//     button->isSelected = 0;
+//     return button;
+// }
