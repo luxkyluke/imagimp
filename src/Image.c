@@ -13,12 +13,26 @@ int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
 	return id;
 }
 
+void appliquerEffetCalqueById(Image* img, int id, Effet effet) {
+	if (!img)
+		return;
+	Calque* c = copyCalque(getCalqueById(img->listCalques, id));
+	if (!c)
+		return;
+	if (img->calque_resultat)
+		freeCalque(img->calque_resultat);
+	img->calque_resultat = appliquerEffet(c, effet);
+}
+
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
 	if (!img)
 		return;
 	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
+	if (!c)
+		return;
 	appliquerLUTById(c, lut_id);
-	freeCalque(img->calque_resultat);
+	if (img->calque_resultat)
+		freeCalque(img->calque_resultat);
 	img->calque_resultat = c;
 }
 
@@ -41,10 +55,9 @@ void drawImageHistogramme(Image* img) {
 		return;
 	}
 	//if (!img->calque_resultat)
-		//updateImage(img);
+	//updateImage(img);
 
 	drawCalqueHistogramme(img->calque_resultat);
-
 }
 
 int addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
@@ -67,11 +80,11 @@ void drawImage(Image* img, SDL_Surface* framebuffer) {
 
 void freeImage(Image* img) {
 	freeCalque_r(img->listCalques);
-	if(img->calque_resultat)
+	if (img->calque_resultat)
 		freeCalque_r(img->calque_resultat);
 }
 
-void fusionnerAllCalques(Image* img){
+void fusionnerAllCalques(Image* img) {
 	fusionCalqueDefinitive(&img->listCalques);
 }
 
@@ -81,7 +94,7 @@ void saveImage(Image* img, char* savePath) {
 
 void saveCalqueById(Image *img, int id, char* savePath) {
 	if (!img)
-		return ;
+		return;
 	Calque* c = getCalqueById(img->listCalques, id);
 	saveCalque(c, savePath);
 }
@@ -90,7 +103,7 @@ void fusionnerCalquesImage(Image* img) {
 	if (!img)
 		return;
 //	img->calque_resultat = fusionnerCalque(img->listCalques);
-	if(img->calque_resultat)
+	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
 	img->calque_resultat = fusionnerCalque(img->listCalques);
 	//printf("%d, %d, %d\n", img->calque_resultat->pixels[50][50].r, img->calque_resultat->pixels[50][50].g, img->calque_resultat->pixels[50][50].b);
@@ -98,10 +111,10 @@ void fusionnerCalquesImage(Image* img) {
 
 void afficheCalqueById(Image* img, int calque_id) {
 	Calque* calque = getCalqueById(img->listCalques, calque_id);
-	if(calque==NULL)
+	if (calque == NULL)
 		return;
-	if(img->calque_resultat)
+	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
-	calque->alpha=1;
+	calque->alpha = 1;
 	img->calque_resultat = calque;
 }
