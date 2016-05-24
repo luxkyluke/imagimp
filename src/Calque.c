@@ -399,20 +399,21 @@ Calque* appliquerSepia(Calque* C){
   if (C == NULL)
     return NULL; 
   int i, j; 
+  int seuil = 123;
   Calque* filtre = copyCalque(C); 
   for (i = 0; i < C->height; i++){ 
-    for (j = 0; j < C->width; j++){ 
-      if(C->pixels[j][i].r > 94) 
-        filtre->pixels[j][i].r = 94; 
-      if(C->pixels[j][i].g > 38) 
-        filtre->pixels[j][i].r = 38; 
-      if(C->pixels[j][i].b > 18) 
-        filtre->pixels[j][i].r = 18; 
-      else{ 
-        filtre->pixels[j][i].r = C->pixels[j][i].r; 
-        filtre->pixels[j][i].g = C->pixels[j][i].g; 
-        filtre->pixels[j][i].b = C->pixels[j][i].b; 
-      } 
+    for (j = 0; j < C->width; j++){
+    	moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3; 
+    	if(moyenne < seuil){
+    		filtre->pixels[j][i].r -= filtre->pixels[j][i] - 10;
+			filtre->pixels[j][i].g -= filtre->pixels[j][i] - 10;
+			filtre->pixels[j][i].b -= filtre->pixels[j][i] - 10;
+    	}
+    	if(moyenne > seuil){
+    		filtre->pixels[j][i].r -= filtre->pixels[j][i] + 10;
+			filtre->pixels[j][i].g -= filtre->pixels[j][i] + 10;
+			filtre->pixels[j][i].b -= filtre->pixels[j][i] + 10;
+    	}
     } 
   } 
   return filtre;
