@@ -128,16 +128,29 @@ void DIMCON(LUT* L, int c){
 }
 
 LUT* fusionnerLut(LUT* l){
- 	int i;
-	LUT *ret= makeLUT();
+ 	if(LUTIsEmpty(l))
+ 		return l;
+	int i;
+	LUT *ret= copyLUT(l);
 	LUT *l_tmp= l->next;
 	while(l_tmp != NULL && l_tmp != l){
 		for(i=0; i < 256; i++){
-			checkValue(&(l->lut[i]));
-			checkValue(&(l_tmp->lut[l->lut[i]]));
-			ret->lut[i] = l_tmp->lut[l->lut[i]];
+			checkValue(&(ret->lut[i]));
+			checkValue(&(l_tmp->lut[ret->lut[i]]));
+			ret->lut[i] = l_tmp->lut[ret->lut[i]];
 		}
 		l_tmp = l_tmp->next;
+	}
+	return ret;
+}
+
+LUT* copyLUT(LUT* l){
+	if(!l)
+		return NULL;
+	LUT* ret = makeLUT();
+	int i;
+	for(i=0; i<256; ++i){
+		ret->lut[i]=l->lut[i];
 	}
 	return ret;
 }

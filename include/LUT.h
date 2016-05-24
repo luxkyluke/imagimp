@@ -21,6 +21,8 @@ int addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
 LUT* getLUTById(LUT* l, int id);
 
+LUT* copyLUT(LUT* l);
+
 void INVERT(LUT* L);
 void ADDLUM(LUT* L, int l);
 void DIMLUM(LUT* L, int l);

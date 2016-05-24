@@ -238,9 +238,9 @@ Calque* fusionnerCalque(Calque* c) {
 				test->pixels[j][i].b = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
 						calque_tmp->alpha * test->listLuts->lut[b];
 				//printf("%d, %d, %d\n", calque_tmp->pixels[j][i].r, calque_tmp->pixels[j][i].g, calque_tmp->pixels[j][i].b);
-				checkValue(&(test->pixels[j][i].r));
-				checkValue(&(test->pixels[j][i].g));
-				checkValue(&(test->pixels[j][i].b));
+//				checkValue(&(test->pixels[j][i].r));
+//				checkValue(&(test->pixels[j][i].g));
+//				checkValue(&(test->pixels[j][i].b));
 			}
 		}
 		calque_tmp = calque_tmp->next;

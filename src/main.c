@@ -85,11 +85,11 @@ int main(int argc, char** argv) {
 	// Image *img;
 	// makeImage(img, 512, 512);
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
-	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.5);
+	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.2);
 
 
-//	idLut2 = addLUTCalqueById(img, idCalqueImg1, invert, 0);
-//	idLut1 = addLUTCalqueById(img, idCalqueImg2, addlum, 200);
+//	idLut2 = addLUTCalqueById(img, idCalqueImg2, invert, 0);
+//	idLut1 = addLUTCalqueById(img, idCalqueImg1, addlum, 100);
 
 	fusionnerCalquesImage(img);
 //	appliqueLUTCalqueByIds(img, idCalqueImg2, idLut1);
@@ -101,9 +101,9 @@ int main(int argc, char** argv) {
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
 //	}*/
 
-	//freeLUT(LUT);
+	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-	afficheCalqueById(img, 2);
+//	afficheCalqueById(img, 2);
 
 	int loop = 1;
 	int posX = 0, posY = 0;
