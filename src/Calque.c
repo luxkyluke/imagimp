@@ -415,7 +415,8 @@ Calque* appliquerSepia(Calque* C){
       } 
     } 
   } 
-  return filtre; 
+  return filtre;
+}
 
 Calque* Nashville(Calque* C){
 	if (C == NULL)
@@ -438,7 +439,6 @@ Calque* Nashville(Calque* C){
 		}
 	}
 	return filtre;
-
 }
 
 /*

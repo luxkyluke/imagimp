@@ -8,6 +8,7 @@
 #include "Histogramme.h"
 #include "sdl_tools.h"
 #include "LutOption.h"
+#include "Effet.h"
 
 
 typedef struct Calque{
