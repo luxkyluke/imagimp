@@ -403,6 +403,30 @@ Calque* appliquerSepia(Calque* C){
   if (C == NULL)
     return NULL;
   int i, j;
+  Calque* filtre = copyCalque(C);
+  for (i = 0; i < C->height; i++){
+    for (j = 0; j < C->width; j++){
+    	int r = C->pixels[j][i].r * 0.393 + C->pixels[j][i].g * 0.769 + C->pixels[j][i].b * 0.189;
+    	int g = C->pixels[j][i].r * 0.349 + C->pixels[j][i].g * 0.686 + C->pixels[j][i].b * 0.168;
+    	int b = C->pixels[j][i].r * 0.272 + C->pixels[j][i].g * 0.534 + C->pixels[j][i].b * 0.131;
+		checkValue(&r);
+    	filtre->pixels[j][i].r = r;
+
+    	checkValue(&g);
+		filtre->pixels[j][i].g = g;
+
+		checkValue(&b);
+		filtre->pixels[j][i].b = b;
+    }
+  }
+  return filtre;
+}
+
+/*Calque* appliquerSepia(Calque* C){
+  if (C == NULL)
+    return NULL;
+  int i, j;
+>>>>>>> dde35824f59f1ce297c7b84c9707f0c949fc56ce
   int seuil = 123;
   Calque* filtre = copyCalque(C);
   for (i = 0; i < C->height; i++){
@@ -421,7 +445,7 @@ Calque* appliquerSepia(Calque* C){
     }
   }
   return filtre;
-}
+}*/
 /*
 Calque* Nashville(Calque* C){
 	if (C == NULL)
@@ -446,7 +470,6 @@ Calque* Nashville(Calque* C){
 	return filtre;
 }
 
-/*
 
 Pour les filtres instagram :
 1. Nashville :
