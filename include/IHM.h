@@ -31,7 +31,8 @@ typedef struct Button{
 
 typedef struct ButtonCalque {
     Button* btn;
-    Button* next;
+    struct ButtonCalque* next;
+    int id;
 } ButtonCalque;
 
 typedef struct IHM{
@@ -45,7 +46,7 @@ typedef struct IHM{
     Slider*  sliderOpacite;
     Button*  btnCalque;
     Button*  btnImage;
-    Button** btnCalquesSelection;
+    ButtonCalque*  btnCalquesSelection;
 } IHM;
 
 void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer);
@@ -55,6 +56,10 @@ int isOnSaturation(int posX, int posY, int xSaturation);
 int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
+int isOnButton(Button* button, int posX, int posY);
+
+ButtonCalque* makeButtonCalque(int posX, int id);
+void addButtonCalque(IHM* ihm, int posX,int id);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
 Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);

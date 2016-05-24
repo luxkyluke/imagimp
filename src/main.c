@@ -89,6 +89,12 @@ int main(int argc, char** argv) {
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
 	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 1.);
 
+	addButtonCalque(ihm,50,1);
+	addButtonCalque(ihm,100,2);
+	addButtonCalque(ihm,150,3);
+
+	ButtonCalque * btc = ihm->btnCalquesSelection;
+
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
@@ -145,7 +151,7 @@ int main(int argc, char** argv) {
 		SDL_Flip(screen);
 
 		SDL_GL_SwapBuffers();
-		Calque * currentCalque = img->listCalques;
+		// Calque * currentCalque = img->listCalques;
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {
@@ -189,20 +195,21 @@ int main(int argc, char** argv) {
 					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1)
 						printf("Il est sur le chargement.\n");
 
-					while(currentCalque!=NULL) {
-						if (posX>=(currentCalque->id)*60 && posX<=(currentCalque->id)*60+50 && posY>=ihm->windowHeight && posY<=ihm->windowHeight+50) {
-							afficheCalqueById(img,currentCalque->id);
+					while(btc!=NULL) {
+						if(isOnButton(btc->btn, posX, posY - ihm->windowHeight)==1) {
+							printf("Id du bouton : %d\n",btc->id );
+							afficheCalqueById(img,btc->id);
 						}
-						glTranslatef(currentCalque->id*60,0,0);
-						glScalef(50,50,1);
-						dessinCarre(1,ColorRGB(0.5,0.5,0.5));
-						glPopMatrix();
-						if(currentCalque->next!=NULL)
-						    currentCalque=currentCalque->next;
+						// glTranslatef(currentCalque->id*60,0,0);
+						// glScalef(50,50,1);
+						// dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+						// glPopMatrix();
+						if(btc->next!=NULL)
+						    btc=btc->next;
 						else
 						    break;
 					}
-					currentCalque = img->listCalques;
+					btc = ihm->btnCalquesSelection;
 
 					break;
 

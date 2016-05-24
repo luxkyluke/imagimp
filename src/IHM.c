@@ -168,19 +168,20 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
         DessinButton(ihm->btnImage);
 }
 
-ButtonCalque* makeButtonCalque(posX) {
+ButtonCalque* makeButtonCalque(int posX, int id) {
     ButtonCalque* buttonCalque = malloc(sizeof(buttonCalque));
     if(!buttonCalque){
         fprintf(stderr, "Probleme Allocation ButtonCalque\n");
         return NULL;
     }
     buttonCalque->btn = makeButton(50, 50, posX, 10, "1", select);
+    buttonCalque->id = id;
     buttonCalque->next = NULL;
     return buttonCalque;
 }
 
-void addButtonCalque(IHM* ihm, Button* button, int posX) {
-    ButtonCalque* buttonCalque = makeButtonCalque(posX);
+void addButtonCalque(IHM* ihm, int posX,int id) {
+    ButtonCalque* buttonCalque = makeButtonCalque(posX,id);
     if(!buttonCalque)
         return;
     ButtonCalque* last = buttonCalque;
