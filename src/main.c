@@ -10,6 +10,7 @@
 #include "Color3f.h"
 #include "../include/Geometry.h"
 #include "LutOption.h"
+#include "Effet.h"
 
 #include "IHM.h"
 
@@ -93,7 +94,7 @@ int main(int argc, char** argv) {
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	noirEtBlanc(img->calque_resultat);
+	appliquerEffetCalqueById(img, idCalqueImg2, sepia);
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
@@ -107,7 +108,7 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-	fusionnerCalquesImage(img);
+	//fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
 
