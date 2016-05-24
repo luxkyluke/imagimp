@@ -13,15 +13,13 @@ int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
 	return id;
 } 
 
-void appliquerEffetCalqueById(Image* img, int id, Effet effet) {
+void addEffetCalqueById(Image* img, int id, Effet effet) {
 	if (!img)
 		return;
-	Calque* c = copyCalque(getCalqueById(img->listCalques, id));
-	if (!c)
+	Calque* c = getCalqueById(img->listCalques, id);
+	if(!c)
 		return;
-	if (img->calque_resultat)
-		freeCalque(img->calque_resultat);
-	img->calque_resultat = appliquerEffet(c, effet);
+	c->effet = effet;
 }
 
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {

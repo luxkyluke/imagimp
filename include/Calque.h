@@ -22,6 +22,7 @@ typedef struct Calque{
     Histogramme* histogramme;
 	unsigned int id;
     int isSelected;
+    Effet effet;
 } Calque;
 
 Calque* makeCalque(int w, int h, float op);
@@ -33,6 +34,7 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height, float o
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
+Calque* appliquerEffet(Calque* c);
 bool calqueIsEmpty(Calque* c);
 int addLUTCalque(Calque *c, LutOption l, int val);
 Calque* addNewCalque(Calque* c, float op);

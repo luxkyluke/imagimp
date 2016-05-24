@@ -22,6 +22,7 @@ void drawImage(Image* img, SDL_Surface* framebuffer);
 void freeImage(Image* img);
 void appliqueLUTCalqueId(Image* img, int id);
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id);
+void addEffetCalqueById(Image* img, int id, Effet effet);
 void appliqueAllLUTCalqueById(Image* img, int id);
 int addLUTCalqueById(Image* img, int id, LutOption lut, int val);
 void fusionnerCalquesImage(Image* img);
