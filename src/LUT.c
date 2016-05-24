@@ -12,7 +12,15 @@ LUT* makeLUT(){
 	list->prev = NULL;
 	list->next = NULL;
 	list->id = indice_courant++;
+	initLUT(list->lut);
 	return list;
+}
+
+void initLUT(int* lut){
+	int i;
+	for(i=0; i<256; ++i){
+		lut[i]=i;
+	}
 }
 
 bool LUTIsEmpty(LUT* list){
@@ -119,19 +127,19 @@ void DIMCON(LUT* L, int c){
 	ADDCON(L, -c);
 }
 
-void fusionnerLut(LUT* l){
+LUT* fusionnerLut(LUT* l){
  	int i;
-	LUT *next, *l_tmp= l->next;
+	LUT *ret= makeLUT();
+	LUT *l_tmp= l->next;
 	while(l_tmp != NULL && l_tmp != l){
 		for(i=0; i < 256; i++){
 			checkValue(&(l->lut[i]));
 			checkValue(&(l_tmp->lut[l->lut[i]]));
-			l->lut[i] = l_tmp->lut[l->lut[i]];
+			ret->lut[i] = l_tmp->lut[l->lut[i]];
 		}
-		next = l_tmp->next;
-		deleteLUT(l_tmp);
-		l_tmp = next;
+		l_tmp = l_tmp->next;
 	}
+	return ret;
 }
 
 
