@@ -330,6 +330,8 @@ void freeCalque_r(Calque* c) {
 }
 
 void drawCalqueHistogramme(Calque* c) {
+	if(!c)
+		return ;
 	drawHistogramme(c->histogramme);
 }
 
@@ -354,6 +356,8 @@ void saveCalque(Calque* c, char *pathImg) {
 }
 
 void drawCalque(Calque *c) {
+	if(!c)
+		return;
 	int i, j;
 	glPushMatrix();
 	for (i = 0; i < c->height; i++) {
