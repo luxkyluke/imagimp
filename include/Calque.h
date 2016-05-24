@@ -45,5 +45,8 @@ void freeCalque_r(Calque* c);
 void freeCalque(Calque* c);
 void saveCalque(Calque* c, char * pathImg);
 
+Calque* noirEtBlanc(Calque* C);
+
+
 
 #endif

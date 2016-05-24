@@ -90,11 +90,11 @@ int main(int argc, char** argv) {
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-
-	idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
+	noirEtBlanc(img->calque_resultat);
+	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
-	appliqueAllLUTCalqueById(img, idCalqueImg);
+	//appliqueAllLUTCalqueById(img, idCalqueImg);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);

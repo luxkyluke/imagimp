@@ -148,23 +148,6 @@ void freeLUT(LUT* L){
 	printf("FreeLUT OK\n");
 }
 
-/*
-
-Pour les filtres instagram :
-1. Nashville :
-   - 60 luminosité
-   - 12 Contraste
-   - Rajouter calque jaune #f4eabd et baisser l'opacité
-
-   Brannan :
-   - 100 contraste
-   - 6 luminosité
-   - Rajouter calque jaune #eddd9e avec 59 opacité
-
-   Faire filtre noir et blanc (enlever un max de saturation)
-
-   Faire filtre Négatif
-*/
 
 
 
