@@ -218,9 +218,6 @@ Calque* fusionnerCalque(Calque* c) {
 		//printf("%d, %d, %d\n", calque_tmp->pixels[50][50].r, calque_tmp->pixels[50][50].g, calque_tmp->pixels[50][50].b);
 
 		int i, j;
-		for(i=0; i < 256; i++){
-			printf("%d\n", test->listLuts->lut[i]);
-		}
 		for (i = 0; i < c->height; i++) {
 			for (j = 0; j < c->width; j++) {
 				int r = calque_tmp->pixels[j][i].r;
