@@ -102,7 +102,8 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-	afficheCalqueById(img, 2);
+	fusionnerCalquesImage(img);
+	// afficheCalqueById(img, 2);
 
 	int loop = 1;
 	int posX = 0, posY = 0;
@@ -125,20 +126,19 @@ int main(int argc, char** argv) {
 			glScalef(ihm->windowWidth, ihm->filterHeight,1);
 			dessinCarre(1, ColorRGB(1,1,1));
 		glPopMatrix();
-		Calque* imgCalque = img->listCalques;
-		while(imgCalque!=NULL) {
-			glPushMatrix();
-			printf("yo %d\n",imgCalque->id);
-			glTranslatef(imgCalque->id*100,0,0);
-			glScalef(50,50,1);
-			dessinCarre(1,ColorRGB(0.5,0.5,0.5));
-			glPopMatrix();
-			if(imgCalque->next!=NULL)
-				imgCalque=imgCalque->next;
-			else
-				break;
-		}
-		freeCalque(imgCalque);
+		// Calque* imgCalque = img->listCalques;
+		// while(imgCalque!=NULL) {
+		// 	glPushMatrix();
+		// 	glTranslatef(imgCalque->id*100,0,0);
+		// 	glScalef(50,50,1);
+		// 	dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+		// 	glPopMatrix();
+		// 	if(imgCalque->next!=NULL)
+		// 		imgCalque=imgCalque->next;
+		// 	else
+		// 		break;
+		// }
+		// imgCalque = img->listCalques;
 
 		reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
 		drawImage(img, framebuffer);
@@ -156,9 +156,6 @@ int main(int argc, char** argv) {
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
-
-
-
 
 
 		/* On copie le framebuffer � l'�cran */

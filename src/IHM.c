@@ -110,6 +110,8 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderContraste    = makeSlider(200,260,100,contraste,"contraste");
     ihm->sliderSaturation   = makeSlider(200,360,100,saturation,"saturation");
     ihm->sliderOpacite      = makeSlider(100,460,100,opacite,"opacite");
+    ihm->btnCalque          = makeButton(190,40,25,560,"Nouveau calque",calque);
+    ihm->btnImage           = makeButton(190,40,25,620,"Charger image",charger);
     return ihm;
 }
 
@@ -138,15 +140,17 @@ void drawSlider(Slider* slider) {
     glPopMatrix();
 }
 
-// Button* makeButton(int width, int height, int posX, int isSelected) {
-//     Button* button = malloc(sizeof(Button));
-//     if(!button){
-//         fprintf(stderr, "Probleme Allocation Button\n");
-//         return NULL;
-//     }
-//     button->width      = width;
-//     button->height     = height;
-//     button->posX       = posX;
-//     button->isSelected = 0;
-//     return button;
-// }
+Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name) {
+    Button* button = malloc(sizeof(Button));
+    if(!button){
+        fprintf(stderr, "Probleme Allocation Button\n");
+        return NULL;
+    }
+    button->width      = width;
+    button->name       = name;
+    button->height     = height;
+    button->posX       = posX;
+    button->title      = title;
+    button->isSelected = 0;
+    return button;
+}
