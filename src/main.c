@@ -10,6 +10,7 @@
 #include "Color3f.h"
 #include "../include/Geometry.h"
 #include "LutOption.h"
+#include "Effet.h"
 
 #include "IHM.h"
 
@@ -108,7 +109,7 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-	fusionnerCalquesImage(img);
+	//fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
 	int loop = 1;

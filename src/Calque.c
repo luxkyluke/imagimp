@@ -403,22 +403,22 @@ Calque* appliquerSepia(Calque* C){
   Calque* filtre = copyCalque(C);
   for (i = 0; i < C->height; i++){
     for (j = 0; j < C->width; j++){
-    	moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
+    	int moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
     	if(moyenne < seuil){
-    		filtre->pixels[j][i].r -= filtre->pixels[j][i] - 10;
-			filtre->pixels[j][i].g -= filtre->pixels[j][i] - 10;
-			filtre->pixels[j][i].b -= filtre->pixels[j][i] - 10;
+    		filtre->pixels[j][i].r -= filtre->pixels[j][i].r / 2;
+			filtre->pixels[j][i].g -= filtre->pixels[j][i].g / 2;
+			filtre->pixels[j][i].b -= filtre->pixels[j][i].b / 2;
     	}
     	if(moyenne > seuil){
-    		filtre->pixels[j][i].r -= filtre->pixels[j][i] + 10;
-			filtre->pixels[j][i].g -= filtre->pixels[j][i] + 10;
-			filtre->pixels[j][i].b -= filtre->pixels[j][i] + 10;
+    		filtre->pixels[j][i].r += filtre->pixels[i][j].r / 2;
+			filtre->pixels[j][i].g += filtre->pixels[i][j].g / 2;
+			filtre->pixels[j][i].b += filtre->pixels[i][j].b / 2;
     	}
     }
   }
   return filtre;
 }
-
+/*
 Calque* Nashville(Calque* C){
 	if (C == NULL)
 		return NULL;
