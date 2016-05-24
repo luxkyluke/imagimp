@@ -383,7 +383,7 @@ Calque* noirEtBlanc(Calque* C){
 	if (C == NULL)
 		return NULL;
 	int i, j, val;
-	Calque* filtre = C;
+	Calque* filtre = copyCalque(C); 
 	for (i = 0; i < C->height; i++){
 		for (j = 0; j < C->width; j++){
 			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
@@ -395,9 +395,27 @@ Calque* noirEtBlanc(Calque* C){
 	return filtre;
 }
 
-/*Calque* sepia(Filtre* F){
-
-}*/
+Calque* appliquerSepia(Calque* C){ 
+  if (C == NULL) 
+    return NULL; 
+  int i, j; 
+  Calque* filtre = copyCalque(C); 
+  for (i = 0; i < C->height; i++){ 
+    for (j = 0; j < C->width; j++){ 
+      if(C->pixels[j][i].r > 94) 
+        filtre->pixels[j][i].r = 94; 
+      if(C->pixels[j][i].g > 38) 
+        filtre->pixels[j][i].r = 38; 
+      if(C->pixels[j][i].b > 18) 
+        filtre->pixels[j][i].r = 18; 
+      else{ 
+        filtre->pixels[j][i].r = C->pixels[j][i].r; 
+        filtre->pixels[j][i].g = C->pixels[j][i].g; 
+        filtre->pixels[j][i].b = C->pixels[j][i].b; 
+      } 
+    } 
+  } 
+  return filtre; 
 
 Calque* Nashville(Calque* C){
 	if (C == NULL)
