@@ -4,36 +4,17 @@
 
 #define WIDTH_SLIDER 200
 
-void DessinButton(char *text) {
-    glScalef(190,40,1);
+void DessinButton(Button* button) {
+    glPushMatrix();
+    glTranslatef(button->posX, button->posY,0);
+    glScalef(button->width,button->height,1);
     glColor3f(1,1,0);
     dessinCarre(1,ColorRGB(1,1,1));
-
+    glPopMatrix();
     glPushMatrix();
-    glScalef(1,1,1);
-    glTranslatef(0.15, 0.6, 0);
+    glTranslatef(button->posX+30, button->posY+button->height/2+5, 0);
     glColor3f(0, 0, 0);
-    vBitmapOutput(0, 0, text, GLUT_BITMAP_HELVETICA_18);
-    glPopMatrix();
-}
-
-void dessinIHM(IHM* ihm) {
-    // printf("%d xLuminosite\n", xLuminosite);
-    char calque[] = "Nouveau calque", image[] = "Charger image";
-
-    drawSlider(ihm->sliderLuminosite);
-    drawSlider(ihm->sliderContraste);
-    drawSlider(ihm->sliderSaturation);
-    drawSlider(ihm->sliderOpacite);
-
-    glPushMatrix();
-    glTranslatef(55, 560,0);
-    DessinButton(calque);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(55, 620,0);
-    DessinButton(image);
+    vBitmapOutput(0, 0, button->title, GLUT_BITMAP_HELVETICA_18);
     glPopMatrix();
 }
 
@@ -66,17 +47,10 @@ int isOnSaturation(int posX, int posY, int xSaturation) {
         return 0;
 }
 
-int isOnChargerImage(int posX, int posY) {
-   if(posX >= 855 && posX <= 1045 && posY>=620 && posY <= 660)
+int isOnButton(Button* button, int posX, int posY) {
+    if(posX >= button->posX && posX <= button->posX + button->width && posY>=button->posY && posY<=button->posY+button->height)
         return 1;
-   else
-        return 0;
-}
-
-int isOnNouveauCalque(int posX, int posY) {
-   if(posX >= 855 && posX <= 1045 && posY>=560 && posY <= 600)
-        return 1;
-   else
+    else
         return 0;
 }
 
@@ -110,8 +84,8 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderContraste    = makeSlider(200,260,100,contraste,"contraste");
     ihm->sliderSaturation   = makeSlider(200,360,100,saturation,"saturation");
     ihm->sliderOpacite      = makeSlider(100,460,100,opacite,"opacite");
-    ihm->btnCalque          = makeButton(190,40,25,560,"Nouveau calque",calque);
-    ihm->btnImage           = makeButton(190,40,25,620,"Charger image",charger);
+    ihm->btnCalque          = makeButton(190,40,50,560,"Nouveau calque",calque);
+    ihm->btnImage           = makeButton(190,40,50,620,"Charger image",charger);
     return ihm;
 }
 
@@ -150,7 +124,68 @@ Button* makeButton(int width, int height, int posX, int posY, char* title, BtnNa
     button->name       = name;
     button->height     = height;
     button->posX       = posX;
+    button->posY       = posY;
     button->title      = title;
     button->isSelected = 0;
     return button;
+}
+
+void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
+    reshape(ihm->windowWidth,ihm->filterHeight,0,0);
+        glPushMatrix();
+        glScalef(ihm->windowWidth, ihm->filterHeight,1);
+        dessinCarre(1, ColorRGB(1,1,1));
+        glPopMatrix();
+
+        Calque* imgCalque = img->listCalques;
+        while(imgCalque!=NULL) {
+         glPushMatrix();
+         glTranslatef(imgCalque->id*60,0,0);
+         glScalef(50,50,1);
+         dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+         glPopMatrix();
+         if(imgCalque->next!=NULL)
+             imgCalque=imgCalque->next;
+         else
+             break;
+        }
+        imgCalque = img->listCalques;
+
+    reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
+    drawImage(img, framebuffer);
+
+    reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
+        glPushMatrix();
+            glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,1);
+            dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
+        glPopMatrix();
+        drawImageHistogramme(img);
+        drawSlider(ihm->sliderLuminosite);
+        drawSlider(ihm->sliderContraste);
+        drawSlider(ihm->sliderSaturation);
+        drawSlider(ihm->sliderOpacite);
+        DessinButton(ihm->btnCalque);
+        DessinButton(ihm->btnImage);
+}
+
+ButtonCalque* makeButtonCalque(posX) {
+    ButtonCalque* buttonCalque = malloc(sizeof(buttonCalque));
+    if(!buttonCalque){
+        fprintf(stderr, "Probleme Allocation ButtonCalque\n");
+        return NULL;
+    }
+    buttonCalque->btn = makeButton(50, 50, posX, 10, "1", select);
+    buttonCalque->next = NULL;
+    return buttonCalque;
+}
+
+void addButtonCalque(IHM* ihm, Button* button, int posX) {
+    ButtonCalque* buttonCalque = makeButtonCalque(posX);
+    if(!buttonCalque)
+        return;
+    ButtonCalque* last = buttonCalque;
+    while (last->next != NULL) {
+        last = last->next;
+    }
+    last->next = buttonCalque;
 }

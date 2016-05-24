@@ -5,9 +5,10 @@
 #include <SDL/SDL.h>
 #include "sdl_tools.h"
 #include "LUT.h"
+#include "Image.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger} BtnName;
+typedef enum _btnName {calque, charger, select} BtnName;
 
 typedef struct Slider{
     int width;
@@ -22,25 +23,32 @@ typedef struct Button{
     int width,
         height,
         posX,
+        posY,
         isSelected;
     char* title;
     BtnName name;
 } Button;
+
+typedef struct ButtonCalque {
+    Button* btn;
+    Button* next;
+} ButtonCalque;
 
 typedef struct IHM{
     int windowWidth,
         windowHeight,
         paramWidth,
         filterHeight;
-    Slider* sliderContraste;
-    Slider* sliderLuminosite;
-    Slider* sliderSaturation;
-    Slider* sliderOpacite;
-    Button* btnCalque;
-    Button* btnImage;
+    Slider*  sliderContraste;
+    Slider*  sliderLuminosite;
+    Slider*  sliderSaturation;
+    Slider*  sliderOpacite;
+    Button*  btnCalque;
+    Button*  btnImage;
+    Button** btnCalquesSelection;
 } IHM;
 
-void dessinIHM(IHM* ihm);
+void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer);
 int isOnLuminosite(int posX, int posY, int xLuminosite);
 int isOnContraste(int posX, int posY, int xContraste);
 int isOnSaturation(int posX, int posY, int xSaturation);

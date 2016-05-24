@@ -110,7 +110,6 @@ int main(int argc, char** argv) {
 	fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
-
 	int loop = 1;
 	int posX = 0, posY = 0;
 
@@ -127,40 +126,10 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		reshape(WINDOW_WIDTH,WINDOW_HEIGHT_FILTER,0,0);
-		glPushMatrix();
-			// glTranslatef(1,0,0);
-			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,1);
-			dessinCarre(1, ColorRGB(1,1,1));
-		glPopMatrix();
-		// Calque* imgCalque = img->listCalques;
-		// while(imgCalque!=NULL) {
-		// 	glPushMatrix();
-		// 	glTranslatef(imgCalque->id*100,0,0);
-		// 	glScalef(50,50,1);
-		// 	dessinCarre(1,ColorRGB(0.5,0.5,0.5));
-		// 	glPopMatrix();
-		// 	if(imgCalque->next!=NULL)
-		// 		imgCalque=imgCalque->next;
-		// 	else
-		// 		break;
-		// }
-		// imgCalque = img->listCalques;
-
-		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		drawImage(img, framebuffer);
-
-		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
-		glPushMatrix();
-			glScalef(WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,1);
-			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
-		glPopMatrix();
-		drawImageHistogramme(img);
-		dessinIHM(ihm);
-
+		dessinIHM(ihm,img,framebuffer);
 
 
 		//if modif de l'utilisateur
@@ -174,6 +143,7 @@ int main(int argc, char** argv) {
 		SDL_Flip(screen);
 
 		SDL_GL_SwapBuffers();
+		Calque * currentCalque = img->listCalques;
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {
@@ -201,7 +171,7 @@ int main(int argc, char** argv) {
 					break;
 
 				case SDL_MOUSEBUTTONDOWN:
-				printf("posX : %d posY : %d\n", posX,posY);
+					printf("posX : %d posY : %d\n", posX,posY);
 					if(isOnLuminosite(posX,posY,xLuminosite) == 1)
 						luminositeCheck = 1;
 
@@ -211,11 +181,26 @@ int main(int argc, char** argv) {
 					if(isOnSaturation(posX,posY,xSaturation) == 1)
 						saturationCheck = 1;
 
-					if(isOnNouveauCalque(posX, posY) == 1)
+					if(isOnButton(ihm->btnCalque,posX - ihm->windowWidth, posY) == 1)
 						printf("Il est sur le calque.\n");
 
-					if(isOnChargerImage(posX, posY) == 1)
+					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1)
 						printf("Il est sur le chargement.\n");
+
+					while(currentCalque!=NULL) {
+						if (posX>=(currentCalque->id)*60 && posX<=(currentCalque->id)*60+50 && posY>=ihm->windowHeight && posY<=ihm->windowHeight+50) {
+							afficheCalqueById(img,currentCalque->id);
+						}
+						glTranslatef(currentCalque->id*60,0,0);
+						glScalef(50,50,1);
+						dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+						glPopMatrix();
+						if(currentCalque->next!=NULL)
+						    currentCalque=currentCalque->next;
+						else
+						    break;
+					}
+					currentCalque = img->listCalques;
 
 					break;
 
