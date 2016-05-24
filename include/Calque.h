@@ -48,7 +48,7 @@ void freeCalque(Calque* c);
 void saveCalque(Calque* c, char * pathImg);
 
 Calque* noirEtBlanc(Calque* C);
-
+Calque* appliquerSepia(Calque* C);
 
 
 #endif
