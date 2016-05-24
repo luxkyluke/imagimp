@@ -46,11 +46,10 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
-	IHM* ihm = makeIHM(800,600,300,200);
 
 	SDL_Surface* screen = NULL;
 	if (NULL
-			== (screen = SDL_SetVideoMode(ihm->windowWidth + ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,
+			== (screen = SDL_SetVideoMode(WINDOW_WIDTH+WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,
 					BIT_PER_PIXEL, SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
@@ -65,8 +64,8 @@ int main(int argc, char** argv) {
 	/* Cr�ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (NULL
-			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, ihm->windowWidth,
-					ihm->windowHeight, 24, 0, 0, 0, 0))) {
+			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
+					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
 		fprintf(stderr,
 				"Erreur d'allocation pour le framebuffer. Fin du programme.\n");
 		return EXIT_FAILURE;
@@ -80,22 +79,25 @@ int main(int argc, char** argv) {
 
 	initGlut(argc,argv);
 
-	Image* img = makeImage(512, 512);
-	int idCalqueImg2, idCalqueImg1, idLut2, idLut1;
+	Image* img = makeImage(1600, 1200);
+	int idCalqueImg, idLut2, idLut1;
 	// Image *img;
 	// makeImage(img, 512, 512);
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
 	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.2);
 
+//	LUT* l = makeLUT();
+//	INVERT(l);
+//	//ADDLUM(l, 50);
+//	addLUT(l, l->lut);
 
+	noirEtBlanc(img->calque_resultat);
+	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
+//	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
+//	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
+	//appliqueAllLUTCalqueById(img, idCalqueImg);
 //	idLut2 = addLUTCalqueById(img, idCalqueImg2, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg1, addlum, 100);
-
-	fusionnerCalquesImage(img);
-//	appliqueLUTCalqueByIds(img, idCalqueImg2, idLut1);
-//	appliqueAllLUTCalqueById(img, idCalqueImg2);
-
-//	appliqueAllLUTCalqueById(img, idLut1);
 
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
@@ -103,13 +105,15 @@ int main(int argc, char** argv) {
 
 	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
-//	afficheCalqueById(img, 2);
+	fusionnerCalquesImage(img);
+	// afficheCalqueById(img, 2);
+
 
 	int loop = 1;
 	int posX = 0, posY = 0;
 
 	//int change = 0;
-	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite = 0, opaciteCheck = 0;
+	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0;
 
 	while (loop) {
 		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
@@ -121,45 +125,45 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		reshape(ihm->windowWidth,ihm->filterHeight,0,0);
+		reshape(WINDOW_WIDTH,WINDOW_HEIGHT_FILTER,0,0);
 		glPushMatrix();
-			glScalef(ihm->windowWidth, ihm->filterHeight,1);
+			// glTranslatef(1,0,0);
+			glScalef(WINDOW_WIDTH, WINDOW_HEIGHT_FILTER,1);
 			dessinCarre(1, ColorRGB(1,1,1));
 		glPopMatrix();
-		Calque* imgCalque = img->listCalques;
-		while(imgCalque!=NULL) {
-			glPushMatrix();
-			printf("yo %d\n",imgCalque->id);
-			glTranslatef(imgCalque->id*100,0,0);
-			glScalef(50,50,1);
-			dessinCarre(1,ColorRGB(0.5,0.5,0.5));
-			glPopMatrix();
-			if(imgCalque->next!=NULL)
-				imgCalque=imgCalque->next;
-			else
-				break;
-		}
-		freeCalque(imgCalque);
+		// Calque* imgCalque = img->listCalques;
+		// while(imgCalque!=NULL) {
+		// 	glPushMatrix();
+		// 	glTranslatef(imgCalque->id*100,0,0);
+		// 	glScalef(50,50,1);
+		// 	dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+		// 	glPopMatrix();
+		// 	if(imgCalque->next!=NULL)
+		// 		imgCalque=imgCalque->next;
+		// 	else
+		// 		break;
+		// }
+		// imgCalque = img->listCalques;
 
-		reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
-		drawImage(img, framebuffer);
+		reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0,WINDOW_HEIGHT_FILTER);
+		/* Nettoyage du framebuffer */
+		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
+		printImage(img, framebuffer);
+
+		reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT+WINDOW_HEIGHT_FILTER, WINDOW_WIDTH, 0);
 		glPushMatrix();
-			glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,1);
+			glScalef(WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,1);
 			dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
 		glPopMatrix();
 		drawImageHistogramme(img);
-		dessinIHM(ihm);
+		dessinIHM(img->listCalques, xLuminosite,xContraste,xSaturation);
 
 
 
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
-
-
-
 
 
 		/* On copie le framebuffer � l'�cran */
@@ -180,24 +184,16 @@ int main(int argc, char** argv) {
 				case SDL_MOUSEMOTION:
 					posX = e.button.x;
 					posY = e.button.y;
-					if(luminositeCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
-						xLuminosite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
-						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos-xLuminosite;
+					if(luminositeCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xLuminosite = WINDOW_WIDTH + 150 - posX;
 					}
 
-					if(contrasteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
-						xContraste = WINDOW_WIDTH + (ihm->paramWidth/2) - posX;
-						ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos-xContraste;
+					if(contrasteCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xContraste = WINDOW_WIDTH + 150 - posX;
 					}
 
-					if(saturationCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+250) {
-						xSaturation = ihm->windowWidth + (ihm->paramWidth/2) - posX;
-						ihm->sliderSaturation->posSlider = ihm->sliderSaturation->startPos-xSaturation;
-					}
-
-					if(opaciteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+150) {
-						xOpacite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
-						ihm->sliderOpacite->posSlider = ((ihm->sliderOpacite->startPos) - xOpacite);
+					if(saturationCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
+						xSaturation = WINDOW_WIDTH + 150 - posX;
 					}
 
 					break;
@@ -213,9 +209,6 @@ int main(int argc, char** argv) {
 					if(isOnSaturation(posX,posY,xSaturation) == 1)
 						saturationCheck = 1;
 
-					if(isOnOpacite(posX,posY,xOpacite) == 1)
-						opaciteCheck = 1;
-
 					if(isOnNouveauCalque(posX, posY) == 1)
 						printf("Il est sur le calque.\n");
 
@@ -228,7 +221,6 @@ int main(int argc, char** argv) {
 					luminositeCheck = 0;
 					contrasteCheck  = 0;
 					saturationCheck = 0;
-					opaciteCheck    = 0;
 					break;
 			}
 		}

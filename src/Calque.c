@@ -363,3 +363,42 @@ void drawCalque(Calque *c) {
 	}
 	glPopMatrix();
 }
+
+
+Calque* noirEtBlanc(Calque* C){
+	if (C == NULL)
+		return NULL;
+	int i, j, val;
+	Calque* filtre = C;
+	for (i = 0; i < C->height; i++){
+		for (j = 0; j < C->width; j++){
+			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
+			filtre->pixels[j][i].r = val;
+			filtre->pixels[j][i].g = val;
+			filtre->pixels[j][i].b = val;
+		}
+	}
+	return filtre;
+}
+
+/*Calque* sepia(Filtre* F){
+
+}*/
+
+/*
+
+Pour les filtres instagram :
+1. Nashville :
+   - 60 luminosité
+   - 12 Contraste
+   - Rajouter calque jaune #f4eabd et baisser l'opacité
+
+   Brannan :
+   - 100 contraste
+   - 6 luminosité
+   - Rajouter calque jaune #eddd9e avec 59 opacité
+
+   Faire filtre noir et blanc (enlever un max de saturation)
+
+   Faire filtre Négatif
+*/
