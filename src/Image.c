@@ -120,4 +120,6 @@ void afficheCalqueById(Image* img, int calque_id) {
 		img->calque_resultat = appliquerEffet(img->calque_resultat);
 	}
 
+	calculHistogramme(img->calque_resultat);
+
 }
