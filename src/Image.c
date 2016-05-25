@@ -82,9 +82,9 @@ void freeImage(Image* img) {
 		freeCalque_r(img->calque_resultat);
 }
 
-void fusionnerAllCalques(Image* img) {
-	fusionCalqueDefinitive(&img->listCalques);
-}
+//void fusionnerAllCalques(Image* img) {
+//	fusionCalqueDefinitive(&img->listCalques);
+//}
 
 void saveImage(Image* img, char* savePath) {
 	saveCalque(img->listCalques, savePath);
@@ -133,7 +133,7 @@ void afficheCalqueById(Image* img, int calque_id) {
 
 }
 
-void removeCalqueById(Image* img, int id){
+void removeClaqueById(Image* img, int id){
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);

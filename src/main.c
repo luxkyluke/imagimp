@@ -11,6 +11,7 @@
 #include "../include/Geometry.h"
 #include "LutOption.h"
 #include "Effet.h"
+#include "bool.h"
 
 #include "IHM.h"
 
@@ -39,6 +40,15 @@ void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		exit(EXIT_FAILURE);
 	}
+}
+
+void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
+	/* On copie le framebuffer � l'�cran */
+	SDL_BlitSurface(framebuffer, NULL, screen, NULL);
+
+	SDL_Flip(screen);
+
+	SDL_GL_SwapBuffers();
 }
 
 int main(int argc, char** argv) {
@@ -91,14 +101,20 @@ int main(int argc, char** argv) {
 	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 1.);
 	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 1.);
 	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 1.);
-	idC6 = chargerImage(img, "images/Sylvain_Lake.ppm", 1600, 1200, 1.);
+	idC6 = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
 	addButtonCalque(ihm, 2);
 	addButtonCalque(ihm, 3);
+	addButtonCalque(ihm, 4);
+	addButtonCalque(ihm, 5);
+	addButtonCalque(ihm, 6);
+	addButtonCalque(ihm, 7);
 
 	ButtonCalque * btc = ihm->btnCalquesSelection;
+
+	removeClaqueById(img, idC4);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
@@ -126,12 +142,13 @@ int main(int argc, char** argv) {
 	int loop = 1;
 	int posX = 0, posY = 0;
 
-	//int change = 0;
+	bool change = true;
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
 			xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite = 0,
 			opaciteCheck = 0;
 
 	while (loop) {
+
 		SDL_FillRect(framebuffer, NULL,
 				SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
@@ -143,20 +160,20 @@ int main(int argc, char** argv) {
 
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-		dessinIHM(ihm, img, framebuffer);
+
 
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
+		if(change){
+			dessinIHM(ihm, img, framebuffer);
+			nextFrame(framebuffer, screen);
+		}
 
-		/* On copie le framebuffer � l'�cran */
-		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
-
-		SDL_Flip(screen);
-
-		SDL_GL_SwapBuffers();
 		// Calque * currentCalque = img->listCalques;
 		SDL_Event e;
+		change = false;
+//		printf("Affichage\n");
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {
 				loop = 0;
@@ -165,6 +182,7 @@ int main(int argc, char** argv) {
 
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
+
 				posX = e.button.x;
 				posY = e.button.y;
 				if (luminositeCheck == 1 && posX >= WINDOW_WIDTH + 50
@@ -172,6 +190,8 @@ int main(int argc, char** argv) {
 					xLuminosite = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderLuminosite->posSlider =
 							ihm->sliderLuminosite->startPos - xLuminosite;
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
 				}
 
 				if (contrasteCheck == 1 && posX >= WINDOW_WIDTH + 50
@@ -179,7 +199,8 @@ int main(int argc, char** argv) {
 					xContraste = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderContraste->posSlider =
 							ihm->sliderContraste->startPos - xContraste;
-
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
 				}
 
 				if (opaciteCheck == 1 && posX >= ihm->windowWidth + 50
@@ -187,14 +208,18 @@ int main(int argc, char** argv) {
 					xOpacite = ihm->windowWidth + (ihm->paramWidth / 2) - posX;
 					ihm->sliderOpacite->posSlider =
 							((ihm->sliderOpacite->startPos) - xOpacite);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
 				}
 
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
+				change=true;
 				printf("posX : %d posY : %d\n", posX, posY);
-				if (isOnLuminosite(posX, posY, xLuminosite) == 1)
+				if (isOnLuminosite(posX, posY, xLuminosite) == 1){
 					luminositeCheck = 1;
+				}
 
 				if (isOnContraste(posX, posY, xContraste) == 1)
 					contrasteCheck = 1;
@@ -215,7 +240,11 @@ int main(int argc, char** argv) {
 				while (btc != NULL) {
 					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
 							== 1) {
-						afficheCalqueById(img, btc->id);
+						if(btc->id >1)
+							afficheCalqueById(img, btc->id);
+						else{
+							fusionnerCalquesImage(img);
+						}
 					}
 					if (btc->next != NULL)
 						btc = btc->next;

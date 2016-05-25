@@ -100,7 +100,7 @@ void drawSlider(Slider* slider) {
             glVertex3f(0, 0, 0);
             glVertex3f(slider->width, 0, 0);
         glEnd();
-        glTranslatef(slider->posSlider,0,0);
+        glTranslatef((float)slider->posSlider,0.,0.);
         glColor3f(1,1,1);
         glScalef(20,20,0);
         dessinCercle(10,1);
@@ -130,6 +130,7 @@ Button* makeButton(int width, int height, int posX, int posY, char* title, BtnNa
 }
 
 void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
+	drawSlider(ihm->sliderOpacite);
     reshape(ihm->windowWidth,ihm->filterHeight,0,0);
         glPushMatrix();
         glScalef(ihm->windowWidth, ihm->filterHeight,1);
@@ -158,7 +159,8 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
     drawImage(img, framebuffer);
 
     reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
-        glPushMatrix();
+
+    	glPushMatrix();
             glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,1);
             dessinCarre(1, ColorRGB(52./255.,73./255.,94./255.));
         glPopMatrix();
