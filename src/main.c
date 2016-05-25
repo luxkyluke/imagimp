@@ -82,14 +82,18 @@ int main(int argc, char** argv) {
 
 	initGlut(argc, argv);
 
-	Image* img = makeImage(512, 512);
-	int idCalqueImg1, idCalqueImg2, idLut2, idLut1;
+	Image* img = makeImage(1600, 1200);
+	int idC1, idC2, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
-	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
-	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 0.5);
+	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
+	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 1.);
+	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 1.);
+	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 1.);
+	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 1.);
+	idC6 = chargerImage(img, "images/Sylvain_Lake.ppm", 1600, 1200, 1.);
 
-	changeFusionClaqueToAdditive(img, idCalqueImg2);
+//	changeFusionClaqueToAdditive(img, idC2);
 
 	addButtonCalque(ihm, 2);
 	addButtonCalque(ihm, 3);
@@ -101,7 +105,7 @@ int main(int argc, char** argv) {
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	addEffetCalqueById(img, idCalqueImg2, noir_et_blanc);
+//	addEffetCalqueById(img, idC2, noir_et_blanc);
 //	noirEtBlanc(img->calque_resultat);
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);

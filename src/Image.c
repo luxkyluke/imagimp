@@ -132,3 +132,11 @@ void afficheCalqueById(Image* img, int calque_id) {
 	calculHistogramme(img->calque_resultat);
 
 }
+
+void removeCalqueById(Image* img, int id){
+	if (!img)
+		return;
+	Calque* c = getCalqueById(img->listCalques, id);
+	if(c)
+		removeCalque(c);
+}
