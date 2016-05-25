@@ -114,7 +114,12 @@ int main(int argc, char** argv) {
 	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
 	fusionnerCalquesImage(img);
+
+
 	// afficheCalqueById(img, 2);
+
+	char keyboard[100];
+	int iterateurKeyboard = 0, isShiftPressed = 0;
 
 	int loop = 1;
 	int posX = 0, posY = 0;
@@ -141,7 +146,6 @@ int main(int argc, char** argv) {
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
-
 
 		/* On copie le framebuffer � l'�cran */
 		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
@@ -197,8 +201,10 @@ int main(int argc, char** argv) {
 						addNewCalque(img->listCalques,1);
 					}
 
-					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1)
-						printf("Il est sur le chargement.\n");
+					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1){
+						chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
+						fusionnerCalquesImage(img);
+					}
 
 					while(btc!=NULL) {
 						if(isOnButton(btc->btn, posX, posY - ihm->windowHeight)==1) {
@@ -210,7 +216,29 @@ int main(int argc, char** argv) {
 						    break;
 					}
 					btc = ihm->btnCalquesSelection;
+					break;
 
+				case SDL_KEYDOWN:
+					// if(e.key.keysym.sym == ':') {
+					// 	keyboard[iterateurKeyboard] = 47;
+					// } else if(e.key.keysym.sym == 13) {
+					// 	keyboard[iterateurKeyboard]=46;
+					// 	keyboard[iterateurKeyboard+1]=112;
+					// 	keyboard[iterateurKeyboard+2]=112;
+					// 	keyboard[iterateurKeyboard+3]=109;
+					// 	char *tmp = strdup(keyboard);
+					// 	strcpy(keyboard, "images/");
+					// 	strcat(keyboard, tmp);
+					// 	printf("%s\n",keyboard);
+					// 	strcpy(keyboard,"");
+					// 	iterateurKeyboard = 0;
+					// 	free(tmp);
+					// 	// char * nomImage = strcat("images/",keyboard);
+					// 	// nomImage = strcat(nomImage,".ppm");
+					// } else{
+					// 	keyboard[iterateurKeyboard] = e.key.keysym.sym;
+					// }
+					// iterateurKeyboard++;
 					break;
 
 				case SDL_MOUSEBUTTONUP:

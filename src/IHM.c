@@ -138,6 +138,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 
 
         ButtonCalque * btc = ihm->btnCalquesSelection;
+        Calque* current = img->listCalques;
         while(btc!=NULL) {
             // printf("id du button courrant : %d\n",btc->id);
          glPushMatrix();
@@ -147,6 +148,18 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
             dessinCarre(0,ColorRGB(0.5,0.5,0.5));
          else
             dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+
+            glPushMatrix();
+            glTranslatef(0.4, 0.5, 0);
+            glColor3d(1, 0, 0);
+            char str[10];
+
+            sprintf(str, "%d", btc->id);
+            if(btc->id == 1)
+                vBitmapOutput(0, 0, "F", GLUT_BITMAP_HELVETICA_18);
+            else
+                vBitmapOutput(0, 0, str, GLUT_BITMAP_HELVETICA_18);
+            glPopMatrix();
          glPopMatrix();
          if(btc->next!=NULL)
              btc=btc->next;
