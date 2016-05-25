@@ -115,4 +115,9 @@ void afficheCalqueById(Image* img, int calque_id) {
 	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
 	img->calque_resultat = appliquerAllLUT(calque);
+	if(calque->effet != none){
+		img->calque_resultat->effet = calque->effet;
+		img->calque_resultat = appliquerEffet(img->calque_resultat);
+	}
+
 }
