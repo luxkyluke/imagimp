@@ -11,6 +11,7 @@
 #include "../include/Geometry.h"
 #include "LutOption.h"
 #include "Effet.h"
+#include "bool.h"
 
 #include "IHM.h"
 
@@ -23,9 +24,9 @@ static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 static const unsigned int BIT_PER_PIXEL = 24;
 
-
 //redimenssionne la fenetre SDL
-void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport, int yViewport) {
+void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
+		int yViewport) {
 	glViewport(xViewport, yViewport, windowWidth, windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -41,33 +42,42 @@ void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
 	}
 }
 
+void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
+	/* On copie le framebuffer ï¿½ l'ï¿½cran */
+	SDL_BlitSurface(framebuffer, NULL, screen, NULL);
+
+	SDL_Flip(screen);
+
+	SDL_GL_SwapBuffers();
+}
+
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
 		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
 
-	IHM*ihm = makeIHM(800,600,300,200);
-
+	IHM*ihm = makeIHM(800, 600, 300, 200);
 
 	SDL_Surface* screen = NULL;
 	if (NULL
-			== (screen = SDL_SetVideoMode(WINDOW_WIDTH+WINDOW_WIDTH_PARAM, WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER,
-					BIT_PER_PIXEL, SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER))) {
+			== (screen = SDL_SetVideoMode(WINDOW_WIDTH + WINDOW_WIDTH_PARAM,
+					WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER, BIT_PER_PIXEL,
+					SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL
+							| SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
 	// reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0);
 	// reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH);
-	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
+	/* Ouverture d'une fenÃªtre et crÃ©ation d'un contexte OpenGL */
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
 
-	/* Cr�ation d'une surface SDL dans laquelle le raytracer dessinera */
+	/* Crï¿½ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
-	if (NULL
-			== (framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
+	if (!(framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
 					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
 		fprintf(stderr,
 				"Erreur d'allocation pour le framebuffer. Fin du programme.\n");
@@ -76,29 +86,42 @@ int main(int argc, char** argv) {
 
 	/* Initialisation de la SDL */
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
-		fprintf(stderr,"Impossible d'initialiser la SDL. Fin du programme.\n");
+		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
 		return false;
 	}
 
-	initGlut(argc,argv);
+	initGlut(argc, argv);
 
-	Image* img = makeImage(512, 512);
-	int idCalqueImg1, idCalqueImg2, idLut2, idLut1;
+	Image* img = makeImage(1600, 1200);
+	int idC1, idC2, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
-	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
-	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 1.);
-	addButtonCalque(ihm,2);
-	addButtonCalque(ihm,3);
+	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
+	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 1.);
+	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 1.);
+	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 1.);
+	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 1.);
+	idC6 = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
+
+//	changeFusionClaqueToAdditive(img, idC2);
+
+	addButtonCalque(ihm, 2);
+	addButtonCalque(ihm, 3);
+	addButtonCalque(ihm, 4);
+	addButtonCalque(ihm, 5);
+	addButtonCalque(ihm, 6);
+	addButtonCalque(ihm, 7);
 
 	ButtonCalque * btc = ihm->btnCalquesSelection;
+
+	removeClaqueById(img, idC4);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	addEffetCalqueById(img, idCalqueImg2, sepia);
+//	addEffetCalqueById(img, idC2, noir_et_blanc);
 //	noirEtBlanc(img->calque_resultat);
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
@@ -114,25 +137,23 @@ int main(int argc, char** argv) {
 	//freeLUT(LUT)LUT* copyLUT(LUT* l);
 	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
 	fusionnerCalquesImage(img);
-
-
 	// afficheCalqueById(img, 2);
-
-	char keyboard[100];
-	int iterateurKeyboard = 0, isShiftPressed = 0;
 
 	int loop = 1;
 	int posX = 0, posY = 0;
 
-	//int change = 0;
-	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite=0, opaciteCheck=0;
+	bool change = true;
+	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
+			xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite = 0,
+			opaciteCheck = 0;
 
 	while (loop) {
-		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
+
+		SDL_FillRect(framebuffer, NULL,
+				SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -140,113 +161,106 @@ int main(int argc, char** argv) {
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-		dessinIHM(ihm,img,framebuffer);
-
 
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
+		if(change){
+			dessinIHM(ihm, img, framebuffer);
+			nextFrame(framebuffer, screen);
+		}
 
-		/* On copie le framebuffer � l'�cran */
-		SDL_BlitSurface(framebuffer, NULL, screen, NULL);
-
-		SDL_Flip(screen);
-
-		SDL_GL_SwapBuffers();
 		// Calque * currentCalque = img->listCalques;
 		SDL_Event e;
+		change = false;
+//		printf("Affichage\n");
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {
 				loop = 0;
 				break;
 			}
 
+			switch (e.type) {
+			case SDL_MOUSEMOTION:
 
-			switch(e.type) {
-				case SDL_MOUSEMOTION:
-					posX = e.button.x;
-					posY = e.button.y;
-					if(luminositeCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xLuminosite = WINDOW_WIDTH + 150 - posX;
-						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos-xLuminosite;
-					}
+				posX = e.button.x;
+				posY = e.button.y;
+				if (luminositeCheck == 1 && posX >= WINDOW_WIDTH + 50
+						&& posX <= WINDOW_WIDTH + 250) {
+					xLuminosite = WINDOW_WIDTH + 150 - posX;
+					ihm->sliderLuminosite->posSlider =
+							ihm->sliderLuminosite->startPos - xLuminosite;
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
 
-					if(contrasteCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xContraste = WINDOW_WIDTH + 150 - posX;
-						ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos-xContraste;
+				if (contrasteCheck == 1 && posX >= WINDOW_WIDTH + 50
+						&& posX <= WINDOW_WIDTH + 250) {
+					xContraste = WINDOW_WIDTH + 150 - posX;
+					ihm->sliderContraste->posSlider =
+							ihm->sliderContraste->startPos - xContraste;
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
 
-					}
+				if (opaciteCheck == 1 && posX >= ihm->windowWidth + 50
+						&& posX <= ihm->windowWidth + 150) {
+					xOpacite = ihm->windowWidth + (ihm->paramWidth / 2) - posX;
+					ihm->sliderOpacite->posSlider =
+							((ihm->sliderOpacite->startPos) - xOpacite);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
 
-					if(opaciteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+150) {
-						xOpacite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
-						ihm->sliderOpacite->posSlider = ((ihm->sliderOpacite->startPos) - xOpacite);
-					}
+				break;
 
+			case SDL_MOUSEBUTTONDOWN:
+				change=true;
+				printf("posX : %d posY : %d\n", posX, posY);
+				if (isOnLuminosite(posX, posY, xLuminosite) == 1){
+					luminositeCheck = 1;
+				}
 
-					break;
+				if (isOnContraste(posX, posY, xContraste) == 1)
+					contrasteCheck = 1;
 
-				case SDL_MOUSEBUTTONDOWN:
-					printf("posX : %d posY : %d\n", posX,posY);
-					if(isOnLuminosite(posX,posY,xLuminosite) == 1)
-						luminositeCheck = 1;
+				if (isOnOpacite(posX, posY, xOpacite) == 1)
+					opaciteCheck = 1;
 
-					if(isOnContraste(posX,posY,xContraste) == 1)
-						contrasteCheck = 1;
+				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)
+						== 1) {
+					printf("Il est sur le calque.\n");
+					addNewCalque(img->listCalques, 1);
+				}
 
-					if(isOnOpacite(posX,posY,xOpacite) == 1)
-						opaciteCheck = 1;
+				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)
+						== 1)
+					printf("Il est sur le chargement.\n");
 
-					if(isOnButton(ihm->btnCalque,posX - ihm->windowWidth, posY) == 1){
-						printf("Il est sur le calque.\n");
-						addNewCalque(img->listCalques,1);
-					}
-
-					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1){
-						chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
-						fusionnerCalquesImage(img);
-					}
-
-					while(btc!=NULL) {
-						if(isOnButton(btc->btn, posX, posY - ihm->windowHeight)==1) {
-							afficheCalqueById(img,btc->id);
+				while (btc != NULL) {
+					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
+							== 1) {
+						if(btc->id >1)
+							afficheCalqueById(img, btc->id);
+						else{
+							fusionnerCalquesImage(img);
 						}
-						if(btc->next!=NULL)
-						    btc=btc->next;
-						else
-						    break;
 					}
-					btc = ihm->btnCalquesSelection;
-					break;
+					if (btc->next != NULL)
+						btc = btc->next;
+					else
+						break;
+				}
+				btc = ihm->btnCalquesSelection;
 
-				case SDL_KEYDOWN:
-					// if(e.key.keysym.sym == ':') {
-					// 	keyboard[iterateurKeyboard] = 47;
-					// } else if(e.key.keysym.sym == 13) {
-					// 	keyboard[iterateurKeyboard]=46;
-					// 	keyboard[iterateurKeyboard+1]=112;
-					// 	keyboard[iterateurKeyboard+2]=112;
-					// 	keyboard[iterateurKeyboard+3]=109;
-					// 	char *tmp = strdup(keyboard);
-					// 	strcpy(keyboard, "images/");
-					// 	strcat(keyboard, tmp);
-					// 	printf("%s\n",keyboard);
-					// 	strcpy(keyboard,"");
-					// 	iterateurKeyboard = 0;
-					// 	free(tmp);
-					// 	// char * nomImage = strcat("images/",keyboard);
-					// 	// nomImage = strcat(nomImage,".ppm");
-					// } else{
-					// 	keyboard[iterateurKeyboard] = e.key.keysym.sym;
-					// }
-					// iterateurKeyboard++;
-					break;
+				break;
 
-				case SDL_MOUSEBUTTONUP:
-					luminositeCheck = 0;
-					contrasteCheck  = 0;
-					saturationCheck = 0;
-					opaciteCheck    = 0;
-					break;
+			case SDL_MOUSEBUTTONUP:
+				luminositeCheck = 0;
+				contrasteCheck = 0;
+				saturationCheck = 0;
+				opaciteCheck = 0;
+				break;
 			}
 		}
 	}
@@ -258,3 +272,27 @@ int main(int argc, char** argv) {
 
 	return EXIT_SUCCESS;
 }
+
+// case SDL_KEYDOWN:
+                // if(e.key.keysym.sym == ':') {
+                //  keyboard[iterateurKeyboard] = 47;
+                // } else if(e.key.keysym.sym == 13) {
+                //  keyboard[iterateurKeyboard]=46;
+                //  keyboard[iterateurKeyboard+1]=112;
+                //  keyboard[iterateurKeyboard+2]=112;
+                //  keyboard[iterateurKeyboard+3]=109;
+                //  char *tmp = strdup(keyboard);
+                //  strcpy(keyboard, "images/");
+                //  strcat(keyboard, tmp);
+                //  printf("%s\n",keyboard);
+                //  strcpy(keyboard,"");
+                //  iterateurKeyboard = 0;
+                //  free(tmp);
+                //  // char * nomImage = strcat("images/",keyboard);
+                //  // nomImage = strcat(nomImage,".ppm");
+                // } else{
+                //  keyboard[iterateurKeyboard] = e.key.keysym.sym;
+                // }
+                // iterateurKeyboard++;
+            //     break;
+            // }
