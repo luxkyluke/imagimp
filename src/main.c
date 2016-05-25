@@ -43,7 +43,7 @@ void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
 }
 
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
-	/* On copie le framebuffer � l'�cran */
+	/* On copie le framebuffer ï¿½ l'ï¿½cran */
 	SDL_BlitSurface(framebuffer, NULL, screen, NULL);
 
 	SDL_Flip(screen);
@@ -70,12 +70,12 @@ int main(int argc, char** argv) {
 	}
 	// reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0);
 	// reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH);
-	/* Ouverture d'une fenêtre et création d'un contexte OpenGL */
+	/* Ouverture d'une fenÃªtre et crÃ©ation d'un contexte OpenGL */
 	SDL_WM_SetCaption("Imagimp", NULL);
 
 	printf("L'initialisation.\n");
 
-	/* Cr�ation d'une surface SDL dans laquelle le raytracer dessinera */
+	/* Crï¿½ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (!(framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
 					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
@@ -272,3 +272,27 @@ int main(int argc, char** argv) {
 
 	return EXIT_SUCCESS;
 }
+
+// case SDL_KEYDOWN:
+                // if(e.key.keysym.sym == ':') {
+                //  keyboard[iterateurKeyboard] = 47;
+                // } else if(e.key.keysym.sym == 13) {
+                //  keyboard[iterateurKeyboard]=46;
+                //  keyboard[iterateurKeyboard+1]=112;
+                //  keyboard[iterateurKeyboard+2]=112;
+                //  keyboard[iterateurKeyboard+3]=109;
+                //  char *tmp = strdup(keyboard);
+                //  strcpy(keyboard, "images/");
+                //  strcat(keyboard, tmp);
+                //  printf("%s\n",keyboard);
+                //  strcpy(keyboard,"");
+                //  iterateurKeyboard = 0;
+                //  free(tmp);
+                //  // char * nomImage = strcat("images/",keyboard);
+                //  // nomImage = strcat(nomImage,".ppm");
+                // } else{
+                //  keyboard[iterateurKeyboard] = e.key.keysym.sym;
+                // }
+                // iterateurKeyboard++;
+            //     break;
+            // }
