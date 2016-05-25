@@ -58,8 +58,8 @@ int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
 int isOnButton(Button* button, int posX, int posY);
 
-ButtonCalque* makeButtonCalque(int posX, int id);
-void addButtonCalque(IHM* ihm, int posX,int id);
+ButtonCalque* makeButtonCalque(int id);
+void addButtonCalque(IHM* ihm,int id);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
 Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);

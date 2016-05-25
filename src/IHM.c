@@ -80,12 +80,13 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->paramWidth   = paramWidth;
     ihm->filterHeight = filterHeight;
     // 100 est pour que le centre soit centré.
-    ihm->sliderLuminosite   = makeSlider(200,160,100,luminosite,"luminosite");
-    ihm->sliderContraste    = makeSlider(200,260,100,contraste,"contraste");
-    ihm->sliderSaturation   = makeSlider(200,360,100,saturation,"saturation");
-    ihm->sliderOpacite      = makeSlider(100,460,100,opacite,"opacite");
-    ihm->btnCalque          = makeButton(190,40,50,560,"Nouveau calque",calque);
-    ihm->btnImage           = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->sliderLuminosite    = makeSlider(200,160,100,luminosite,"luminosite");
+    ihm->sliderContraste     = makeSlider(200,260,100,contraste,"contraste");
+    ihm->sliderSaturation    = makeSlider(200,360,100,saturation,"saturation");
+    ihm->sliderOpacite       = makeSlider(100,460,100,opacite,"opacite");
+    ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
+    ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->btnCalquesSelection = makeButtonCalque(1);
     return ihm;
 }
 
@@ -97,11 +98,7 @@ void drawSlider(Slider* slider) {
             glVertex3f(0, 0, 0);
             glVertex3f(slider->width, 0, 0);
         glEnd();
-        // if(slider->name == opacite){
-        //     glTranslatef((slider->posSlider+100),0,0);
-        // }
-        // else
-            glTranslatef(slider->posSlider,0,0);
+        glTranslatef(slider->posSlider,0,0);
         glColor3f(1,1,1);
         glScalef(20,20,0);
         dessinCercle(10,1);
@@ -137,19 +134,20 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
         dessinCarre(1, ColorRGB(1,1,1));
         glPopMatrix();
 
-        Calque* imgCalque = img->listCalques;
-        while(imgCalque!=NULL) {
+
+        ButtonCalque * btc = ihm->btnCalquesSelection;
+        while(btc!=NULL) {
+            // printf("id du button courrant : %d\n",btc->id);
          glPushMatrix();
-         glTranslatef(imgCalque->id*60,0,0);
+         glTranslatef(btc->btn->posX,btc->btn->posY,0);
          glScalef(50,50,1);
          dessinCarre(1,ColorRGB(0.5,0.5,0.5));
          glPopMatrix();
-         if(imgCalque->next!=NULL)
-             imgCalque=imgCalque->next;
+         if(btc->next!=NULL)
+             btc=btc->next;
          else
              break;
         }
-        imgCalque = img->listCalques;
 
     reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
     drawImage(img, framebuffer);
@@ -168,25 +166,29 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
         DessinButton(ihm->btnImage);
 }
 
-ButtonCalque* makeButtonCalque(int posX, int id) {
-    ButtonCalque* buttonCalque = malloc(sizeof(buttonCalque));
+ButtonCalque* makeButtonCalque(int id) {
+    ButtonCalque* buttonCalque = malloc(sizeof(ButtonCalque));
     if(!buttonCalque){
         fprintf(stderr, "Probleme Allocation ButtonCalque\n");
         return NULL;
     }
-    buttonCalque->btn = makeButton(50, 50, posX, 10, "1", select);
+    buttonCalque->btn = makeButton(50, 50, id*60, 10, "1", select);
     buttonCalque->id = id;
     buttonCalque->next = NULL;
     return buttonCalque;
 }
 
-void addButtonCalque(IHM* ihm, int posX,int id) {
-    ButtonCalque* buttonCalque = makeButtonCalque(posX,id);
-    if(!buttonCalque)
+void addButtonCalque(IHM* ihm, int id) {
+    ButtonCalque* tmp = ihm->btnCalquesSelection;
+    ButtonCalque* newButtonCalque = makeButtonCalque(id);
+    if(!newButtonCalque)
         return;
-    ButtonCalque* last = buttonCalque;
-    while (last->next != NULL) {
-        last = last->next;
+    ButtonCalque* last = newButtonCalque;
+
+    while (ihm->btnCalquesSelection->next != NULL) {
+        ihm->btnCalquesSelection = ihm->btnCalquesSelection->next;
     }
-    last->next = buttonCalque;
+
+    ihm->btnCalquesSelection->next = newButtonCalque;
+    ihm->btnCalquesSelection = tmp;
 }

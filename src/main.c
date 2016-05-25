@@ -88,10 +88,8 @@ int main(int argc, char** argv) {
 	// makeImage(img, 512, 512);
 	idCalqueImg1 = chargerImage(img, "images/Aerial.512.ppm", 512, 512, 1.);
 	idCalqueImg2 = chargerImage(img, "images/Baboon.ppm", 512, 512, 1.);
-
-	addButtonCalque(ihm,50,1);
-	addButtonCalque(ihm,100,2);
-	addButtonCalque(ihm,150,3);
+	addButtonCalque(ihm,2);
+	addButtonCalque(ihm,3);
 
 	ButtonCalque * btc = ihm->btnCalquesSelection;
 
@@ -197,13 +195,8 @@ int main(int argc, char** argv) {
 
 					while(btc!=NULL) {
 						if(isOnButton(btc->btn, posX, posY - ihm->windowHeight)==1) {
-							printf("Id du bouton : %d\n",btc->id );
 							afficheCalqueById(img,btc->id);
 						}
-						// glTranslatef(currentCalque->id*60,0,0);
-						// glScalef(50,50,1);
-						// dessinCarre(1,ColorRGB(0.5,0.5,0.5));
-						// glPopMatrix();
 						if(btc->next!=NULL)
 						    btc=btc->next;
 						else
