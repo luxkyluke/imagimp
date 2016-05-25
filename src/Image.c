@@ -94,7 +94,16 @@ void saveCalqueById(Image *img, int id, char* savePath) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	saveCalque(c, savePath);
+	if(c)
+		saveCalque(c, savePath);
+}
+
+void changeFusionClaqueToAdditive(Image* img, int id){
+	if (!img)
+		return;
+	Calque* c = getCalqueById(img->listCalques, id);
+	if(c)
+		setFusion(c, additive);
 }
 
 void fusionnerCalquesImage(Image* img) {

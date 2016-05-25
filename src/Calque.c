@@ -18,22 +18,22 @@ void remplirCalqueCouleur(Calque* calque, Pixel p) {
 
 Calque* makeCalque(int w, int h, float op) {
 	Calque* calque = malloc(sizeof(Calque));
-	if(!calque){
+	if (!calque) {
 		fprintf(stderr, "Probleme Allocation Calque\n");
 		return NULL;
 	}
-	calque->next       = NULL;
-	calque->prev       = NULL;
-	calque->height     = h;
-	calque->width      = w;
-	calque->fusion     = DEFAULT_FUSION;
-	calque->alpha      = op;
+	calque->next = NULL;
+	calque->prev = NULL;
+	calque->height = h;
+	calque->width = w;
+	calque->fusion = DEFAULT_FUSION;
+	calque->alpha = op;
 	calque->isSelected = 1;
-	calque->listLuts   = NULL; // changer les noms des variables des struct
-	calque->id         = indice_courant++;
-	calque->effet 	   = none;
-	calque->listLuts   = makeLUT();
-	calque->pixels     = (Pixel **) malloc(calque->width * sizeof(Pixel*));
+	calque->listLuts = NULL; // changer les noms des variables des struct
+	calque->id = indice_courant++;
+	calque->effet = none;
+	calque->listLuts = makeLUT();
+	calque->pixels = (Pixel **) malloc(calque->width * sizeof(Pixel*));
 	int i;
 	for (i = 0; i < calque->width; i++) {
 		calque->pixels[i] = (Pixel *) malloc(calque->height * sizeof(Pixel));
@@ -58,7 +58,7 @@ Calque* getCalqueById(Calque* c, int id) {
 	return NULL;
 }
 
-Calque* copyCalque(Calque *c){
+Calque* copyCalque(Calque *c) {
 	Calque *copie = makeCalque(c->width, c->height, c->alpha);
 	int i, j;
 	for (i = 0; i < c->height; i++) {
@@ -110,8 +110,8 @@ Calque* addNewCalque(Calque* c, float op) {
 	return newCalque;
 }
 
-void addCalque(Calque* c, Calque* c2){
-	if(!c)
+void addCalque(Calque* c, Calque* c2) {
+	if (!c)
 		return;
 	Calque* last = c;
 
@@ -127,24 +127,24 @@ int addLUTCalque(Calque *c, LutOption lut, int val) {
 		return 0;
 
 	LUT l;
-	switch(lut){
-		case invert :
-			INVERT(&l);
-			break;
-		case addlum:
-			ADDLUM(&l, val);
-			break;
-		case dimlum:
-			DIMLUM(&l, val);
-			break;
-		case addcon:
-			ADDCON(&l, val);
-			break;
-		case dimcon:
-			DIMCON(&l, val);
-			break;
+	switch (lut) {
+	case invert:
+		INVERT(&l);
+		break;
+	case addlum:
+		ADDLUM(&l, val);
+		break;
+	case dimlum:
+		DIMLUM(&l, val);
+		break;
+	case addcon:
+		ADDCON(&l, val);
+		break;
+	case dimcon:
+		DIMCON(&l, val);
+		break;
 	}
-	if(!c->listLuts)
+	if (!c->listLuts)
 		c->listLuts = makeLUT();
 	return addLUT(c->listLuts, l.lut);
 }
@@ -152,11 +152,11 @@ int addLUTCalque(Calque *c, LutOption lut, int val) {
 void removeCalque(Calque* c) {
 	if (!c)
 		return;
-	if(c->prev != NULL){
+	if (c->prev != NULL) {
 		c->prev->next = c->next;
 		c->next = NULL;
 	}
-	if(c->next != NULL){
+	if (c->next != NULL) {
 		c->next->prev = c->prev;
 		c->prev = NULL;
 	}
@@ -200,63 +200,87 @@ int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
 //	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
 //}
 
-Calque* appliquerEffet(Calque* c){
-	if(!c)
+Calque* appliquerEffet(Calque* c) {
+	if (!c)
 		return NULL;
 	Calque* ret = NULL;
-	switch(c->effet){
-		case noir_et_blanc:
-			ret = noirEtBlanc(c);
-			break;
-		case sepia:
-			ret = appliquerSepia(c);
-			break;
+	switch (c->effet) {
+	case noir_et_blanc:
+		ret = noirEtBlanc(c);
+		break;
+	case sepia:
+		ret = appliquerSepia(c);
+		break;
 	}
 	ret->next = c->next;
 	ret->prev = c->prev;
 	return ret;
 }
 
-void fusionCalqueDefinitive(Calque **calque){
+void fusionCalqueDefinitive(Calque **calque) {
 	Calque *next = (*calque)->next;
 	*calque = fusionnerCalque(*calque);
 	freeCalque_r(next);
 }
 
+void fusionnerMultiplicationCalque2a2(Calque *ret, Calque *c2) {
+	ret->listLuts = fusionnerLut(c2->listLuts);
+	printf("effet %d\n", c2->effet);
+	if (c2->effet != none)
+		c2 = appliquerEffet(c2);
+	int i, j;
+	for (i = 0; i < c2->height; i++) {
+		for (j = 0; j < c2->width; j++) {
+			int r = c2->pixels[j][i].r;
+			int g = c2->pixels[j][i].g;
+			int b = c2->pixels[j][i].b;
+
+			ret->pixels[j][i].r = ret->pixels[j][i].r* (1. - c2->alpha)
+					+ ret->listLuts->lut[r] * c2->alpha;
+			ret->pixels[j][i].g = ret->pixels[j][i].r* (1. - c2->alpha)
+					+ c2->alpha * ret->listLuts->lut[g];
+			ret->pixels[j][i].b = ret->pixels[j][i].r* (1. - c2->alpha)
+					+ c2->alpha * ret->listLuts->lut[b];
+		}
+	}
+}
+
+void fusionnerAdditiveCalque2a2(Calque *ret, Calque *c2) {
+	ret->listLuts = fusionnerLut(c2->listLuts);
+	printf("effet %d\n", c2->effet);
+	if (c2->effet != none)
+		c2 = appliquerEffet(c2);
+	int i, j;
+	for (i = 0; i < c2->height; i++) {
+		for (j = 0; j < c2->width; j++) {
+			int r = c2->pixels[j][i].r;
+			int g = c2->pixels[j][i].g;
+			int b = c2->pixels[j][i].b;
+
+			ret->pixels[j][i].r = ret->pixels[j][i].r
+					+ ret->listLuts->lut[r] * c2->alpha;
+			ret->pixels[j][i].g = ret->pixels[j][i].r
+					+ c2->alpha * ret->listLuts->lut[g];
+			ret->pixels[j][i].b = ret->pixels[j][i].r
+					+ c2->alpha * ret->listLuts->lut[b];
+			checkValue(&(ret->pixels[j][i].r));
+			checkValue(&(ret->pixels[j][i].g));
+			checkValue(&(ret->pixels[j][i].b));
+		}
+	}
+}
+
 Calque* fusionnerCalque(Calque* c) {
-	if (c == NULL )
+	if (c == NULL)
 		return NULL;
 	Calque* test = makeCalque(c->width, c->height, 1.);
 	remplirCalqueCouleur(test, makePixel(0, 0, 0));
 	Calque *calque_tmp = c->next;
 	while (calque_tmp != NULL) {
-		test->listLuts = fusionnerLut(calque_tmp->listLuts);
-		printf("effet %d\n", calque_tmp->effet);
-		if(calque_tmp->effet != none)
-			calque_tmp = appliquerEffet(calque_tmp);
-		int i, j;
-		for (i = 0; i < c->height; i++) {
-			for (j = 0; j < c->width; j++) {
-				int r = calque_tmp->pixels[j][i].r;
-				int g = calque_tmp->pixels[j][i].g;
-				int b = calque_tmp->pixels[j][i].b;
-//				checkValue(&r);
-//				checkValue(&g);
-//				checkValue(&b);
-				//printf("%d, %d, %d\n", test->pixels[450][250].r, test->pixels[450][250].g, test->pixels[450][250].b);
-				//printf("%d, %d, %d\n", calque_tmp->pixels[j][i].r, calque_tmp->pixels[j][i].g, calque_tmp->pixels[j][i].b);
-				test->pixels[j][i].r = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						test->listLuts->lut[r] * calque_tmp->alpha;
-				test->pixels[j][i].g = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						calque_tmp->alpha* test->listLuts->lut[g];
-				test->pixels[j][i].b = test->pixels[j][i].r*(1.-calque_tmp->alpha) +
-						calque_tmp->alpha * test->listLuts->lut[b];
-				//printf("%d, %d, %d\n", calque_tmp->pixels[j][i].r, calque_tmp->pixels[j][i].g, calque_tmp->pixels[j][i].b);
-//				checkValue(&(test->pixels[j][i].r));
-//				checkValue(&(test->pixels[j][i].g));
-//				checkValue(&(test->pixels[j][i].b));
-			}
-		}
+		if(calque_tmp->fusion == additive)
+			fusionnerAdditiveCalque2a2(test, calque_tmp);
+		else
+			fusionnerMultiplicationCalque2a2(test, calque_tmp);
 		calque_tmp = calque_tmp->next;
 	}
 	calculHistogramme(test);
@@ -296,10 +320,10 @@ Calque* appliquerAllLUT(Calque* calque) {
 }
 
 void freeCalque(Calque* c) {
-	if(!c)
+	if (!c)
 		return;
 	int i;
-	if(c->pixels){
+	if (c->pixels) {
 		for (i = 0; i < c->width; i++) {
 			free(c->pixels[i]);
 		}
@@ -330,15 +354,15 @@ void freeCalque_r(Calque* c) {
 }
 
 void drawCalqueHistogramme(Calque* c) {
-	if(!c)
-		return ;
+	if (!c)
+		return;
 	drawHistogramme(c->histogramme);
 }
 
 void saveCalque(Calque* c, char *pathImg) {
-	if(!c)
+	if (!c)
 		return;
-	c=fusionnerCalque(c);
+	c = fusionnerCalque(c);
 //	printf("%d, %d, %d\n", c->pixels[50][50].r, c->pixels[50][50].g, c->pixels[50][50].b);
 //	fflush(stdin);
 	unsigned char *rgb = malloc(
@@ -356,7 +380,7 @@ void saveCalque(Calque* c, char *pathImg) {
 }
 
 void drawCalque(Calque *c) {
-	if(!c)
+	if (!c)
 		return;
 	int i, j;
 	glPushMatrix();
@@ -371,8 +395,9 @@ void drawCalque(Calque *c) {
 
 			glBegin(GL_POINTS);
 			glColor3f(r / 255., g / 255., b / 255.);
-			if(c->width>WINDOW_WIDTH || c->height>WINDOW_HEIGHT)
-				glVertex2f(j*WINDOW_WIDTH/c->width, i*WINDOW_HEIGHT/c->height);
+			if (c->width > WINDOW_WIDTH || c->height > WINDOW_HEIGHT)
+				glVertex2f(j * WINDOW_WIDTH / c->width,
+						i * WINDOW_HEIGHT / c->height);
 			else
 				glVertex2f(j, i);
 			glEnd();
@@ -382,15 +407,15 @@ void drawCalque(Calque *c) {
 	glPopMatrix();
 }
 
-
-Calque* noirEtBlanc(Calque* C){
+Calque* noirEtBlanc(Calque* C) {
 	if (C == NULL)
 		return NULL;
 	int i, j, val;
 	Calque* filtre = copyCalque(C);
-	for (i = 0; i < C->height; i++){
-		for (j = 0; j < C->width; j++){
-			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
+	for (i = 0; i < C->height; i++) {
+		for (j = 0; j < C->width; j++) {
+			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)
+					/ 3;
 			filtre->pixels[j][i].r = val;
 			filtre->pixels[j][i].g = val;
 			filtre->pixels[j][i].b = val;
@@ -399,90 +424,93 @@ Calque* noirEtBlanc(Calque* C){
 	return filtre;
 }
 
-Calque* appliquerSepia(Calque* C){
-  if (C == NULL)
-    return NULL;
-  int i, j;
-  Calque* filtre = copyCalque(C);
-  for (i = 0; i < C->height; i++){
-    for (j = 0; j < C->width; j++){
-    	int r = C->pixels[j][i].r * 0.393 + C->pixels[j][i].g * 0.769 + C->pixels[j][i].b * 0.189;
-    	int g = C->pixels[j][i].r * 0.349 + C->pixels[j][i].g * 0.686 + C->pixels[j][i].b * 0.168;
-    	int b = C->pixels[j][i].r * 0.272 + C->pixels[j][i].g * 0.534 + C->pixels[j][i].b * 0.131;
-		checkValue(&r);
-    	filtre->pixels[j][i].r = r;
-
-    	checkValue(&g);
-		filtre->pixels[j][i].g = g;
-
-		checkValue(&b);
-		filtre->pixels[j][i].b = b;
-    }
-  }
-  return filtre;
-}
-
-/*Calque* appliquerSepia(Calque* C){
-  if (C == NULL)
-    return NULL;
-  int i, j;
->>>>>>> dde35824f59f1ce297c7b84c9707f0c949fc56ce
-  int seuil = 123;
-  Calque* filtre = copyCalque(C);
-  for (i = 0; i < C->height; i++){
-    for (j = 0; j < C->width; j++){
-    	int moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
-    	if(moyenne < seuil){
-    		filtre->pixels[j][i].r -= filtre->pixels[j][i].r / 2;
-			filtre->pixels[j][i].g -= filtre->pixels[j][i].g / 2;
-			filtre->pixels[j][i].b -= filtre->pixels[j][i].b / 2;
-    	}
-    	if(moyenne > seuil){
-    		filtre->pixels[j][i].r += filtre->pixels[i][j].r / 2;
-			filtre->pixels[j][i].g += filtre->pixels[i][j].g / 2;
-			filtre->pixels[j][i].b += filtre->pixels[i][j].b / 2;
-    	}
-    }
-  }
-  return filtre;
-}*/
-/*
-Calque* Nashville(Calque* C){
+Calque* appliquerSepia(Calque* C) {
 	if (C == NULL)
 		return NULL;
 	int i, j;
 	Calque* filtre = copyCalque(C);
-	for (i = 0; i < C->height; i++){
-		for (j = 0; j < C->width; j++){
-			if(C->pixels[j][i].r > 94)
-				filtre->pixels[j][i].r = 94;
-			if(C->pixels[j][i].r > 38)
-				filtre->pixels[j][i].r = 38;
-			if(C->pixels[j][i].r > 18)
-				filtre->pixels[j][i].r = 18;
-			else{
-				filtre->pixels[j][i].r = C->pixels[j][i].r;
-				filtre->pixels[j][i].g = C->pixels[j][i].g;
-				filtre->pixels[j][i].b = C->pixels[j][i].b;
-			}
+	for (i = 0; i < C->height; i++) {
+		for (j = 0; j < C->width; j++) {
+			int r = C->pixels[j][i].r * 0.393 + C->pixels[j][i].g * 0.769
+					+ C->pixels[j][i].b * 0.189;
+			int g = C->pixels[j][i].r * 0.349 + C->pixels[j][i].g * 0.686
+					+ C->pixels[j][i].b * 0.168;
+			int b = C->pixels[j][i].r * 0.272 + C->pixels[j][i].g * 0.534
+					+ C->pixels[j][i].b * 0.131;
+			checkValue(&r);
+			filtre->pixels[j][i].r = r;
+
+			checkValue(&g);
+			filtre->pixels[j][i].g = g;
+
+			checkValue(&b);
+			filtre->pixels[j][i].b = b;
 		}
 	}
 	return filtre;
 }
 
+/*Calque* appliquerSepia(Calque* C){
+ if (C == NULL)
+ return NULL;
+ int i, j;
+ >>>>>>> dde35824f59f1ce297c7b84c9707f0c949fc56ce
+ int seuil = 123;
+ Calque* filtre = copyCalque(C);
+ for (i = 0; i < C->height; i++){
+ for (j = 0; j < C->width; j++){
+ int moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3;
+ if(moyenne < seuil){
+ filtre->pixels[j][i].r -= filtre->pixels[j][i].r / 2;
+ filtre->pixels[j][i].g -= filtre->pixels[j][i].g / 2;
+ filtre->pixels[j][i].b -= filtre->pixels[j][i].b / 2;
+ }
+ if(moyenne > seuil){
+ filtre->pixels[j][i].r += filtre->pixels[i][j].r / 2;
+ filtre->pixels[j][i].g += filtre->pixels[i][j].g / 2;
+ filtre->pixels[j][i].b += filtre->pixels[i][j].b / 2;
+ }
+ }
+ }
+ return filtre;
+ }*/
+/*
+ Calque* Nashville(Calque* C){
+ if (C == NULL)
+ return NULL;
+ int i, j;
+ Calque* filtre = copyCalque(C);
+ for (i = 0; i < C->height; i++){
+ for (j = 0; j < C->width; j++){
+ if(C->pixels[j][i].r > 94)
+ filtre->pixels[j][i].r = 94;
+ if(C->pixels[j][i].r > 38)
+ filtre->pixels[j][i].r = 38;
+ if(C->pixels[j][i].r > 18)
+ filtre->pixels[j][i].r = 18;
+ else{
+ filtre->pixels[j][i].r = C->pixels[j][i].r;
+ filtre->pixels[j][i].g = C->pixels[j][i].g;
+ filtre->pixels[j][i].b = C->pixels[j][i].b;
+ }
+ }
+ }
+ return filtre;
+ }
 
-Pour les filtres instagram :
-1. Nashville :
-   - 60 luminosité
-   - 12 Contraste
-   - Rajouter calque jaune #f4eabd et baisser l'opacité
 
-   Brannan :
-   - 100 contraste
-   - 6 luminosité
-   - Rajouter calque jaune #eddd9e avec 59 opacité
+ Pour les filtres instagram :
+ 1. Nashville :
+ - 60 luminosité
+ - 12 Contraste
+ - Rajouter calque jaune #f4eabd et baisser l'opacité
 
-   Faire filtre noir et blanc (enlever un max de saturation)
+ Brannan :
+ - 100 contraste
+ - 6 luminosité
+ - Rajouter calque jaune #eddd9e avec 59 opacité
 
-   Faire filtre Négatif
-*/
+ Faire filtre noir et blanc (enlever un max de saturation)
+
+ Faire filtre Négatif
+ */
