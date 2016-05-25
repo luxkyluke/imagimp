@@ -51,10 +51,10 @@ void dessinCarre(int fill, Color3f color){
   else{
     glBegin(GL_LINE_LOOP);
       glColor3f(color.r,color.g, color.b);
-      glVertex2f(-0.5,0.5); //point de depart
-      glVertex2f(0.5,0.5); //point d’arrive
-      glVertex2f(0.5,-0.5);
-      glVertex2f(-0.5,-0.5);
+      glVertex2f(0,1); //point de depart
+      glVertex2f(1,1); //point d’arrive
+      glVertex2f(1,0);
+      glVertex2f(0,0);
     glEnd();
   }
 }

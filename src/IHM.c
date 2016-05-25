@@ -26,7 +26,9 @@ int isOnLuminosite(int posX, int posY, int xLuminosite) {
 }
 
 int isOnOpacite(int posX, int posY, int xOpacite) {
-    if(posX >= 940 - xOpacite && posX <= 960 - xOpacite && posY>=453 && posY <= 468) {
+    printf("posXOpac %d, posYOpac %d\n",posX,posY);
+    if(posX >= 940 - xOpacite && posX <= 960 - xOpacite && posY>=353 && posY <= 368) {
+        printf("in\n");
         return 1;
     }
     else
@@ -83,7 +85,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderLuminosite    = makeSlider(200,160,100,luminosite,"luminosite");
     ihm->sliderContraste     = makeSlider(200,260,100,contraste,"contraste");
     ihm->sliderSaturation    = makeSlider(200,360,100,saturation,"saturation");
-    ihm->sliderOpacite       = makeSlider(100,460,100,opacite,"opacite");
+    ihm->sliderOpacite       = makeSlider(100,360,100,opacite,"opacite");
     ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
     ihm->btnCalquesSelection = makeButtonCalque(1);
@@ -141,7 +143,10 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
          glPushMatrix();
          glTranslatef(btc->btn->posX,btc->btn->posY,0);
          glScalef(50,50,1);
-         dessinCarre(1,ColorRGB(0.5,0.5,0.5));
+         if(btc->btn->isSelected == 0)
+            dessinCarre(0,ColorRGB(0.5,0.5,0.5));
+         else
+            dessinCarre(1,ColorRGB(0.5,0.5,0.5));
          glPopMatrix();
          if(btc->next!=NULL)
              btc=btc->next;
@@ -160,7 +165,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
         drawImageHistogramme(img);
         drawSlider(ihm->sliderLuminosite);
         drawSlider(ihm->sliderContraste);
-        drawSlider(ihm->sliderSaturation);
+        // drawSlider(ihm->sliderSaturation);
         drawSlider(ihm->sliderOpacite);
         DessinButton(ihm->btnCalque);
         DessinButton(ihm->btnImage);

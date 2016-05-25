@@ -109,6 +109,7 @@ void fusionnerCalquesImage(Image* img) {
 
 void afficheCalqueById(Image* img, int calque_id) {
 	Calque* calque = getCalqueById(img->listCalques, calque_id);
+
 	if (calque == NULL)
 		return;
 	if (img->calque_resultat)

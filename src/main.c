@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
 	int posX = 0, posY = 0;
 
 	//int change = 0;
-	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0;
+	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0, xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite=0, opaciteCheck=0;
 
 	while (loop) {
 		SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
@@ -164,15 +164,20 @@ int main(int argc, char** argv) {
 					posY = e.button.y;
 					if(luminositeCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
 						xLuminosite = WINDOW_WIDTH + 150 - posX;
+						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos-xLuminosite;
 					}
 
 					if(contrasteCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
 						xContraste = WINDOW_WIDTH + 150 - posX;
+						ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos-xContraste;
+
 					}
 
-					if(saturationCheck == 1 && posX >= WINDOW_WIDTH+50 && posX <= WINDOW_WIDTH+250) {
-						xSaturation = WINDOW_WIDTH + 150 - posX;
+					if(opaciteCheck == 1 && posX >= ihm->windowWidth+50 && posX <= ihm->windowWidth+150) {
+						xOpacite = ihm->windowWidth + (ihm->paramWidth/2) - posX;
+						ihm->sliderOpacite->posSlider = ((ihm->sliderOpacite->startPos) - xOpacite);
 					}
+
 
 					break;
 
@@ -184,11 +189,13 @@ int main(int argc, char** argv) {
 					if(isOnContraste(posX,posY,xContraste) == 1)
 						contrasteCheck = 1;
 
-					if(isOnSaturation(posX,posY,xSaturation) == 1)
-						saturationCheck = 1;
+					if(isOnOpacite(posX,posY,xOpacite) == 1)
+						opaciteCheck = 1;
 
-					if(isOnButton(ihm->btnCalque,posX - ihm->windowWidth, posY) == 1)
+					if(isOnButton(ihm->btnCalque,posX - ihm->windowWidth, posY) == 1){
 						printf("Il est sur le calque.\n");
+						addNewCalque(img->listCalques,1);
+					}
 
 					if(isOnButton(ihm->btnImage,posX - ihm->windowWidth, posY) == 1)
 						printf("Il est sur le chargement.\n");
@@ -210,6 +217,7 @@ int main(int argc, char** argv) {
 					luminositeCheck = 0;
 					contrasteCheck  = 0;
 					saturationCheck = 0;
+					opaciteCheck    = 0;
 					break;
 			}
 		}
