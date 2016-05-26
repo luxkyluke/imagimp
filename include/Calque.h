@@ -42,6 +42,8 @@ void fusionCalqueDefinitive(Calque **calque);
 void drawCalqueHistogramme(Calque* c);
 void addCalque(Calque* c, Calque* c2);
 Calque* fusionnerCalque(Calque* c);
+void fusionnerAdditiveCalque2a2(Calque *ret, Calque *c2);
+void fusionnerMultiplicationCalque2a2(Calque *ret, Calque *c2);
 Calque* appliquerLUTById(Calque* calque, int id);
 Calque* appliquerAllLUT(Calque* calque);
 void drawCalque(Calque* c);

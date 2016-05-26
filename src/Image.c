@@ -11,7 +11,7 @@ Image* makeImage(int width, int height) {
 int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
 	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	return id;
-} 
+}
 
 void addEffetCalqueById(Image* img, int id, Effet effet) {
 	if (!img)
@@ -82,9 +82,9 @@ void freeImage(Image* img) {
 		freeCalque_r(img->calque_resultat);
 }
 
-void fusionnerAllCalques(Image* img) {
-	fusionCalqueDefinitive(&img->listCalques);
-}
+//void fusionnerAllCalques(Image* img) {
+//	fusionCalqueDefinitive(&img->listCalques);
+//}
 
 void saveImage(Image* img, char* savePath) {
 	saveCalque(img->listCalques, savePath);
@@ -94,7 +94,16 @@ void saveCalqueById(Image *img, int id, char* savePath) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	saveCalque(c, savePath);
+	if(c)
+		saveCalque(c, savePath);
+}
+
+void changeFusionClaqueToAdditive(Image* img, int id){
+	if (!img)
+		return;
+	Calque* c = getCalqueById(img->listCalques, id);
+	if(c)
+		setFusion(c, additive);
 }
 
 void fusionnerCalquesImage(Image* img) {
@@ -109,10 +118,25 @@ void fusionnerCalquesImage(Image* img) {
 
 void afficheCalqueById(Image* img, int calque_id) {
 	Calque* calque = getCalqueById(img->listCalques, calque_id);
+
 	if (calque == NULL)
 		return;
 	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
-	calque->alpha = 1;
-	img->calque_resultat = calque;
+	img->calque_resultat = appliquerAllLUT(calque);
+	if(calque->effet != none){
+		img->calque_resultat->effet = calque->effet;
+		img->calque_resultat = appliquerEffet(img->calque_resultat);
+	}
+
+	calculHistogramme(img->calque_resultat);
+
+}
+
+void removeClaqueById(Image* img, int id){
+	if (!img)
+		return;
+	Calque* c = getCalqueById(img->listCalques, id);
+	if(c)
+		removeCalque(c);
 }
