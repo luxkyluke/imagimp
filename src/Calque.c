@@ -422,54 +422,18 @@ Calque* appliquerSepia(Calque* C){
   return filtre;
 }
 
-/*Calque* appliquerSepia(Calque* C){
-  if (C == NULL)
-    return NULL; 
-  int i, j; 
-  int seuil = 123;
-  Calque* filtre = copyCalque(C); 
-  for (i = 0; i < C->height; i++){ 
-    for (j = 0; j < C->width; j++){
-    	int moyenne = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)/3; 
-    	if(moyenne < seuil){
-    		filtre->pixels[j][i].r -= filtre->pixels[j][i].r / 2;
-			filtre->pixels[j][i].g -= filtre->pixels[j][i].g / 2;
-			filtre->pixels[j][i].b -= filtre->pixels[j][i].b / 2;
-    	}
-    	if(moyenne > seuil){
-    		filtre->pixels[j][i].r += filtre->pixels[i][j].r / 2;
-			filtre->pixels[j][i].g += filtre->pixels[i][j].g / 2;
-			filtre->pixels[j][i].b += filtre->pixels[i][j].b / 2;
-    	}
-    } 
-  } 
-  return filtre;
-}*/
 /*
 Calque* Nashville(Calque* C){
 	if (C == NULL)
 		return NULL;
-	int i, j;
 	Calque* filtre = copyCalque(C);
-	for (i = 0; i < C->height; i++){
-		for (j = 0; j < C->width; j++){
-			if(C->pixels[j][i].r > 94)
-				filtre->pixels[j][i].r = 94;
-			if(C->pixels[j][i].r > 38)
-				filtre->pixels[j][i].r = 38;
-			if(C->pixels[j][i].r > 18)
-				filtre->pixels[j][i].r = 18;
-			else{
-				filtre->pixels[j][i].r = C->pixels[j][i].r;
-				filtre->pixels[j][i].g = C->pixels[j][i].g;
-				filtre->pixels[j][i].b = C->pixels[j][i].b;
-			}
-		}
-	}
+	ADDLUM(filtre->listLuts, 60);
+	ADDCON(filtre->listLuts, 12);
+
 	return filtre;
-}
+}*/
 
-
+/*
 Pour les filtres instagram :
 1. Nashville :
    - 60 luminosité
@@ -481,7 +445,4 @@ Pour les filtres instagram :
    - 6 luminosité
    - Rajouter calque jaune #eddd9e avec 59 opacité
 
-   Faire filtre noir et blanc (enlever un max de saturation)
-
-   Faire filtre Négatif
 */

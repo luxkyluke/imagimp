@@ -94,8 +94,9 @@ int main(int argc, char** argv) {
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-	addEffetCalqueById(img, idCalqueImg2, sepia);
-//	noirEtBlanc(img->calque_resultat);
+	addLUTCalqueById(img, idCalqueImg2, dimcon, 40);
+	//addEffetCalqueById(img, idCalqueImg2, sepia);
+//	noirEtBlanc(img->calque_resultat); 
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);

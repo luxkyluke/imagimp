@@ -7,6 +7,7 @@
 
 
 
+
 typedef struct LUT{
 	int lut[256];
 	struct LUT* prev;

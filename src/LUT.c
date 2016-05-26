@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "LUT.h"
 #include "Pixel.h"
+#include <common.h>
 
 static unsigned int indice_courant = 1;
 
@@ -123,8 +124,22 @@ void ADDCON(LUT* L, int c){
  	}
 }
 
-void DIMCON(LUT* L, int c){
-	ADDCON(L, -c);
+/*void DIMCON(LUT* L, int c){
+	int i; 
+ 	for (i = 0; i < 256; i++){
+ 		int value = -c -i +127;
+ 		checkValue(&value); 
+   		L->lut[i] = value; 
+ 	}  
+ 	
+}*/
+void DIMCON(LUT* L, int c){ //c varie entre 0 et 1
+	int i; 
+	float coef = c/100.;
+	for(i = 0; i < 256; i++)  {
+		//int value = 128 - (128 - L->lut[i]) * coef;
+   		L->lut[i] = 128 - (128 - i) * coef;;
+	}
 }
 
 LUT* fusionnerLut(LUT* l){
