@@ -105,16 +105,8 @@ int main(int argc, char** argv) {
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
-	addButtonCalque(ihm, 2);
-	addButtonCalque(ihm, 3);
-	addButtonCalque(ihm, 4);
-	addButtonCalque(ihm, 5);
-	addButtonCalque(ihm, 6);
-	addButtonCalque(ihm, 7);
 
-	ButtonCalque * btc = ihm->btnCalquesSelection;
-
-	removeClaqueById(img, idC4);
+	removeClaqueById(img, idC2);
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
@@ -141,6 +133,9 @@ int main(int argc, char** argv) {
 
 	int loop = 1;
 	int posX = 0, posY = 0;
+
+	initIHM(ihm, img->listCalques);
+	ButtonCalque * btc = ihm->btnCalquesSelection;
 
 	bool change = true;
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,

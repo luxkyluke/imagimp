@@ -57,6 +57,7 @@ int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnChargerImage(int posX, int posY);
 int isOnNouveauCalque(int posX, int posY);
 int isOnButton(Button* button, int posX, int posY);
+void initIHM(IHM *ihm, Calque* c);
 
 ButtonCalque* makeButtonCalque(int id);
 void addButtonCalque(IHM* ihm,int id);
