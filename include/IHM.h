@@ -8,7 +8,7 @@
 #include "Image.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger, select} BtnName;
+typedef enum _btnName {calque, charger, select, supprimer} BtnName;
 
 typedef struct Slider{
     int width;
@@ -39,13 +39,15 @@ typedef struct IHM{
     int windowWidth,
         windowHeight,
         paramWidth,
-        filterHeight;
+        filterHeight,
+        currentCalque;
     Slider*  sliderContraste;
     Slider*  sliderLuminosite;
     Slider*  sliderSaturation;
     Slider*  sliderOpacite;
     Button*  btnCalque;
     Button*  btnImage;
+    Button*  btnDelete;
     ButtonCalque*  btnCalquesSelection;
 } IHM;
 
@@ -54,8 +56,6 @@ int isOnLuminosite(int posX, int posY, int xLuminosite);
 int isOnContraste(int posX, int posY, int xContraste);
 int isOnSaturation(int posX, int posY, int xSaturation);
 int isOnOpacite(int posX, int posY, int xOpacite);
-int isOnChargerImage(int posX, int posY);
-int isOnNouveauCalque(int posX, int posY);
 int isOnButton(Button* button, int posX, int posY);
 
 ButtonCalque* makeButtonCalque(int id);

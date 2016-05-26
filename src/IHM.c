@@ -9,7 +9,10 @@ void DessinButton(Button* button) {
     glTranslatef(button->posX, button->posY,0);
     glScalef(button->width,button->height,1);
     glColor3f(1,1,0);
-    dessinCarre(1,ColorRGB(1,1,1));
+    if(button->name == supprimer)
+        dessinCarre(0,ColorRGB(0,0,0));
+    else
+        dessinCarre(1,ColorRGB(1,1,1));
     glPopMatrix();
     glPushMatrix();
     glTranslatef(button->posX+30, button->posY+button->height/2+5, 0);
@@ -81,6 +84,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->windowHeight = windowHeight;
     ihm->paramWidth   = paramWidth;
     ihm->filterHeight = filterHeight;
+    ihm->currentCalque = 1;
     // 100 est pour que le centre soit centré.
     ihm->sliderLuminosite    = makeSlider(200,160,100,luminosite,"luminosite");
     ihm->sliderContraste     = makeSlider(200,260,100,contraste,"contraste");
@@ -88,6 +92,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderOpacite       = makeSlider(100,360,100,opacite,"opacite");
     ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
     ihm->btnCalquesSelection = makeButtonCalque(1);
     return ihm;
 }
@@ -167,6 +172,8 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
          else
              break;
         }
+
+        DessinButton(ihm->btnDelete);
 
     reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
     drawImage(img, framebuffer);

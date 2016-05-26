@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
 	fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
-	int loop = 1;
+	int loop = 1, current = 0;
 	int posX = 0, posY = 0;
 
 	bool change = true;
@@ -233,16 +233,28 @@ int main(int argc, char** argv) {
 					addNewCalque(img->listCalques, 1);
 				}
 
-				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)
-						== 1)
+				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
+					chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
 					printf("Il est sur le chargement.\n");
+				}
+
+				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
+					printf("Il est sur la suppression. %d\n", ihm->currentCalque);
+					if(img->calque_resultat->id != 1) {
+						freeCalque(getCalqueById(img->listCalques, ihm->currentCalque));
+						// fusionnerCalquesImage(img);
+					}
+				}
 
 				while (btc != NULL) {
 					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
 							== 1) {
-						if(btc->id >1)
+						if(btc->id>1){
+							ihm->currentCalque=btc->id;
 							afficheCalqueById(img, btc->id);
+						}
 						else{
+							ihm->currentCalque=1;
 							fusionnerCalquesImage(img);
 						}
 					}
