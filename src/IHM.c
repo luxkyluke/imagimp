@@ -191,7 +191,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 
         DessinButton(ihm->btnDelete);
 
-    reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
+    reshape(ihm->paramWidth,ihm->windowHeight + ihm->filterHeight,ihm->windowWidth,0);
     drawImage(img, framebuffer);
 
 	glPushMatrix();
