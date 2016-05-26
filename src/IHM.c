@@ -5,17 +5,20 @@
 #define WIDTH_SLIDER 200
 
 void DessinButton(Button* button) {
-	glPushMatrix();
-	glTranslatef(button->posX, button->posY, 0);
-	glScalef(button->width, button->height, 1);
-	glColor3f(1, 1, 0);
-	dessinCarre(1, ColorRGB(1, 1, 1));
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(button->posX + 30, button->posY + button->height / 2 + 5, 0);
-	glColor3f(0, 0, 0);
-	vBitmapOutput(0, 0, button->title, GLUT_BITMAP_HELVETICA_18);
-	glPopMatrix();
+    glPushMatrix();
+    glTranslatef(button->posX, button->posY,0);
+    glScalef(button->width,button->height,1);
+    glColor3f(1,1,0);
+    if(button->name == supprimer)
+        dessinCarre(0,ColorRGB(0,0,0));
+    else
+        dessinCarre(1,ColorRGB(1,1,1));
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(button->posX+30, button->posY+button->height/2+5, 0);
+    glColor3f(0, 0, 0);
+    vBitmapOutput(0, 0, button->title, GLUT_BITMAP_HELVETICA_18);
+    glPopMatrix();
 }
 
 int isOnLuminosite(int posX, int posY, int xLuminosite) {
@@ -76,26 +79,27 @@ Slider* makeSlider(int width, int posY, int posSlider, SliderName name,
 	return slider;
 }
 
-IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth,
-		int filterHeight) {
-	IHM* ihm = (IHM*) malloc(sizeof(IHM));
-	if (!ihm) {
-		fprintf(stderr, "Probleme Allocation IHM\n");
-		return NULL;
-	}
-	ihm->windowWidth = windowWidth;
-	ihm->windowHeight = windowHeight;
-	ihm->paramWidth = paramWidth;
-	ihm->filterHeight = filterHeight;
-	// 100 est pour que le centre soit centré.
-	ihm->sliderLuminosite = makeSlider(200, 160, 100, luminosite, "luminosite");
-	ihm->sliderContraste = makeSlider(200, 260, 100, contraste, "contraste");
-	ihm->sliderSaturation = makeSlider(200, 360, 100, saturation, "saturation");
-	ihm->sliderOpacite = makeSlider(100, 360, 100, opacite, "opacite");
-	ihm->btnCalque = makeButton(190, 40, 50, 560, "Nouveau calque", calque);
-	ihm->btnImage = makeButton(190, 40, 50, 620, "Charger image", charger);
-	ihm->btnCalquesSelection = makeButtonCalque(1);
-	return ihm;
+IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight) {
+    IHM* ihm = (IHM*) malloc(sizeof(IHM));
+    if(!ihm){
+        fprintf(stderr, "Probleme Allocation IHM\n");
+        return NULL;
+    }
+    ihm->windowWidth  = windowWidth;
+    ihm->windowHeight = windowHeight;
+    ihm->paramWidth   = paramWidth;
+    ihm->filterHeight = filterHeight;
+    ihm->currentCalque = 1;
+    // 100 est pour que le centre soit centré.
+    ihm->sliderLuminosite    = makeSlider(200,160,100,luminosite,"luminosite");
+    ihm->sliderContraste     = makeSlider(200,260,100,contraste,"contraste");
+    ihm->sliderSaturation    = makeSlider(200,360,100,saturation,"saturation");
+    ihm->sliderOpacite       = makeSlider(100,360,100,opacite,"opacite");
+    ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
+    ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
+    ihm->btnCalquesSelection = makeButtonCalque(1);
+    return ihm;
 }
 
 void initIHM(IHM *ihm, Calque* c){
@@ -185,8 +189,10 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	reshape(ihm->windowWidth, ihm->windowHeight, 0, ihm->filterHeight);
 	drawImage(img, framebuffer);
 
-	reshape(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight,
-			ihm->windowWidth, 0);
+        DessinButton(ihm->btnDelete);
+
+    reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
+    drawImage(img, framebuffer);
 
 	glPushMatrix();
 	glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight, 1);
