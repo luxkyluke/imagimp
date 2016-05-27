@@ -88,16 +88,16 @@ int main(int argc, char** argv) {
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
-
-	removeClaqueById(img, idC2);
-
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
-//	addEffetCalqueById(img, idC2, noir_et_blanc);
+
+	addLUTCalqueById(img, idC1, dimcon, 40);
+	//addEffetCalqueById(img, idCalqueImg2, sepia);
 //	noirEtBlanc(img->calque_resultat);
+
 	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
 //	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
@@ -218,9 +218,21 @@ int main(int argc, char** argv) {
 
 				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
 					printf("Il est sur la suppression. %d\n", ihm->currentCalque);
-					if(img->calque_resultat->id != 1) {
-						freeCalque(getCalqueById(img->listCalques, ihm->currentCalque));
-						// fusionnerCalquesImage(img);
+					Calque* tmp = getCalqueById(img->listCalques, ihm->currentCalque);
+					if(tmp->next != NULL) {
+						int nextId = tmp->next->id;
+						printf("L'id a affiche %d\n", nextId);
+						afficheCalqueById(img, nextId);
+						removeClaqueById(img, tmp->id);
+						Calque* t = img->listCalques;
+						freeButtonCalque(ihm, ihm->currentCalque);
+						printf("id calque next : %d\n",nextId);
+						ihm->currentCalque = nextId;
+						while(t!=NULL){
+							printf("%d ->", t->id);
+							fflush(stdin);
+							t=t->next;
+						}
 					}
 				}
 
