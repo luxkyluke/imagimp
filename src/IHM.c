@@ -186,13 +186,12 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 			break;
 	}
 
+    DessinButton(ihm->btnDelete);
+
 	reshape(ihm->windowWidth, ihm->windowHeight, 0, ihm->filterHeight);
 	drawImage(img, framebuffer);
 
-        DessinButton(ihm->btnDelete);
-
     reshape(ihm->paramWidth,ihm->windowHeight + ihm->filterHeight,ihm->windowWidth,0);
-    drawImage(img, framebuffer);
 
 	glPushMatrix();
 	glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight, 1);
@@ -232,4 +231,17 @@ void addButtonCalque(IHM* ihm, int id) {
 
 	ihm->btnCalquesSelection->next = newButtonCalque;
 	ihm->btnCalquesSelection = tmp;
+}
+
+void freeButtonCalque(IHM* ihm, int id) {
+    ButtonCalque *tmp = ihm->btnCalquesSelection;
+
+    while(tmp!=NULL && tmp->next->id != id){
+        tmp = tmp->next;
+    }
+
+    if(tmp==NULL)
+        return;
+
+    tmp->next=tmp->next->next;
 }

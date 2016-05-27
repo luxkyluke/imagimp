@@ -152,16 +152,20 @@ int addLUTCalque(Calque *c, LutOption lut, int val) {
 void removeCalque(Calque* c) {
 	if (!c)
 		return;
-	if (c->prev != NULL) {
+	if (c->prev != NULL && c->next != NULL) {
 		c->prev->next = c->next;
-		c->next = NULL;
-	}
-	if (c->next != NULL) {
-		c->next->prev = c->prev;
 		c->prev = NULL;
+	}
+	if (c->next != NULL && c->prev != NULL) {
+		c->next->prev = c->prev;
+		c->next = NULL;
 	}
 	freeCalque(c);
 	c = NULL;
+
+	// je supprime le 6,
+	// prev non nul, le next du 5 devient le 7.
+	// next non nul, le prev du 5 devient le 5.
 }
 
 int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
@@ -426,24 +430,24 @@ Calque* noirEtBlanc(Calque* C) {
 
 Calque* appliquerSepia(Calque* C){
   if (C == NULL)
-    return NULL; 
-  int i, j; 
-  Calque* filtre = copyCalque(C); 
-  for (i = 0; i < C->height; i++){ 
+    return NULL;
+  int i, j;
+  Calque* filtre = copyCalque(C);
+  for (i = 0; i < C->height; i++){
     for (j = 0; j < C->width; j++){
     	int r = C->pixels[j][i].r * 0.393 + C->pixels[j][i].g * 0.769 + C->pixels[j][i].b * 0.189;
     	int g = C->pixels[j][i].r * 0.349 + C->pixels[j][i].g * 0.686 + C->pixels[j][i].b * 0.168;
     	int b = C->pixels[j][i].r * 0.272 + C->pixels[j][i].g * 0.534 + C->pixels[j][i].b * 0.131;
 		checkValue(&r);
     	filtre->pixels[j][i].r = r;
-    	
+
     	checkValue(&g);
 		filtre->pixels[j][i].g = g;
 
 		checkValue(&b);
 		filtre->pixels[j][i].b = b;
-    } 
-  } 
+    }
+  }
   return filtre;
 }
 

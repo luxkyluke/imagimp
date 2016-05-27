@@ -67,5 +67,6 @@ Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* ti
 Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
+void freeButtonCalque(IHM* ihm, int id);
 
 #endif
