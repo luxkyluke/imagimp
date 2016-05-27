@@ -143,7 +143,7 @@ void DIMCON(LUT* L, int c){ //c varie entre 0 et 1
 }
 
 LUT* fusionnerLut(LUT* l){
- 	if(LUTIsEmpty(l))
+ 	if(!l || LUTIsEmpty(l))
  		return l;
 	int i;
 	LUT *ret= copyLUT(l);

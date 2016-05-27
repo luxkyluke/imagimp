@@ -218,22 +218,7 @@ int main(int argc, char** argv) {
 
 				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
 					printf("Il est sur la suppression. %d\n", ihm->currentCalque);
-					Calque* tmp = getCalqueById(img->listCalques, ihm->currentCalque);
-					if(tmp->next != NULL) {
-						int nextId = tmp->next->id;
-						printf("L'id a affiche %d\n", nextId);
-						afficheCalqueById(img, nextId);
-						removeClaqueById(img, tmp->id);
-						Calque* t = img->listCalques;
-						freeButtonCalque(ihm, ihm->currentCalque);
-						printf("id calque next : %d\n",nextId);
-						ihm->currentCalque = nextId;
-						while(t!=NULL){
-							printf("%d ->", t->id);
-							fflush(stdin);
-							t=t->next;
-						}
-					}
+					suppButton(ihm, img);
 				}
 
 				while (btc != NULL) {

@@ -17,10 +17,12 @@ void addEffetCalqueById(Image* img, int id, Effet effet) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(!c)
+	if (!c)
 		return;
 	c->effet = effet;
 }
+
+
 
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
 	if (!img)
@@ -94,15 +96,15 @@ void saveCalqueById(Image *img, int id, char* savePath) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		saveCalque(c, savePath);
 }
 
-void changeFusionClaqueToAdditive(Image* img, int id){
+void changeFusionClaqueToAdditive(Image* img, int id) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		setFusion(c, additive);
 }
 
@@ -124,7 +126,7 @@ void afficheCalqueById(Image* img, int calque_id) {
 	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
 	img->calque_resultat = appliquerAllLUT(calque);
-	if(calque->effet != none){
+	if (calque->effet != none) {
 		img->calque_resultat->effet = calque->effet;
 		img->calque_resultat = appliquerEffet(img->calque_resultat);
 	}
@@ -133,10 +135,10 @@ void afficheCalqueById(Image* img, int calque_id) {
 
 }
 
-void removeClaqueById(Image* img, int id){
+void removeClaqueById(Image* img, int id) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		removeCalque(c);
 }

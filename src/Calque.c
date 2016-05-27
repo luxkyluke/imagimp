@@ -152,15 +152,15 @@ int addLUTCalque(Calque *c, LutOption lut, int val) {
 void removeCalque(Calque* c) {
 	if (!c)
 		return;
-	if (c->prev != NULL && c->next != NULL) {
+	if (c->prev != NULL) {
 		c->prev->next = c->next;
-		c->prev = NULL;
 	}
-	if (c->next != NULL && c->prev != NULL) {
+	if (c->next != NULL) {
 		c->next->prev = c->prev;
-		c->next = NULL;
 	}
 	freeCalque(c);
+	c->next = NULL;
+	c->prev = NULL;
 	c = NULL;
 
 	// je supprime le 6,
