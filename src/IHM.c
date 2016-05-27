@@ -131,8 +131,20 @@ void initBtnIHM(IHM *ihm, Calque* c){
 	}
 }
 
-void refreshBtnIHM(IHM *ihm){
+void suppButton(IHM* ihm, Image* img) {
+	if (ihm->currentCalque > 1) {
+		Calque* tmp = getCalqueById(img->listCalques, ihm->currentCalque);
+		int prevId = tmp->prev->id;
+		printf("L'id a affiche %d\n", prevId);
+		afficheCalqueById(img, prevId);
+		printf("tmp : %d\n", tmp->id);
+		removeCalque(tmp);
+		//						removeClaqueById(img, tmp->id);
 
+		freeButtonCalque(ihm, ihm->currentCalque);
+		printf("id current calque : %d\n", prevId);
+		ihm->currentCalque = prevId;
+	}
 }
 
 void drawSlider(Slider* slider) {

@@ -17,21 +17,21 @@ void addEffetCalqueById(Image* img, int id, Effet effet) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(!c)
+	if (!c)
 		return;
 	c->effet = effet;
 }
 
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
-	if (!img)
-		return;
-	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
-	if (!c)
-		return;
-	appliquerLUTById(c, lut_id);
-	if (img->calque_resultat)
-		freeCalque(img->calque_resultat);
-	img->calque_resultat = c;
+//	if (!img)
+//		return;
+//	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
+//	if (!c)
+//		return;
+//	appliquerLUTById(c, lut_id);
+//	if (img->calque_resultat)
+//		freeCalque(img->calque_resultat);
+//	img->calque_resultat = c;
 }
 
 void appliqueAllLUTCalqueById(Image* img, int id) {
@@ -58,11 +58,11 @@ void drawImageHistogramme(Image* img) {
 	drawCalqueHistogramme(img->calque_resultat);
 }
 
-int addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
+void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 	if (!img)
-		return 0;
+		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	return addLUTCalque(c, lut, val);
+	addLUTCalque(c, lut, val);
 }
 
 void drawImage(Image* img, SDL_Surface* framebuffer) {
@@ -94,15 +94,15 @@ void saveCalqueById(Image *img, int id, char* savePath) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		saveCalque(c, savePath);
 }
 
-void changeFusionClaqueToAdditive(Image* img, int id){
+void changeFusionClaqueToAdditive(Image* img, int id) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		setFusion(c, additive);
 }
 
@@ -124,7 +124,7 @@ void afficheCalqueById(Image* img, int calque_id) {
 	if (img->calque_resultat)
 		freeCalque(img->calque_resultat);
 	img->calque_resultat = appliquerAllLUT(calque);
-	if(calque->effet != none){
+	if (calque->effet != none) {
 		img->calque_resultat->effet = calque->effet;
 		img->calque_resultat = appliquerEffet(img->calque_resultat);
 	}
@@ -133,10 +133,10 @@ void afficheCalqueById(Image* img, int calque_id) {
 
 }
 
-void removeClaqueById(Image* img, int id){
+void removeClaqueById(Image* img, int id) {
 	if (!img)
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	if(c)
+	if (c)
 		removeCalque(c);
 }
