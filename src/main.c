@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 1.);
 	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 1.);
 	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 1.);
-	idC6 = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
+	idC6 = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 0.);
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
@@ -237,17 +237,9 @@ int main(int argc, char** argv) {
 				}
 
 				while (btc != NULL) {
-					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
-							== 1) {
-						if(btc->id>1){
-							ihm->currentCalque=btc->id;
-							afficheCalqueById(img, btc->id);
-						}
-						else{
-							ihm->currentCalque=1;
-							fusionnerCalquesImage(img);
-						}
-					}
+					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)== 1)
+						eventButtonCalque(img, ihm, btc->id);
+
 					if (btc->next != NULL)
 						btc = btc->next;
 					else
@@ -258,6 +250,37 @@ int main(int argc, char** argv) {
 				break;
 
 			case SDL_MOUSEBUTTONUP:
+				printf("Current Calque %d\n",ihm->currentCalque);
+				if(luminositeCheck==1) {
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					addLUTCalqueById(img, ihm->currentCalque, addlum, ihm->sliderLuminosite->posSlider-100);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				if(contrasteCheck==1) {
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					int contraste = ihm->sliderContraste->posSlider - 100;
+					printf("contraste : %d\n",contraste);
+					if(contraste < 0) {
+						addLUTCalqueById(img, ihm->currentCalque, dimcon, contraste);
+					} else {
+						addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
+					}
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				if(opaciteCheck = 1) {
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					c->alpha = (float)ihm->sliderOpacite->posSlider/100;
+					printf("alpha : %f\n", c->alpha);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
 				luminositeCheck = 0;
 				contrasteCheck = 0;
 				saturationCheck = 0;

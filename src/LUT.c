@@ -125,16 +125,16 @@ void ADDCON(LUT* L, int c){
 }
 
 /*void DIMCON(LUT* L, int c){
-	int i; 
+	int i;
  	for (i = 0; i < 256; i++){
  		int value = -c -i +127;
- 		checkValue(&value); 
-   		L->lut[i] = value; 
- 	}  
- 	
+ 		checkValue(&value);
+   		L->lut[i] = value;
+ 	}
+
 }*/
 void DIMCON(LUT* L, int c){ //c varie entre 0 et 1
-	int i; 
+	int i;
 	float coef = c/100.;
 	for(i = 0; i < 256; i++)  {
 		//int value = 128 - (128 - L->lut[i]) * coef;

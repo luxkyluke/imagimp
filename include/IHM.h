@@ -72,5 +72,6 @@ Button* makeButton(int width, int height, int posX, int posY, char* title, BtnNa
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
+void eventButtonCalque(Image* img, IHM* ihm, int id);
 
 #endif

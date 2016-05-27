@@ -273,3 +273,14 @@ void freeButtonCalque(IHM* ihm, int id) {
 
     tmp->next=tmp->next->next;
 }
+
+void eventButtonCalque(Image* img, IHM* ihm, int id) {
+    if(id > 1){
+        ihm->currentCalque=id;
+        afficheCalqueById(img, id);
+    }
+    else{
+        ihm->currentCalque=1;
+        fusionnerCalquesImage(img);
+    }
+}

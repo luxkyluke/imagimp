@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-
-
 typedef struct LUT{
 	int lut[256];
 	struct LUT* prev;
