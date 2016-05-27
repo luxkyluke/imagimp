@@ -2,6 +2,7 @@
 #include "LUT.h"
 #include "Pixel.h"
 #include <common.h>
+#include "LutOption.h"
 
 
 LUT* makeLUT(){
@@ -33,9 +34,11 @@ LUT* getLUTByType(LUT* l, LutOption type){
 		return NULL;
 	LUT *tmp = l;
 	while (tmp != NULL) {
-		if (tmp->type == type)
+		if (tmp->type == type){
 			return tmp;
-		tmp = tmp->next;
+		} else {
+			tmp = NULL;
+		}
 	}
 	fprintf(stderr, "Indice du LUT introuvable\n");
 	fflush(stdin);
@@ -183,6 +186,7 @@ void freeLUT(LUT* L){
 	}
 	printf("FreeLUT OK\n");
 }
+
 
 
 

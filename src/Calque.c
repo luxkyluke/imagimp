@@ -126,27 +126,28 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	if (!c)
 		return;
 
-	LUT l;
+	LUT *l = c->listLuts;
+
 	switch (lut) {
 	case invert:
-		INVERT(&l);
+		INVERT(l);
 		break;
 	case addlum:
-		ADDLUM(&l, val);
+		ADDLUM(l, val);
 		break;
 	case dimlum:
-		DIMLUM(&l, val);
+		DIMLUM(l, val);
 		break;
 	case addcon:
-		ADDCON(&l, val);
+		ADDCON(l, val);
 		break;
 	case dimcon:
-		DIMCON(&l, val);
+		DIMCON(l, val);
 		break;
 	}
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
-	addLUT(c->listLuts, l.lut);
+	addLUT(c->listLuts, l->lut);
 }
 
 void removeCalque(Calque* c) {

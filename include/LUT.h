@@ -33,6 +33,4 @@ LUT* fusionnerLut(LUT* l);
 void freeLUT(LUT* L);
 
 
-
-
 #endif
