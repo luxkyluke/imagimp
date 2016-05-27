@@ -57,11 +57,15 @@ int isOnContraste(int posX, int posY, int xContraste);
 int isOnSaturation(int posX, int posY, int xSaturation);
 int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnButton(Button* button, int posX, int posY);
-void initIHM(IHM *ihm, Calque* c);
+void initBtnIHM(IHM *ihm, Calque* c);
 
 ButtonCalque* makeButtonCalque(int id);
 void addButtonCalque(IHM* ihm,int id);
 void removeButtonCalque(IHM* ihm, int id);
+
+void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
+		int yViewport);
+void setVideoMode(unsigned int windowWidth, unsigned int windowHeight);
 
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
 Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);

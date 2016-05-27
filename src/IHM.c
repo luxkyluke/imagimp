@@ -4,6 +4,27 @@
 
 #define WIDTH_SLIDER 200
 
+static const unsigned int BIT_PER_PIXEL = 24;
+
+//redimenssionne la fenetre SDL
+void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
+		int yViewport) {
+	glViewport(xViewport, yViewport, windowWidth, windowHeight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0., windowWidth, windowHeight, 0.);
+}
+
+//Ouvre la fenetre SDL
+void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
+	if (NULL == SDL_SetVideoMode(windowWidth, windowHeight, BIT_PER_PIXEL,
+	SDL_OPENGL | SDL_GL_DOUBLEBUFFER | 1)) {
+		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+
 void DessinButton(Button* button) {
     glPushMatrix();
     glTranslatef(button->posX, button->posY,0);
@@ -102,12 +123,16 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     return ihm;
 }
 
-void initIHM(IHM *ihm, Calque* c){
+void initBtnIHM(IHM *ihm, Calque* c){
 	Calque *tmp = c;
 	while(tmp!=NULL){
 		addButtonCalque(ihm, tmp->id);
 		tmp=tmp->next;
 	}
+}
+
+void refreshBtnIHM(IHM *ihm){
+
 }
 
 void drawSlider(Slider* slider) {
@@ -191,7 +216,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 
         DessinButton(ihm->btnDelete);
 
-    reshape(ihm->windowWidth,ihm->windowHeight,0,ihm->filterHeight);
+    reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
     drawImage(img, framebuffer);
 
 	glPushMatrix();

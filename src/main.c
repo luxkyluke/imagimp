@@ -22,25 +22,8 @@ static unsigned int WINDOW_HEIGHT = 600;
 
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
-static const unsigned int BIT_PER_PIXEL = 24;
 
-//redimenssionne la fenetre SDL
-void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
-		int yViewport) {
-	glViewport(xViewport, yViewport, windowWidth, windowHeight);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0., windowWidth, windowHeight, 0.);
-}
 
-//Ouvre la fenetre SDL
-void setVideoMode(unsigned int windowWidth, unsigned int windowHeight) {
-	if (NULL == SDL_SetVideoMode(windowWidth, windowHeight, BIT_PER_PIXEL,
-	SDL_OPENGL | SDL_GL_DOUBLEBUFFER | 1)) {
-		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
-		exit(EXIT_FAILURE);
-	}
-}
 
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
 	/* On copie le framebuffer ï¿½ l'ï¿½cran */
@@ -62,7 +45,7 @@ int main(int argc, char** argv) {
 	SDL_Surface* screen = NULL;
 	if (NULL
 			== (screen = SDL_SetVideoMode(WINDOW_WIDTH + WINDOW_WIDTH_PARAM,
-					WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER, BIT_PER_PIXEL,
+					WINDOW_HEIGHT + WINDOW_HEIGHT_FILTER, 32,
 					SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_OPENGL
 							| SDL_GL_DOUBLEBUFFER))) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
@@ -134,7 +117,7 @@ int main(int argc, char** argv) {
 	int loop = 1, current = 0;
 	int posX = 0, posY = 0;
 
-	initIHM(ihm, img->listCalques);
+	initBtnIHM(ihm, img->listCalques);
 	ButtonCalque * btc = ihm->btnCalquesSelection;
 
 	bool change = true;
