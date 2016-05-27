@@ -36,7 +36,7 @@ void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
 Calque* appliquerEffet(Calque* c);
 bool calqueIsEmpty(Calque* c);
-int addLUTCalque(Calque *c, LutOption l, int val);
+void addLUTCalque(Calque *c, LutOption l, int val);
 Calque* addNewCalque(Calque* c, float op);
 void fusionCalqueDefinitive(Calque **calque);
 void drawCalqueHistogramme(Calque* c);

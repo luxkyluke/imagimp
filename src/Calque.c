@@ -122,9 +122,9 @@ void addCalque(Calque* c, Calque* c2) {
 	last->next = c2;
 }
 
-int addLUTCalque(Calque *c, LutOption lut, int val) {
+void addLUTCalque(Calque *c, LutOption lut, int val) {
 	if (!c)
-		return 0;
+		return;
 
 	LUT l;
 	switch (lut) {
@@ -146,7 +146,7 @@ int addLUTCalque(Calque *c, LutOption lut, int val) {
 	}
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
-	return addLUT(c->listLuts, l.lut);
+	addLUT(c->listLuts, l.lut);
 }
 
 void removeCalque(Calque* c) {
@@ -307,11 +307,11 @@ Calque* appliqueLUT(Calque* calque, LUT* L) {
 }
 
 Calque* appliquerLUTById(Calque* calque, int id) {
-	if (!calque)
-		return NULL;
-	LUT* l = getLUTById(calque->listLuts, id);
-	Calque *c = appliqueLUT(calque, l);
-	return c;
+//	if (!calque)
+//		return NULL;
+//	LUT* l = getLUTById(calque->listLuts, id);
+//	Calque *c = appliqueLUT(calque, l);
+//	return c;
 }
 
 Calque* appliquerAllLUT(Calque* calque) {

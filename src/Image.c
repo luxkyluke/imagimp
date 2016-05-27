@@ -22,18 +22,16 @@ void addEffetCalqueById(Image* img, int id, Effet effet) {
 	c->effet = effet;
 }
 
-
-
 void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
-	if (!img)
-		return;
-	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
-	if (!c)
-		return;
-	appliquerLUTById(c, lut_id);
-	if (img->calque_resultat)
-		freeCalque(img->calque_resultat);
-	img->calque_resultat = c;
+//	if (!img)
+//		return;
+//	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
+//	if (!c)
+//		return;
+//	appliquerLUTById(c, lut_id);
+//	if (img->calque_resultat)
+//		freeCalque(img->calque_resultat);
+//	img->calque_resultat = c;
 }
 
 void appliqueAllLUTCalqueById(Image* img, int id) {
@@ -60,11 +58,11 @@ void drawImageHistogramme(Image* img) {
 	drawCalqueHistogramme(img->calque_resultat);
 }
 
-int addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
+void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 	if (!img)
-		return 0;
+		return;
 	Calque* c = getCalqueById(img->listCalques, id);
-	return addLUTCalque(c, lut, val);
+	addLUTCalque(c, lut, val);
 }
 
 void drawImage(Image* img, SDL_Surface* framebuffer) {

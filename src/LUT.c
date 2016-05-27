@@ -3,8 +3,6 @@
 #include "Pixel.h"
 #include <common.h>
 
-static unsigned int indice_courant = 1;
-
 
 LUT* makeLUT(){
 	LUT* list = (LUT*) malloc(sizeof(LUT));
@@ -12,7 +10,7 @@ LUT* makeLUT(){
 		return NULL;
 	list->prev = NULL;
 	list->next = NULL;
-	list->id = indice_courant++;
+	list->type = aucun;
 	initLUT(list->lut);
 	return list;
 }
@@ -30,12 +28,12 @@ bool LUTIsEmpty(LUT* list){
 	return false;
 }
 
-LUT* getLUTById(LUT* l, int id){
+LUT* getLUTByType(LUT* l, LutOption type){
 	if (!l)
 		return NULL;
 	LUT *tmp = l;
 	while (tmp != NULL) {
-		if (tmp->id == id)
+		if (tmp->type == type)
 			return tmp;
 		tmp = tmp->next;
 	}
@@ -44,16 +42,15 @@ LUT* getLUTById(LUT* l, int id){
 	return NULL;
 }
 
-int addLUT(LUT* list, int lut[256]){
+void addLUT(LUT* list, int lut[256]){
 	int i;
 	if (list == NULL)
-		return 0;
+		return;
 	if (LUTIsEmpty(list) == true){
 		list->next = list;
 		list->prev = list;
 		for (i = 0; i < 256; i++)
 			list->lut[i] = lut[i];
-		return list->id;
 	}
 	if (list->next == list)	{
 		LUT* newNode = makeLUT();
@@ -63,7 +60,6 @@ int addLUT(LUT* list, int lut[256]){
 		list->prev = newNode;
 		for (i = 0; i < 256; i++)
 			newNode->lut[i] = lut[i];
-		return newNode->id;
 	}
 	LUT* newNode = makeLUT();
 	newNode->next = list;
@@ -72,7 +68,6 @@ int addLUT(LUT* list, int lut[256]){
 	list->prev = newNode;
 	for (i = 0; i < 256; i++)
 		newNode->lut[i] = lut[i];
-	return newNode->id;
 }
 
 void deleteLUT(LUT* list){
@@ -100,6 +95,7 @@ void INVERT(LUT* L){
  		checkValue(&value);
  		L->lut[i] = value;
  	}
+ 	L->type = invert;
  }
 
 void ADDLUM(LUT* L, int l){
@@ -109,10 +105,12 @@ void ADDLUM(LUT* L, int l){
  		checkValue(&value);
  		L->lut[i] = value;
  	}
+ 	L->type = addlum;
  }
 
 void DIMLUM(LUT* L, int l){
  	ADDLUM(L, -l);
+ 	L->type = dimlum;
 }
 
 void ADDCON(LUT* L, int c){
@@ -122,6 +120,7 @@ void ADDCON(LUT* L, int c){
  		checkValue(&value);
  		L->lut[i] = value;
  	}
+ 	L->type = addcon;
 }
 
 /*void DIMCON(LUT* L, int c){
@@ -140,6 +139,7 @@ void DIMCON(LUT* L, int c){ //c varie entre 0 et 1
 		//int value = 128 - (128 - L->lut[i]) * coef;
    		L->lut[i] = 128 - (128 - i) * coef;;
 	}
+	L->type = dimcon;
 }
 
 LUT* fusionnerLut(LUT* l){

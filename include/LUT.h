@@ -4,6 +4,7 @@
 #include "bool.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "LutOption.h"
 
 
 
@@ -12,15 +13,16 @@ typedef struct LUT{
 	int lut[256];
 	struct LUT* prev;
 	struct LUT* next;
-	unsigned int id;
+	LutOption type;
+
 }LUT;
 
 void initLUT(int* lut);
 LUT* makeLUT();
 bool LUTIsEmpty(LUT* list);
-int addLUT(LUT* list, int lut[256]);
+void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
-LUT* getLUTById(LUT* l, int id);
+LUT* getLUTByType(LUT* l, LutOption type);
 
 LUT* copyLUT(LUT* l);
 

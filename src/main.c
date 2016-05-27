@@ -23,6 +23,14 @@ static unsigned int WINDOW_HEIGHT = 600;
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 
+static unsigned char* sources_img ={
+	"space",
+	"tarte",
+	"coquine",
+	"cute",
+	"pink_floyd",
+	"lake"
+};
 
 
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
@@ -79,12 +87,12 @@ int main(int argc, char** argv) {
 	int idC1, idC2, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
-	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
-	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 1.);
-	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 1.);
-	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 1.);
-	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 1.);
-	idC6 = chargerImage(img, "images/Sylvan_Lake.ppm", 1600, 1200, 1.);
+	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
+	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
+	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
+	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
+	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
+	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.0);
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
@@ -210,9 +218,11 @@ int main(int argc, char** argv) {
 					printf("Il est sur le calque.\n");
 					addNewCalque(img->listCalques, 1);
 				}
-
+				//charger image
 				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
-					chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
+					int id = chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
+					addButtonCalque(ihm, id);
+					printf("%d\n", id);
 					printf("Il est sur le chargement.\n");
 				}
 
