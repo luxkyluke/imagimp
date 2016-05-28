@@ -267,7 +267,7 @@ int main(int argc, char** argv) {
 						removeLUTByType(c->listLuts, dimcon);
 					int contraste = ihm->sliderContraste->posSlider - 100;
 					if(contraste < 0) {
-						addLUTCalqueById(img, ihm->currentCalque, dimcon, contraste);
+						addLUTCalqueById(img, ihm->currentCalque, dimcon, 100 - -1*contraste);
 					} else {
 						addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
 					}
