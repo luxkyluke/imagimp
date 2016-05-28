@@ -48,8 +48,11 @@ void removeLUTByType(LUT* l, LutOption type){
 		return;
 	LUT *tmp = l;
 	while (tmp != NULL) {
-		if (tmp->type == type)
+		if (tmp->type == type) {
+			printf("delete\n");
 			deleteLUT(tmp);
+			return;
+		}
 		tmp=tmp->next;
 		if(tmp == l)
 			break;
@@ -185,18 +188,23 @@ LUT* copyLUT(LUT* l){
 }
 
 
-void freeLUT(LUT* L){
-	if(!L)
-		return;
-	LUT* tmp = L->next;
-	LUT* next;
-	while(tmp != NULL && tmp != L){
-		next = tmp->next;
-		free(tmp);
-		tmp = next;
-	}
-	printf("FreeLUT OK\n");
+void freeLUT (LUT** liste){
+	if(liste!=NULL){
+    	viderLUT( *liste );  /* on vide d'abord la liste */
+    	free( *liste ), *liste = NULL;
+    }
 }
+
+
+void viderLUT (LUT* liste){
+    LUT *it, *next;
+
+    for ( it = liste->next; it != liste; it = next ){
+        next = it->next;  /* on enregistre le pointeur sur l'élément suivant avant de supprimer l'élément courant */
+        free(it);         /* on supprime l'élément courant */
+    }
+}
+
 
 
 

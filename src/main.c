@@ -263,6 +263,65 @@ int main(int argc, char** argv) {
 				}
 				btc = ihm->btnCalquesSelection;
 
+				if(isOnButton(ihm->rstContraste, posX-ihm->windowWidth, posY)) {
+					xContraste = 0;
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					if(ihm->sliderLuminosite->posSlider<100) {
+						removeLUTByType(c->listLuts, dimcon);
+					} else {
+						removeLUTByType(c->listLuts, addcon);
+					}
+					ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos;
+					printf("reset contraste\n");
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				if(isOnButton(ihm->rstLuminosite, posX-ihm->windowWidth, posY)) {
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					printf("ID DU CALQUE COURRANT %d\n",c->id);
+					if(c!=NULL) {
+						xLuminosite = 0;
+						LUT* l_tmp = c->listLuts;
+						while(l_tmp != NULL){
+							printf("%d \n", l_tmp->type);
+							l_tmp=l_tmp->next;
+							if(l_tmp==c->listLuts) {
+								break;
+							}
+						}
+						// removeLUTByType(c->listLuts, addlum);
+						LUT* tmp = c->listLuts;
+						freeLUT(&tmp);
+						while(l_tmp != NULL){
+							printf("%d \n", l_tmp->type);
+							l_tmp=l_tmp->next;
+							if(l_tmp==c->listLuts) {
+								break;
+							}
+						}
+
+						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
+						printf("reset lum\n");
+						eventButtonCalque(img,ihm,ihm->currentCalque);
+						dessinIHM(ihm, img, framebuffer);
+						nextFrame(framebuffer, screen);
+					}
+				}
+
+				if(isOnButton(ihm->rstAlpha, posX-ihm->windowWidth, posY)) {
+					xOpacite = 0;
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					c->alpha = 1;
+					ihm->sliderOpacite->posSlider = ihm->sliderOpacite->startPos;
+					printf("reset alpha\n");
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+
 				break;
 
 			case SDL_MOUSEBUTTONUP:
@@ -285,7 +344,7 @@ int main(int argc, char** argv) {
 						removeLUTByType(c->listLuts, dimcon);
 					int contraste = ihm->sliderContraste->posSlider - 100;
 					if(contraste < 0) {
-						addLUTCalqueById(img, ihm->currentCalque, dimcon, contraste);
+						addLUTCalqueById(img, ihm->currentCalque, dimcon, 100 - -1*contraste);
 					} else {
 						addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
 					}
@@ -304,6 +363,7 @@ int main(int argc, char** argv) {
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
+
 				luminositeCheck = 0;
 				contrasteCheck = 0;
 				saturationCheck = 0;
