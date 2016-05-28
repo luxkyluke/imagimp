@@ -88,14 +88,16 @@ int main(int argc, char** argv) {
 	// Image *img;
 	// makeImage(img, 512, 512);
 
-	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
+
 	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
+	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
 	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
-	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
-	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
-	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.3);
+//	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
+//	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
+//	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.3);
 
 //	changeFusionClaqueToAdditive(img, idC2);
+
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
@@ -104,6 +106,7 @@ int main(int argc, char** argv) {
 
 
 	addLUTCalqueById(img, idC1, dimcon, 40);
+
 	//addEffetCalqueById(img, idCalqueImg2, sepia);
 //	noirEtBlanc(img->calque_resultat);
 
@@ -247,34 +250,28 @@ int main(int argc, char** argv) {
 
 			case SDL_MOUSEBUTTONUP:
 				if(luminositeCheck==1) {
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					LUT* l = getLUTByType(c->listLuts,addlum);
-					if(l != NULL) {
-						ADDLUM(l,ihm->sliderLuminosite->posSlider-100);
-						fusionnerLut(c->listLuts);
-					}else {
-						addLUTCalqueById(img, ihm->currentCalque, addlum, ihm->sliderLuminosite->posSlider-100);
-					}
+					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
+					if(existLUTCalqueType(c, addlum))
+						removeLUTByType(c->listLuts,addlum);
+					addLUTCalqueById(img, ihm->currentCalque, addlum, ihm->sliderLuminosite->posSlider-100);
 					eventButtonCalque(img,ihm,ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
 
 				if(contrasteCheck==1) {
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					LUT* l = getLUTByType(c->listLuts,addcon);
+					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
+					if(existLUTCalqueType(c, addcon))
+						removeLUTByType(c->listLuts,addcon);
+					if(existLUTCalqueType(c, dimcon))
+						removeLUTByType(c->listLuts, dimcon);
 					int contraste = ihm->sliderContraste->posSlider - 100;
-
-					if(l != NULL) {
-						ADDCON(l,contraste);
-						fusionnerLut(c->listLuts);
-					}else {
-						if(contraste < 0) {
-							addLUTCalqueById(img, ihm->currentCalque, dimcon, contraste);
-						} else {
-							addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
-						}
+					if(contraste < 0) {
+						addLUTCalqueById(img, ihm->currentCalque, dimcon, contraste);
+					} else {
+						addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
 					}
+
 
 					eventButtonCalque(img,ihm,ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);

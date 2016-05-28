@@ -19,8 +19,8 @@ LUT* makeLUT();
 bool LUTIsEmpty(LUT* list);
 void addLUT(LUT* list, int lut[256]);
 void deleteLUT(LUT* list);
-LUT* getLUTByType(LUT* l, LutOption type);
-
+void removeLUTByType(LUT* l, LutOption type);
+bool existLUTByType(LUT* l, LutOption type);
 LUT* copyLUT(LUT* l);
 
 void INVERT(LUT* L);

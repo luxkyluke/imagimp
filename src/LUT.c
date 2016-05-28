@@ -29,20 +29,31 @@ bool LUTIsEmpty(LUT* list){
 	return false;
 }
 
-LUT* getLUTByType(LUT* l, LutOption type){
-	if (!l)
-		return NULL;
+bool existLUTByType(LUT* l, LutOption type){
+	if (!l || LUTIsEmpty(l))
+		return false;
 	LUT *tmp = l;
 	while (tmp != NULL) {
-		if (tmp->type == type){
-			return tmp;
-		} else {
-			tmp = NULL;
-		}
+		if (tmp->type == type)
+			return true;
+		tmp=tmp->next;
+		if(tmp == l)
+			break;
 	}
-	fprintf(stderr, "Indice du LUT introuvable\n");
-	fflush(stdin);
-	return NULL;
+	return false;
+}
+
+void removeLUTByType(LUT* l, LutOption type){
+	if (!l || LUTIsEmpty(l))
+		return;
+	LUT *tmp = l;
+	while (tmp != NULL) {
+		if (tmp->type == type)
+			deleteLUT(tmp);
+		tmp=tmp->next;
+		if(tmp == l)
+			break;
+	}
 }
 
 void addLUT(LUT* list, int lut[256]){

@@ -122,6 +122,18 @@ void addCalque(Calque* c, Calque* c2) {
 	last->next = c2;
 }
 
+void removeLUTCalqueByType(Calque* c, LutOption type){
+	if(!c)
+		return;
+	removeLUTByType(c->listLuts, type);
+}
+
+bool existLUTCalqueType(Calque *c, LutOption type){
+	if(!c)
+		return false;
+	return existLUTByType(c->listLuts, type);
+}
+
 void addLUTCalque(Calque *c, LutOption lut, int val) {
 	if (!c)
 		return;
@@ -143,6 +155,8 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 		break;
 	case dimcon:
 		DIMCON(l, val);
+		break;
+	case aucun:
 		break;
 	}
 	if (!c->listLuts)
@@ -216,6 +230,8 @@ Calque* appliquerEffet(Calque* c) {
 	case sepia:
 		ret = appliquerSepia(c);
 		break;
+	case none :
+		break;
 	}
 	ret->next = c->next;
 	ret->prev = c->prev;
@@ -261,16 +277,15 @@ void fusionnerAdditiveCalque2a2(Calque *ret, Calque *c2) {
 			int r = c2->pixels[j][i].r;
 			int g = c2->pixels[j][i].g;
 			int b = c2->pixels[j][i].b;
-
-			ret->pixels[j][i].r = ret->pixels[j][i].r
-					+ ret->listLuts->lut[r] * c2->alpha;
-			ret->pixels[j][i].g = ret->pixels[j][i].r
-					+ c2->alpha * ret->listLuts->lut[g];
-			ret->pixels[j][i].b = ret->pixels[j][i].r
-					+ c2->alpha * ret->listLuts->lut[b];
-			checkValue(&(ret->pixels[j][i].r));
-			checkValue(&(ret->pixels[j][i].g));
-			checkValue(&(ret->pixels[j][i].b));
+			if(ret->pixels[j][i].r < 255)
+				ret->pixels[j][i].r = ret->pixels[j][i].r
+						+ ret->listLuts->lut[r] * c2->alpha;
+			if(ret->pixels[j][i].g < 255)
+				ret->pixels[j][i].g = ret->pixels[j][i].r
+						+ c2->alpha * ret->listLuts->lut[g];
+			if(ret->pixels[j][i].b < 255)
+				ret->pixels[j][i].b = ret->pixels[j][i].r
+						+ c2->alpha * ret->listLuts->lut[b];
 		}
 	}
 }
@@ -307,13 +322,13 @@ Calque* appliqueLUT(Calque* calque, LUT* L) {
 	return ret;
 }
 
-Calque* appliquerLUTById(Calque* calque, int id) {
+//Calque* appliquerLUTById(Calque* calque, int id) {
 //	if (!calque)
 //		return NULL;
 //	LUT* l = getLUTById(calque->listLuts, id);
 //	Calque *c = appliqueLUT(calque, l);
 //	return c;
-}
+//}
 
 Calque* appliquerAllLUT(Calque* calque) {
 	if (!calque) {
