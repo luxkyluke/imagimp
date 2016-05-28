@@ -8,7 +8,8 @@
 #include "Image.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger, select, supprimer} BtnName;
+typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion} BtnName;
+
 
 typedef struct Slider{
     int width;
@@ -49,6 +50,11 @@ typedef struct IHM{
     Button*  btnImage;
     Button*  btnDelete;
     ButtonCalque*  btnCalquesSelection;
+
+    Button*  rstContraste;
+    Button*  rstLuminosite;
+    Button*  rstAlpha;
+
 } IHM;
 
 void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer);

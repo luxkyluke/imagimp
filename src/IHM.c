@@ -120,6 +120,11 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
     ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
     ihm->btnCalquesSelection = makeButtonCalque(1);
+
+    ihm->rstLuminosite       = makeButton(110,25,160,200-15,"Reset",rstLuminosite);
+    ihm->rstContraste        = makeButton(110,25,160,300-15,"Reset",rstContraste);
+    ihm->rstAlpha            = makeButton(110,25,160,400-15,"Reset",rstAlpha);
+
     return ihm;
 }
 
@@ -162,7 +167,7 @@ void drawSlider(Slider* slider) {
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(100, slider->posY, 0);
+	glTranslatef(50, slider->posY, 0);
 	glColor3d(1, 1, 1);
 	vBitmapOutput(-2, 45, slider->title, GLUT_BITMAP_HELVETICA_18);
 	glPopMatrix();
@@ -244,6 +249,11 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	drawSlider(ihm->sliderOpacite);
 	DessinButton(ihm->btnCalque);
 	DessinButton(ihm->btnImage);
+
+    DessinButton(ihm->rstLuminosite);
+    DessinButton(ihm->rstAlpha);
+    DessinButton(ihm->rstContraste);
+
 }
 
 ButtonCalque* makeButtonCalque(int id) {
