@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <SDL/SDL.h>
+
 
 #include "sdl_tools.h"
 #include "glut_tools.h"
@@ -23,14 +25,7 @@ static unsigned int WINDOW_HEIGHT = 600;
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 
-static unsigned char* sources_img ={
-	"space",
-	"tarte",
-	"coquine",
-	"cute",
-	"pink_floyd",
-	"lake"
-};
+#define PATH_IMG "images/"
 
 
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
@@ -42,11 +37,22 @@ void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
 	SDL_GL_SwapBuffers();
 }
 
+
+
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
 		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
+	int nb_source = 6;
+	const char *tab_source_img[nb_source];
+	tab_source_img[0] = "space";
+	tab_source_img[1] = "tarte";
+	tab_source_img[2] = "coquine";
+	tab_source_img[3] = "cute";
+	tab_source_img[4] = "pink_floyd";
+	tab_source_img[5] = "lake";
+	int id_source=0;
 
 	IHM*ihm = makeIHM(800, 600, 300, 200);
 
@@ -224,9 +230,20 @@ int main(int argc, char** argv) {
 				}
 				//charger image
 				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
-					int id = chargerImage(img, "images/space.ppm", 1600, 1200, 1.);
-					addButtonCalque(ihm, id);
-					printf("%d\n", id);
+					char* path = PATH_IMG;
+					if(id_source >= nb_source)
+						break;
+					const char* name = tab_source_img[id_source++];
+					printf("%s\n",name);
+					printf("%s\n",path);
+					strcat(path, name);
+					printf("%s\n",path);
+					strcat(path, ".ppm");
+					printf("%s\n",path);
+//					int id = chargerImage(img, path, 1600, 1200, 1.);
+
+//					addButtonCalque(ihm, id);
+//					printf("%d\n", id);
 					printf("Il est sur le chargement.\n");
 				}
 
@@ -249,6 +266,7 @@ int main(int argc, char** argv) {
 				break;
 
 			case SDL_MOUSEBUTTONUP:
+				//modification luminosité
 				if(luminositeCheck==1) {
 					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
 					if(existLUTCalqueType(c, addlum))
@@ -258,7 +276,7 @@ int main(int argc, char** argv) {
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
-
+				//modificatoin du contraste
 				if(contrasteCheck==1) {
 					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
 					if(existLUTCalqueType(c, addcon))
