@@ -197,9 +197,10 @@ void freeLUT (LUT** liste){
 
 
 void viderLUT (LUT* liste){
+	if(!liste)
+		return;
     LUT *it, *next;
-
-    for ( it = liste->next; it != liste; it = next ){
+    for ( it = liste->next; it != NULL &&  it != liste; it = next ){
         next = it->next;  /* on enregistre le pointeur sur l'élément suivant avant de supprimer l'élément courant */
         free(it);         /* on supprime l'élément courant */
     }

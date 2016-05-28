@@ -350,7 +350,7 @@ void freeCalque(Calque* c) {
 		free(c->pixels);
 		c->pixels = NULL;
 	}
-	freeLUT(&c->listLuts);
+	freeLUT(&(c)->listLuts);
 	c->listLuts = NULL;
 	printf("FreeCalque OK\n");
 }
