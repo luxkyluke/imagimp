@@ -232,9 +232,9 @@ int main(int argc, char** argv) {
 					if(id_source >= nb_source)
 						break;
 					const char* name_fichier = tab_source_img[id_source++];
-//					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
+					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
 
-//					addButtonCalque(ihm, id);
+					addButtonCalque(ihm, id);
 //					printf("%d\n", id);
 					printf("Il est sur le chargement.\n");
 				}

@@ -100,15 +100,13 @@ void deleteLUT(LUT* list){
 	if (list->next == list){
 		list->next = NULL;
 		list->prev = NULL;
-		return;
 	}
-	LUT* old_last = list->prev;
-	list->prev->prev = list;
-	list->prev = old_last->prev;
-	free(old_last);
+	else{
+		list->prev->next = list->next;
+		list->next->prev = list->prev;
+	}
+	free(list);
 }
-
-
 
 void INVERT(LUT* L){
  	int i;
