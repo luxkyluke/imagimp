@@ -5,7 +5,7 @@
 #include "PPM.h"
 
 /* D'apr�s le standard http://netpbm.sourceforge.net/doc/ppm.html */
-unsigned char *PPM_lire(char *nom_fichier, int *width, int *height) {
+unsigned char *PPM_lire(const char *nom_fichier, int *width, int *height) {
 
     FILE *fichier = fopen(nom_fichier, "rb");
     if(!fichier) {

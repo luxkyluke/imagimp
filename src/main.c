@@ -88,14 +88,14 @@ int main(int argc, char** argv) {
 	initGlut(argc, argv);
 
 	Image* img = makeImage(1600, 1200);
-	int idC1, idC2, idC3, idC4, idC5, idC6;
+	int idC1;// idC2, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
 
 
 	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
-	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
-	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
+	chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
+	chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
 //	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
 //	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
 //	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.3);
@@ -130,7 +130,7 @@ int main(int argc, char** argv) {
 	fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
-	int loop = 1, current = 0;
+	int loop = 1;//, current = 0;
 	int posX = 0, posY = 0;
 
 	initBtnIHM(ihm, img->listCalques);
@@ -138,8 +138,7 @@ int main(int argc, char** argv) {
 
 	bool change = true;
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
-			xContraste = 0, saturationCheck = 0, xSaturation = 0, xOpacite = 0,
-			opaciteCheck = 0;
+			xContraste = 0,  xOpacite = 0,	opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
 
 	while (loop) {
 
@@ -176,7 +175,6 @@ int main(int argc, char** argv) {
 
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
-
 				posX = e.button.x;
 				posY = e.button.y;
 				if (luminositeCheck == 1 && posX >= WINDOW_WIDTH + 50
@@ -285,7 +283,6 @@ int main(int argc, char** argv) {
 							printf("Il existe\n");
 							removeLUTByType(c->listLuts,addlum);
 						}
-
 						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
 						printf("reset lum\n");
 						eventButtonCalque(img,ihm,ihm->currentCalque);
@@ -350,7 +347,7 @@ int main(int argc, char** argv) {
 
 				luminositeCheck = 0;
 				contrasteCheck = 0;
-				saturationCheck = 0;
+//				saturationCheck = 0;
 				opaciteCheck = 0;
 				break;
 			}

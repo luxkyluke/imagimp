@@ -97,7 +97,7 @@ void calculHistogramme(Calque *c) {
 }
 
 void drawHistogramme(Histogramme* histogramme) {
-	int max = 0, i = 0;
+	int i = 0;
 
 	glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
