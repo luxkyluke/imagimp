@@ -8,7 +8,7 @@ Image* makeImage(int width, int height) {
 	return img;
 }
 
-int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
+int chargerImage(Image* img, const char * pathImg, int width, int height, float op) {
 	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	return id;
 }
@@ -63,6 +63,7 @@ void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
 	addLUTCalque(c, lut, val);
+
 }
 
 void drawImage(Image* img, SDL_Surface* framebuffer) {
@@ -79,7 +80,7 @@ void drawImage(Image* img, SDL_Surface* framebuffer) {
 void freeImage(Image* img) {
 	freeCalque_r(img->listCalques);
 	if (img->calque_resultat)
-		freeCalque_r(img->calque_resultat);
+		freeCalque(img->calque_resultat);
 }
 
 //void fusionnerAllCalques(Image* img) {

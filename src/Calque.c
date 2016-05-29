@@ -67,7 +67,7 @@ Calque* copyCalque(Calque *c) {
 					c->pixels[j][i].g, c->pixels[j][i].b);
 		}
 	}
-	copie->listLuts = c->listLuts;
+	copie->listLuts = copyLUT_r(c->listLuts);
 	return copie;
 }
 
@@ -161,7 +161,7 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	}
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
-	addLUT(c->listLuts, l->lut);
+	addLUT(c->listLuts, l->lut, lut);
 }
 
 void removeCalque(Calque* c) {
@@ -183,7 +183,7 @@ void removeCalque(Calque* c) {
 	// next non nul, le prev du 5 devient le 5.
 }
 
-int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
+int chargerImageCalque(Calque* c, const char * pathImg, int width, int height,
 		float op) {
 	unsigned char *rgb = PPM_lire(pathImg, &width, &height);
 	if (rgb == NULL) {
@@ -343,6 +343,7 @@ void freeCalque(Calque* c) {
 	if (!c)
 		return;
 	int i;
+	int id = c->id;
 	if (c->pixels) {
 		for (i = 0; i < c->width; i++) {
 			free(c->pixels[i]);
@@ -350,19 +351,9 @@ void freeCalque(Calque* c) {
 		free(c->pixels);
 		c->pixels = NULL;
 	}
-	freeLUT(c->listLuts);
-	c->listLuts = NULL;
-	printf("FreeCalque OK\n");
+	freeLUT(&(c->listLuts));
+	printf("FreeCalque numero : %d OK\n", id);
 }
-
-//void freeCalque_r(Calque* c) {
-//	Calque *next, *tmp = c;
-//	while(c != NULL){
-//		next = c->next;
-//		freeCalque(tmp);
-//		tmp = next;
-//	}
-//}
 
 void freeCalque_r(Calque* c) {
 	if (c == NULL) {

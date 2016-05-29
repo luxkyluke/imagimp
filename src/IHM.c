@@ -118,8 +118,18 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderOpacite       = makeSlider(100,360,100,opacite,"opacite");
     ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->btnSave             = makeButton(190,40,50,680,"Enr. image",save);
     ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
     ihm->btnCalquesSelection = makeButtonCalque(1);
+
+    ihm->rstLuminosite       = makeButton(110,25,160,200-15,"Reset",rstLuminosite);
+    ihm->rstContraste        = makeButton(110,25,160,300-15,"Reset",rstContraste);
+    ihm->rstAlpha            = makeButton(110,25,160,400-15,"Reset",rstAlpha);
+    ihm->btnInvert           = makeButton(110,25,160,500-15,"INVERT",invertbtn);
+    ihm->btnEffetSepia       = makeButton(100,25,0,100,"SEPIA",sepiabtn);
+    ihm->btnEffetNB          = makeButton(100,25,100,100,"NB",nb);
+
+
     return ihm;
 }
 
@@ -162,7 +172,7 @@ void drawSlider(Slider* slider) {
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(100, slider->posY, 0);
+	glTranslatef(50, slider->posY, 0);
 	glColor3d(1, 1, 1);
 	vBitmapOutput(-2, 45, slider->title, GLUT_BITMAP_HELVETICA_18);
 	glPopMatrix();
@@ -224,14 +234,14 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	}
 
     DessinButton(ihm->btnDelete);
+    DessinButton(ihm->btnEffetSepia);
+    DessinButton(ihm->btnEffetNB);
 
 	reshape(ihm->windowWidth, ihm->windowHeight, 0, ihm->filterHeight);
 	drawImage(img, framebuffer);
 
-    reshape(ihm->paramWidth,ihm->windowHeight + ihm->filterHeight,ihm->windowWidth,0);
 
     reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
-    drawImage(img, framebuffer);
 
 	glPushMatrix();
 	glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight, 1);
@@ -244,6 +254,13 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	drawSlider(ihm->sliderOpacite);
 	DessinButton(ihm->btnCalque);
 	DessinButton(ihm->btnImage);
+    DessinButton(ihm->btnSave);
+    DessinButton(ihm->btnInvert);
+
+    DessinButton(ihm->rstLuminosite);
+    DessinButton(ihm->rstAlpha);
+    DessinButton(ihm->rstContraste);
+
 }
 
 ButtonCalque* makeButtonCalque(int id) {
@@ -263,7 +280,7 @@ void addButtonCalque(IHM* ihm, int id) {
 	ButtonCalque* newButtonCalque = makeButtonCalque(id);
 	if (!newButtonCalque)
 		return;
-	ButtonCalque* last = newButtonCalque;
+//	ButtonCalque* last = newButtonCalque;
 
 	while (ihm->btnCalquesSelection->next != NULL) {
 		ihm->btnCalquesSelection = ihm->btnCalquesSelection->next;
@@ -294,5 +311,61 @@ void eventButtonCalque(Image* img, IHM* ihm, int id) {
     else{
         ihm->currentCalque=1;
         fusionnerCalquesImage(img);
+    }
+}
+
+void resetLuminosite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen) {
+    Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+    if(c!=NULL) {
+        if(existLUTCalqueType(c, addlum))
+            removeLUTByType(c->listLuts,addlum);
+        ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
+        eventButtonCalque(img,ihm,ihm->currentCalque);
+        dessinIHM(ihm, img, framebuffer);
+        nextFrame(framebuffer, screen);
+    }
+}
+
+void resetOpacite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen) {
+    Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+    c->alpha = 1;
+    ihm->sliderOpacite->posSlider = ihm->sliderOpacite->startPos;
+    eventButtonCalque(img,ihm,ihm->currentCalque);
+    dessinIHM(ihm, img, framebuffer);
+    nextFrame(framebuffer, screen);
+}
+
+void resetContraste(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen){
+    Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+    if(ihm->sliderContraste->posSlider<100) {
+        if(existLUTCalqueType(c, dimcon)) {
+            printf("Il existe\n");
+            removeLUTByType(c->listLuts,dimcon);
+        }
+    } else {
+        if(existLUTCalqueType(c, addcon)) {
+            printf("Il existe\n");
+            removeLUTByType(c->listLuts,addcon);
+        }
+    }
+    ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos;
+    printf("reset contraste\n");
+    eventButtonCalque(img,ihm,ihm->currentCalque);
+    dessinIHM(ihm, img, framebuffer);
+    nextFrame(framebuffer, screen);
+}
+
+void switchInvert(Image* img, IHM* ihm) {
+    Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
+    if(ihm->btnInvert->isSelected == 1) {
+        if(existLUTCalqueType(c, invert))
+            removeLUTByType(c->listLuts,invert);
+        ihm->btnInvert->isSelected = 0;
+    }
+    else {
+        if(existLUTCalqueType(c, invert))
+            removeLUTByType(c->listLuts,invert);
+        addLUTCalqueById(img, ihm->currentCalque, invert, ihm->sliderLuminosite->posSlider-100);
+        ihm->btnInvert->isSelected = 1;
     }
 }

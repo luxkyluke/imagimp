@@ -22,6 +22,8 @@ Pixel makePixel(unsigned int r, unsigned int g, unsigned int b){
 //}
 
 void checkValue(int* value){
+	if(!value)
+		return;
 	if(*value > 255){
 		*value = 255;
 		return;

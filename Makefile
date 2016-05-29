@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -Wall -std=c11 -g -O2
+CCFLAGS = -Wall -std=c11 -g -O0
 LDFLAGS  = -lm
 APP_BIN = imagimp
 SRC_PATH = src

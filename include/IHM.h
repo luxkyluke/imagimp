@@ -8,7 +8,8 @@
 #include "Image.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger, select, supprimer} BtnName;
+typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb,save} BtnName;
+
 
 typedef struct Slider{
     int width;
@@ -47,8 +48,18 @@ typedef struct IHM{
     Slider*  sliderOpacite;
     Button*  btnCalque;
     Button*  btnImage;
-    Button*  btnDelete;
+    Button*  btnSave;
+
     ButtonCalque*  btnCalquesSelection;
+
+    Button*  rstContraste;
+    Button*  rstLuminosite;
+    Button*  rstAlpha;
+    Button*  btnDelete;
+    Button*  btnEffetNB;
+    Button*  btnEffetSepia;
+    Button*  btnInvert;
+
 } IHM;
 
 void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer);
@@ -73,5 +84,8 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
 void eventButtonCalque(Image* img, IHM* ihm, int id);
-
+void resetLuminosite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void resetOpacite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void resetContraste(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void switchInvert(Image* img, IHM* ihm);
 #endif
