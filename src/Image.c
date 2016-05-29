@@ -8,7 +8,7 @@ Image* makeImage(int width, int height) {
 	return img;
 }
 
-int chargerImage(Image* img, char * pathImg, int width, int height, float op) {
+int chargerImage(Image* img, const char * pathImg, int width, int height, float op) {
 	int id = chargerImageCalque(img->listCalques, pathImg, width, height, op);
 	return id;
 }

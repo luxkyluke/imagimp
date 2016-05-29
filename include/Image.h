@@ -16,7 +16,7 @@ typedef struct Image{
 } Image;
 
 Image* makeImage(int width, int height);
-int chargerImage(Image* img, char * pathImg, int width, int height, float op);
+int chargerImage(Image* img, const char * pathImg, int width, int height, float op);
 void saveImage(Image* img, char* savePath);
 void drawImage(Image* img, SDL_Surface* framebuffer);
 void freeImage(Image* img);

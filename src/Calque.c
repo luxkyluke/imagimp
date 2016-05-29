@@ -183,7 +183,7 @@ void removeCalque(Calque* c) {
 	// next non nul, le prev du 5 devient le 5.
 }
 
-int chargerImageCalque(Calque* c, char * pathImg, int width, int height,
+int chargerImageCalque(Calque* c, const char * pathImg, int width, int height,
 		float op) {
 	unsigned char *rgb = PPM_lire(pathImg, &width, &height);
 	if (rgb == NULL) {

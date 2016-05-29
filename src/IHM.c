@@ -278,7 +278,7 @@ void addButtonCalque(IHM* ihm, int id) {
 	ButtonCalque* newButtonCalque = makeButtonCalque(id);
 	if (!newButtonCalque)
 		return;
-	ButtonCalque* last = newButtonCalque;
+//	ButtonCalque* last = newButtonCalque;
 
 	while (ihm->btnCalquesSelection->next != NULL) {
 		ihm->btnCalquesSelection = ihm->btnCalquesSelection->next;

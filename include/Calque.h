@@ -30,7 +30,7 @@ Calque* getNextCalque(Calque* c);
 Calque* getPrevCalque(Calque* c);
 Calque* getCalqueById(Calque* c, int id);
 Calque* copyCalque(Calque *c);
-int chargerImageCalque(Calque* c, char * pathImg, int width, int height, float op);
+int chargerImageCalque(Calque* c, const char * pathImg, int width, int height, float op);
 void setCalqueAlpha(Calque* c, float alpha);
 void setFusion(Calque* c, Fusion fusion);
 void removeCalque(Calque* c);
