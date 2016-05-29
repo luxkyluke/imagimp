@@ -82,5 +82,8 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
 void eventButtonCalque(Image* img, IHM* ihm, int id);
-
+void resetLuminosite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void resetOpacite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void resetContraste(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+void switchInvert(Image* img, IHM* ihm);
 #endif
