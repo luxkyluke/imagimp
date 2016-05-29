@@ -201,9 +201,10 @@ int main(int argc, char** argv) {
 			case SDL_MOUSEBUTTONDOWN:
 				change = true;
 				printf("posX : %d posY : %d\n", posX, posY);
-				if (isOnLuminosite(posX, posY, xLuminosite) == 1) {
+
+				// Changer le check des sliders.
+				if (isOnLuminosite(posX, posY, xLuminosite) == 1)
 					luminositeCheck = 1;
-				}
 
 				if (isOnContraste(posX, posY, xContraste) == 1)
 					contrasteCheck = 1;
@@ -211,14 +212,15 @@ int main(int argc, char** argv) {
 				if (isOnOpacite(posX, posY, xOpacite) == 1)
 					opaciteCheck = 1;
 
+				// Ajouter un nouveau calque.
 				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)
 						== 1) {
 					printf("Il est sur le calque.\n");
 					addNewCalque(img->listCalques, 1);
 				}
-				//charger image
-				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)
-						== 1) {
+
+				// Charger une image.
+				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
 
 					if (id_source >= nb_source)
 						break;
@@ -226,17 +228,14 @@ int main(int argc, char** argv) {
 					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
 
 					addButtonCalque(ihm, id);
-//					printf("%d\n", id);
-					printf("Il est sur le chargement.\n");
 				}
 
-				if (isOnButton(ihm->btnDelete, posX, posY - ihm->windowHeight)
-						== 1) {
-					printf("Il est sur la suppression. %d\n",
-							ihm->currentCalque);
+				// Supprimer un calque.
+				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
 					suppButton(ihm, img);
 				}
 
+				// Évènements pour tous les boutons de calque.
 				while (btc != NULL) {
 					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
 							== 1)
@@ -249,91 +248,48 @@ int main(int argc, char** argv) {
 				}
 				btc = ihm->btnCalquesSelection;
 
-				if (isOnButton(ihm->rstContraste, posX - ihm->windowWidth,
-						posY)) {
+				// Reset contraste.
+				if(isOnButton(ihm->rstContraste, posX-ihm->windowWidth, posY)) {
 					xContraste = 0;
-					Calque* c = getCalqueById(img->listCalques,
-							ihm->currentCalque);
-					if (ihm->sliderContraste->posSlider < 100) {
-						if (existLUTCalqueType(c, dimcon)) {
-							printf("Il existe\n");
-							removeLUTByType(&(c->listLuts), dimcon);
-							LUT* tmp = c->listLuts;
-							while (tmp != NULL) {
-								printf("lut dimcon slider %d\n", tmp->type);
-								tmp = tmp->next;
-								if (tmp == c->listLuts) {
-									printf("egale");
-									break;
-								}
-							}
-
-						}
-					} else {
-						if (existLUTCalqueType(c, addcon)) {
-							printf("Il existe\n");
-							removeLUTByType(&(c->listLuts), addcon);
-							LUT* tmp = c->listLuts;
-							while (tmp != NULL) {
-								printf("lut addcon slider%d\n", tmp->type);
-								tmp = tmp->next;
-								if (tmp == c->listLuts) {
-									printf("egale");
-									break;
-								}
-							}
-
-						}
-					}
-					ihm->sliderContraste->posSlider =
-							ihm->sliderContraste->startPos;
-					printf("reset contraste\n");
-					eventButtonCalque(img, ihm, ihm->currentCalque);
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+					resetContraste(img, ihm, framebuffer, screen);
 				}
 
-				if (isOnButton(ihm->rstLuminosite, posX - ihm->windowWidth,
-						posY)) {
-					Calque* c = getCalqueById(img->listCalques,
-							ihm->currentCalque);
-					printf("ID DU CALQUE COURRANT %d\n", c->id);
-					if (c != NULL) {
-						xLuminosite = 0;
-						if (existLUTCalqueType(c, addlum)) {
-							printf("Il existe\n");
-							removeLUTByType(&(c)->listLuts, addlum);
-							LUT* tmp = c->listLuts;
-							while (tmp != NULL) {
-								printf("lut %d\n", tmp->type);
-								tmp = tmp->next;
-								if (tmp == c->listLuts) {
-									printf("egale");
-									break;
-								}
-							}
-						}
-						ihm->sliderLuminosite->posSlider =
-								ihm->sliderLuminosite->startPos;
-						printf("reset lum\n");
-						eventButtonCalque(img, ihm, ihm->currentCalque);
-						dessinIHM(ihm, img, framebuffer);
-						nextFrame(framebuffer, screen);
-					}
+				// Reset luminosité.
+				if(isOnButton(ihm->rstLuminosite, posX-ihm->windowWidth, posY)) {
+					xLuminosite = 0;
+					resetLuminosite(img, ihm, framebuffer, screen);
 				}
 
-				if (isOnButton(ihm->rstAlpha, posX - ihm->windowWidth, posY)) {
+				// Reset opacité.
+				if(isOnButton(ihm->rstAlpha, posX-ihm->windowWidth, posY)) {
 					xOpacite = 0;
-					Calque* c = getCalqueById(img->listCalques,
-							ihm->currentCalque);
-					c->alpha = 1;
-					ihm->sliderOpacite->posSlider =
-							ihm->sliderOpacite->startPos;
-					printf("reset alpha\n");
-					eventButtonCalque(img, ihm, ihm->currentCalque);
+					resetOpacite(img, ihm, framebuffer, screen);
+				}
+
+				// Mettre en Négatif.
+				if(isOnButton(ihm->btnInvert,posX-ihm->windowWidth,posY)) {
+					switchInvert(img,ihm);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
+
+				// Ajouter l'effet Noir et blanc.
+				if(isOnButton(ihm->btnEffetNB,posX,posY-ihm->windowHeight)) {
+					addEffetCalqueById(img, ihm->currentCalque, noir_et_blanc);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				// Ajouter l'effet Sepia.
+				if(isOnButton(ihm->btnEffetSepia,posX,posY-ihm->windowHeight)) {
+					addEffetCalqueById(img, ihm->currentCalque, sepia);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
 
 				break;
 
