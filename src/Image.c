@@ -79,7 +79,7 @@ void drawImage(Image* img, SDL_Surface* framebuffer) {
 void freeImage(Image* img) {
 	freeCalque_r(img->listCalques);
 	if (img->calque_resultat)
-		freeCalque_r(img->calque_resultat);
+		freeCalque(img->calque_resultat);
 }
 
 //void fusionnerAllCalques(Image* img) {

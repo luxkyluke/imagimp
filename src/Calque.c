@@ -67,7 +67,7 @@ Calque* copyCalque(Calque *c) {
 					c->pixels[j][i].g, c->pixels[j][i].b);
 		}
 	}
-	copie->listLuts = c->listLuts;
+	copie->listLuts = copyLUT(c->listLuts);
 	return copie;
 }
 

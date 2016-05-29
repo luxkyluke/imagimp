@@ -190,13 +190,12 @@ LUT* copyLUT(LUT* l){
 
 
 void freeLUT (LUT** liste){
-	if(liste != NULL && *liste != NULL && !LUTIsEmpty(*liste)){
-		viderLUT( *liste );
+	if(liste != NULL && *liste != NULL ){
+		viderLUT(*liste);
     	free(*liste);
     	*liste = NULL;
-    	liste=NULL;
     }
-	printf("FreeLUT OK\n");
+//	printf("FreeLUT OK\n");
 }
 
 
