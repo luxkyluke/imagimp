@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 	// makeImage(img, 512, 512);
 
 
-	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
+	idC2 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.2);
 	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
 	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
 //	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
@@ -101,11 +101,10 @@ int main(int argc, char** argv) {
 
 //	LUT* l = makeLUT();
 //	INVERT(l);
-//	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
 
 
-	addLUTCalqueById(img, idC1, dimcon, 40);
+	//addLUTCalqueById(img, idC2, addcon, 40);
 
 	//addEffetCalqueById(img, idCalqueImg2, sepia);
 //	noirEtBlanc(img->calque_resultat);

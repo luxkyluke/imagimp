@@ -127,31 +127,40 @@ void DIMLUM(LUT* L, int l){
  	L->type = dimlum;
 }
 
-void ADDCON(LUT* L, int c){
+/*void ADDCON(LUT* L, int c){
  	int i;
  	for (i = 0; i < 256; i++){
- 		int value = (-(127 - i) * c) + 127;
+ 		//int value = (-(127 - i) * c) + 127;
+ 		int value = 128 - (128 - i) * c/100;
+ 		printf("la value est de: %d\n", value);
+ 		checkValue(&value);
+ 		//printf("la value checked est de: %d\n", value);
+ 		L->lut[i] = value;
+ 	}
+ 	L->type = addcon;
+}*/
+
+ void ADDCON(LUT* L, int c){
+ 	int i;
+ 	for (i = 0; i < 256; i++){
+ 		int value = L->lut[i];
+ 		if(i < 127)
+ 			value -= c/10;
+ 		if(i > 127)
+ 			value += c/10;
+ 		if(i = 127)
+ 			value -= c;
  		checkValue(&value);
  		L->lut[i] = value;
  	}
  	L->type = addcon;
 }
 
-/*void DIMCON(LUT* L, int c){
-	int i;
- 	for (i = 0; i < 256; i++){
- 		int value = -c -i +127;
- 		checkValue(&value);
-   		L->lut[i] = value;
- 	}
-
-}*/
-void DIMCON(LUT* L, int c){ //c varie entre 0 et 1
+void DIMCON(LUT* L, int c){ 
 	int i;
 	float coef = c/100.;
 	for(i = 0; i < 256; i++)  {
-		//int value = 128 - (128 - L->lut[i]) * coef;
-   		L->lut[i] = 128 - (128 - i) * coef;;
+   		L->lut[i] = 128 - (128 - i) * coef;
 	}
 	L->type = dimcon;
 }
