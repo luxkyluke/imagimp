@@ -184,15 +184,19 @@ LUT* copyLUT(LUT* l){
 	for(i=0; i<256; ++i){
 		ret->lut[i]=l->lut[i];
 	}
+	ret->type = l->type;
 	return ret;
 }
 
 
 void freeLUT (LUT** liste){
-	if(liste!=NULL){
-    	viderLUT( *liste );  /* on vide d'abord la liste */
-    	free( *liste ), *liste = NULL;
+	if(liste != NULL && *liste != NULL && !LUTIsEmpty(*liste)){
+		viderLUT( *liste );
+    	free(*liste);
+    	*liste = NULL;
+    	liste=NULL;
     }
+	printf("FreeLUT OK\n");
 }
 
 
@@ -200,10 +204,15 @@ void viderLUT (LUT* liste){
 	if(!liste)
 		return;
     LUT *it, *next;
+
     for ( it = liste->next; it != NULL &&  it != liste; it = next ){
-        next = it->next;  /* on enregistre le pointeur sur l'élément suivant avant de supprimer l'élément courant */
-        free(it);         /* on supprime l'élément courant */
+    	int type = it->type;
+        next = it->next;
+        free(it);
+        printf("suppression LUT de type %d\n", type);
+        fflush(stdin);
     }
+
 }
 
 

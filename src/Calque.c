@@ -159,6 +159,7 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	case aucun:
 		break;
 	}
+	l->type = lut;
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
 	addLUT(c->listLuts, l->lut);
@@ -343,6 +344,7 @@ void freeCalque(Calque* c) {
 	if (!c)
 		return;
 	int i;
+	int id = c->id;
 	if (c->pixels) {
 		for (i = 0; i < c->width; i++) {
 			free(c->pixels[i]);
@@ -351,8 +353,7 @@ void freeCalque(Calque* c) {
 		c->pixels = NULL;
 	}
 	freeLUT(&(c)->listLuts);
-	c->listLuts = NULL;
-	printf("FreeCalque OK\n");
+	printf("FreeCalque numero : %d OK\n", id);
 }
 
 //void freeCalque_r(Calque* c) {

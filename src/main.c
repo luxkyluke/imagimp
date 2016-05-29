@@ -95,8 +95,8 @@ int main(int argc, char** argv) {
 	// makeImage(img, 512, 512);
 
 
-	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
 	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
+	idC2 = chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
 	idC3 = chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
 //	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
 //	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
 //	addLUT(l, l->lut);
 
 
-	addLUTCalqueById(img, idC1, dimcon, 40);
+//	addLUTCalqueById(img, idC1, dimcon, 40);
 
 	//addEffetCalqueById(img, idCalqueImg2, sepia);
 //	noirEtBlanc(img->calque_resultat);
@@ -294,10 +294,10 @@ int main(int argc, char** argv) {
 						// removeLUTByType(c->listLuts, addlum);
 						LUT* tmp = c->listLuts;
 						freeLUT(&tmp);
-						while(l_tmp != NULL){
-							printf("%d \n", l_tmp->type);
-							l_tmp=l_tmp->next;
-							if(l_tmp==c->listLuts) {
+						while(tmp != NULL){
+							printf("%d \n", tmp->type);
+							tmp=tmp->next;
+							if(tmp==c->listLuts) {
 								break;
 							}
 						}
@@ -325,7 +325,7 @@ int main(int argc, char** argv) {
 				break;
 
 			case SDL_MOUSEBUTTONUP:
-				//modification luminosité
+				//modification luminositï¿½
 				if(luminositeCheck==1) {
 					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
 					if(existLUTCalqueType(c, addlum))
