@@ -124,6 +124,10 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->rstLuminosite       = makeButton(110,25,160,200-15,"Reset",rstLuminosite);
     ihm->rstContraste        = makeButton(110,25,160,300-15,"Reset",rstContraste);
     ihm->rstAlpha            = makeButton(110,25,160,400-15,"Reset",rstAlpha);
+    ihm->btnInvert           = makeButton(110,25,160,500-15,"INVERT",invertbtn);
+    ihm->btnEffetSepia       = makeButton(100,25,0,100,"SEPIA",sepiabtn);
+    ihm->btnEffetNB          = makeButton(100,25,100,100,"NB",nb);
+
 
     return ihm;
 }
@@ -229,14 +233,14 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	}
 
     DessinButton(ihm->btnDelete);
+    DessinButton(ihm->btnEffetSepia);
+    DessinButton(ihm->btnEffetNB);
 
 	reshape(ihm->windowWidth, ihm->windowHeight, 0, ihm->filterHeight);
 	drawImage(img, framebuffer);
 
-    reshape(ihm->paramWidth,ihm->windowHeight + ihm->filterHeight,ihm->windowWidth,0);
 
     reshape(ihm->paramWidth,ihm->windowHeight+ihm->filterHeight, ihm->windowWidth, 0);
-    drawImage(img, framebuffer);
 
 	glPushMatrix();
 	glScalef(ihm->paramWidth, ihm->windowHeight + ihm->filterHeight, 1);
@@ -249,6 +253,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	drawSlider(ihm->sliderOpacite);
 	DessinButton(ihm->btnCalque);
 	DessinButton(ihm->btnImage);
+    DessinButton(ihm->btnInvert);
 
     DessinButton(ihm->rstLuminosite);
     DessinButton(ihm->rstAlpha);

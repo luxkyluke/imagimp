@@ -305,6 +305,39 @@ int main(int argc, char** argv) {
 					nextFrame(framebuffer, screen);
 				}
 
+				// Si il clique sur invert.
+				if(isOnButton(ihm->btnInvert,posX-ihm->windowWidth,posY)) {
+					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
+					if(ihm->btnInvert->isSelected == 1) {
+						if(existLUTCalqueType(c, invert))
+							removeLUTByType(c->listLuts,invert);
+						ihm->btnInvert->isSelected = 0;
+					}
+					else {
+						if(existLUTCalqueType(c, invert))
+							removeLUTByType(c->listLuts,invert);
+						addLUTCalqueById(img, ihm->currentCalque, invert, ihm->sliderLuminosite->posSlider-100);
+						ihm->btnInvert->isSelected = 1;
+					}
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				if(isOnButton(ihm->btnEffetNB,posX,posY-ihm->windowHeight)) {
+					addEffetCalqueById(img, ihm->currentCalque, noir_et_blanc);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
+				if(isOnButton(ihm->btnEffetSepia,posX,posY-ihm->windowHeight)) {
+					addEffetCalqueById(img, ihm->currentCalque, sepia);
+					eventButtonCalque(img,ihm,ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+				}
+
 
 				break;
 
