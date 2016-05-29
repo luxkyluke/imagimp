@@ -3,7 +3,6 @@
 #include <string.h>
 #include <SDL/SDL.h>
 
-
 #include "sdl_tools.h"
 #include "glut_tools.h"
 #include "Image.h"
@@ -25,8 +24,7 @@ static unsigned int WINDOW_HEIGHT = 600;
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 
-
-void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
+void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen) {
 	/* On copie le framebuffer ï¿½ l'ï¿½cran */
 	SDL_BlitSurface(framebuffer, NULL, screen, NULL);
 
@@ -34,8 +32,6 @@ void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
 
 	SDL_GL_SwapBuffers();
 }
-
-
 
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
@@ -50,7 +46,7 @@ int main(int argc, char** argv) {
 	tab_source_img[3] = "images/cute.ppm";
 	tab_source_img[4] = "images/pink_floyd.ppm";
 	tab_source_img[5] = "images/lake.ppm";
-	int id_source=0;
+	int id_source = 0;
 
 	IHM*ihm = makeIHM(800, 600, 300, 200);
 
@@ -73,7 +69,7 @@ int main(int argc, char** argv) {
 	/* Crï¿½ation d'une surface SDL dans laquelle le raytracer dessinera */
 	SDL_Surface* framebuffer = NULL;
 	if (!(framebuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, WINDOW_WIDTH,
-					WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
+			WINDOW_HEIGHT, 24, 0, 0, 0, 0))) {
 		fprintf(stderr,
 				"Erreur d'allocation pour le framebuffer. Fin du programme.\n");
 		return EXIT_FAILURE;
@@ -88,10 +84,9 @@ int main(int argc, char** argv) {
 	initGlut(argc, argv);
 
 	Image* img = makeImage(1600, 1200);
-	int idC1;// idC2, idC3, idC4, idC5, idC6;
+	int idC1;	// idC2, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
-
 
 	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
 	chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
@@ -102,12 +97,10 @@ int main(int argc, char** argv) {
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
-
 //	LUT* l = makeLUT();
 //	INVERT(l);
 //	//ADDLUM(l, 50);
 //	addLUT(l, l->lut);
-
 
 	addLUTCalqueById(img, idC1, dimcon, 40);
 
@@ -130,7 +123,7 @@ int main(int argc, char** argv) {
 	fusionnerCalquesImage(img);
 	// afficheCalqueById(img, 2);
 
-	int loop = 1;//, current = 0;
+	int loop = 1;	//, current = 0;
 	int posX = 0, posY = 0;
 
 	initBtnIHM(ihm, img->listCalques);
@@ -138,7 +131,7 @@ int main(int argc, char** argv) {
 
 	bool change = true;
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
-			xContraste = 0,  xOpacite = 0,	opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
+			xContraste = 0, xOpacite = 0, opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
 
 	while (loop) {
 
@@ -154,11 +147,10 @@ int main(int argc, char** argv) {
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 
-
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
-		if(change){
+		if (change) {
 			dessinIHM(ihm, img, framebuffer);
 			nextFrame(framebuffer, screen);
 		}
@@ -207,9 +199,9 @@ int main(int argc, char** argv) {
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				change=true;
+				change = true;
 				printf("posX : %d posY : %d\n", posX, posY);
-				if (isOnLuminosite(posX, posY, xLuminosite) == 1){
+				if (isOnLuminosite(posX, posY, xLuminosite) == 1) {
 					luminositeCheck = 1;
 				}
 
@@ -225,9 +217,10 @@ int main(int argc, char** argv) {
 					addNewCalque(img->listCalques, 1);
 				}
 				//charger image
-				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
+				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)
+						== 1) {
 
-					if(id_source >= nb_source)
+					if (id_source >= nb_source)
 						break;
 					const char* name_fichier = tab_source_img[id_source++];
 					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
@@ -237,13 +230,16 @@ int main(int argc, char** argv) {
 					printf("Il est sur le chargement.\n");
 				}
 
-				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
-					printf("Il est sur la suppression. %d\n", ihm->currentCalque);
+				if (isOnButton(ihm->btnDelete, posX, posY - ihm->windowHeight)
+						== 1) {
+					printf("Il est sur la suppression. %d\n",
+							ihm->currentCalque);
 					suppButton(ihm, img);
 				}
 
 				while (btc != NULL) {
-					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)== 1)
+					if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
+							== 1)
 						eventButtonCalque(img, ihm, btc->id);
 
 					if (btc->next != NULL)
@@ -253,94 +249,167 @@ int main(int argc, char** argv) {
 				}
 				btc = ihm->btnCalquesSelection;
 
-				if(isOnButton(ihm->rstContraste, posX-ihm->windowWidth, posY)) {
+				if (isOnButton(ihm->rstContraste, posX - ihm->windowWidth,
+						posY)) {
 					xContraste = 0;
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					if(ihm->sliderContraste->posSlider<100) {
-						if(existLUTCalqueType(c, dimcon)) {
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
+					if (ihm->sliderContraste->posSlider < 100) {
+						if (existLUTCalqueType(c, dimcon)) {
 							printf("Il existe\n");
-							removeLUTByType(c->listLuts,dimcon);
+							removeLUTByType(&(c->listLuts), dimcon);
+							LUT* tmp = c->listLuts;
+							while (tmp != NULL) {
+								printf("lut dimcon slider %d\n", tmp->type);
+								tmp = tmp->next;
+								if (tmp == c->listLuts) {
+									printf("egale");
+									break;
+								}
+							}
+
 						}
 					} else {
-						if(existLUTCalqueType(c, addcon)) {
+						if (existLUTCalqueType(c, addcon)) {
 							printf("Il existe\n");
-							removeLUTByType(c->listLuts,addcon);
+							removeLUTByType(&(c->listLuts), addcon);
+							LUT* tmp = c->listLuts;
+							while (tmp != NULL) {
+								printf("lut addcon slider%d\n", tmp->type);
+								tmp = tmp->next;
+								if (tmp == c->listLuts) {
+									printf("egale");
+									break;
+								}
+							}
+
 						}
 					}
-					ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos;
+					ihm->sliderContraste->posSlider =
+							ihm->sliderContraste->startPos;
 					printf("reset contraste\n");
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
 
-				if(isOnButton(ihm->rstLuminosite, posX-ihm->windowWidth, posY)) {
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					printf("ID DU CALQUE COURRANT %d\n",c->id);
-					if(c!=NULL) {
+				if (isOnButton(ihm->rstLuminosite, posX - ihm->windowWidth,
+						posY)) {
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
+					printf("ID DU CALQUE COURRANT %d\n", c->id);
+					if (c != NULL) {
 						xLuminosite = 0;
-						if(existLUTCalqueType(c, addlum)) {
+						if (existLUTCalqueType(c, addlum)) {
 							printf("Il existe\n");
-							removeLUTByType(c->listLuts,addlum);
+							removeLUTByType(&(c)->listLuts, addlum);
+							LUT* tmp = c->listLuts;
+							while (tmp != NULL) {
+								printf("lut %d\n", tmp->type);
+								tmp = tmp->next;
+								if (tmp == c->listLuts) {
+									printf("egale");
+									break;
+								}
+							}
 						}
-						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
+						ihm->sliderLuminosite->posSlider =
+								ihm->sliderLuminosite->startPos;
 						printf("reset lum\n");
-						eventButtonCalque(img,ihm,ihm->currentCalque);
+						eventButtonCalque(img, ihm, ihm->currentCalque);
 						dessinIHM(ihm, img, framebuffer);
 						nextFrame(framebuffer, screen);
 					}
 				}
 
-				if(isOnButton(ihm->rstAlpha, posX-ihm->windowWidth, posY)) {
+				if (isOnButton(ihm->rstAlpha, posX - ihm->windowWidth, posY)) {
 					xOpacite = 0;
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
 					c->alpha = 1;
-					ihm->sliderOpacite->posSlider = ihm->sliderOpacite->startPos;
+					ihm->sliderOpacite->posSlider =
+							ihm->sliderOpacite->startPos;
 					printf("reset alpha\n");
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
-
 
 				break;
 
 			case SDL_MOUSEBUTTONUP:
 				//modification luminosit�
-				if(luminositeCheck==1) {
-					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
-					if(existLUTCalqueType(c, addlum))
-						removeLUTByType(c->listLuts,addlum);
-					addLUTCalqueById(img, ihm->currentCalque, addlum, ihm->sliderLuminosite->posSlider-100);
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+				if (luminositeCheck == 1) {
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
+					if (existLUTCalqueType(c, addlum)) {
+						removeLUTByType(&(c->listLuts), addlum);
+						LUT* tmp = c->listLuts;
+						while (tmp != NULL) {
+							printf("lut lum %d\n", tmp->type);
+							tmp = tmp->next;
+							if (tmp == c->listLuts) {
+								printf("egale");
+								break;
+							}
+						}
+					}
+					addLUTCalqueById(img, ihm->currentCalque, addlum,
+							ihm->sliderLuminosite->posSlider - 100);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
 				//modificatoin du contraste
-				if(contrasteCheck==1) {
-					Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
-					if(existLUTCalqueType(c, addcon))
-						removeLUTByType(c->listLuts,addcon);
-					if(existLUTCalqueType(c, dimcon))
-						removeLUTByType(c->listLuts, dimcon);
+				if (contrasteCheck == 1) {
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
+					if (existLUTCalqueType(c, addcon)){
+						removeLUTByType(&(c->listLuts), addcon);
+						LUT* tmp = c->listLuts;
+						while (tmp != NULL) {
+							printf("lut addcontraste %d\n", tmp->type);
+							tmp = tmp->next;
+							if (tmp == c->listLuts) {
+								printf("egale");
+								break;
+							}
+						}
+
+					}
+					if (existLUTCalqueType(c, dimcon)){
+						removeLUTByType(&(c->listLuts), dimcon);
+						LUT* tmp = c->listLuts;
+						while (tmp != NULL) {
+							printf("lut dimcon %d\n", tmp->type);
+							tmp = tmp->next;
+							if (tmp == c->listLuts) {
+								printf("egale");
+								break;
+							}
+						}
+
+					}
 					int contraste = ihm->sliderContraste->posSlider - 100;
-					if(contraste < 0) {
-						addLUTCalqueById(img, ihm->currentCalque, dimcon, 100 - -1*contraste);
+					if (contraste < 0) {
+						addLUTCalqueById(img, ihm->currentCalque, dimcon,
+								100 - -1 * contraste);
 					} else {
-						addLUTCalqueById(img, ihm->currentCalque, addcon, contraste);
+						addLUTCalqueById(img, ihm->currentCalque, addcon,
+								contraste);
 					}
 
-
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
 
-				if(opaciteCheck == 1) {
-					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					c->alpha = (float)ihm->sliderOpacite->posSlider/100;
+				if (opaciteCheck == 1) {
+					Calque* c = getCalqueById(img->listCalques,
+							ihm->currentCalque);
+					c->alpha = (float) ihm->sliderOpacite->posSlider / 100;
 					printf("alpha : %f\n", c->alpha);
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
@@ -363,25 +432,25 @@ int main(int argc, char** argv) {
 }
 
 // case SDL_KEYDOWN:
-                // if(e.key.keysym.sym == ':') {
-                //  keyboard[iterateurKeyboard] = 47;
-                // } else if(e.key.keysym.sym == 13) {
-                //  keyboard[iterateurKeyboard]=46;
-                //  keyboard[iterateurKeyboard+1]=112;
-                //  keyboard[iterateurKeyboard+2]=112;
-                //  keyboard[iterateurKeyboard+3]=109;
-                //  char *tmp = strdup(keyboard);
-                //  strcpy(keyboard, "images/");
-                //  strcat(keyboard, tmp);
-                //  printf("%s\n",keyboard);
-                //  strcpy(keyboard,"");
-                //  iterateurKeyboard = 0;
-                //  free(tmp);
-                //  // char * nomImage = strcat("images/",keyboard);
-                //  // nomImage = strcat(nomImage,".ppm");
-                // } else{
-                //  keyboard[iterateurKeyboard] = e.key.keysym.sym;
-                // }
-                // iterateurKeyboard++;
-            //     break;
-            // }
+// if(e.key.keysym.sym == ':') {
+//  keyboard[iterateurKeyboard] = 47;
+// } else if(e.key.keysym.sym == 13) {
+//  keyboard[iterateurKeyboard]=46;
+//  keyboard[iterateurKeyboard+1]=112;
+//  keyboard[iterateurKeyboard+2]=112;
+//  keyboard[iterateurKeyboard+3]=109;
+//  char *tmp = strdup(keyboard);
+//  strcpy(keyboard, "images/");
+//  strcat(keyboard, tmp);
+//  printf("%s\n",keyboard);
+//  strcpy(keyboard,"");
+//  iterateurKeyboard = 0;
+//  free(tmp);
+//  // char * nomImage = strcat("images/",keyboard);
+//  // nomImage = strcat(nomImage,".ppm");
+// } else{
+//  keyboard[iterateurKeyboard] = e.key.keysym.sym;
+// }
+// iterateurKeyboard++;
+//     break;
+// }

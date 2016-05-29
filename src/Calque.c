@@ -351,18 +351,9 @@ void freeCalque(Calque* c) {
 		free(c->pixels);
 		c->pixels = NULL;
 	}
-	freeLUT(&(c)->listLuts);
+	freeLUT(&(c->listLuts));
 	printf("FreeCalque numero : %d OK\n", id);
 }
-
-//void freeCalque_r(Calque* c) {
-//	Calque *next, *tmp = c;
-//	while(c != NULL){
-//		next = c->next;
-//		freeCalque(tmp);
-//		tmp = next;
-//	}
-//}
 
 void freeCalque_r(Calque* c) {
 	if (c == NULL) {
