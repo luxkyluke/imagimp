@@ -222,7 +222,9 @@ void viderLUT (LUT* liste){
 		return;
     LUT *it, *next;
 
-    for ( it = liste->next; it != NULL &&  it != liste; it = next ){
+    for ( it = liste->next; it != liste; it = next ){
+    	if(!it)
+    		break;
     	int type = it->type;
         next = it->next;
         free(it);
