@@ -213,9 +213,7 @@ int main(int argc, char** argv) {
 					opaciteCheck = 1;
 
 				// Ajouter un nouveau calque.
-				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)
-						== 1) {
-					printf("Il est sur le calque.\n");
+				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)== 1) {
 					addNewCalque(img->listCalques, 1);
 				}
 
@@ -228,6 +226,11 @@ int main(int argc, char** argv) {
 					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
 
 					addButtonCalque(ihm, id);
+				}
+
+				// Sauvegarder une image.
+				if (isOnButton(ihm->btnSave, posX - ihm->windowWidth, posY)== 1) {
+
 				}
 
 				// Supprimer un calque.

@@ -118,6 +118,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->sliderOpacite       = makeSlider(100,360,100,opacite,"opacite");
     ihm->btnCalque           = makeButton(190,40,50,560,"Nouveau calque",calque);
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
+    ihm->btnSave             = makeButton(190,40,50,680,"Enr. image",save);
     ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
     ihm->btnCalquesSelection = makeButtonCalque(1);
 
@@ -253,6 +254,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	drawSlider(ihm->sliderOpacite);
 	DessinButton(ihm->btnCalque);
 	DessinButton(ihm->btnImage);
+    DessinButton(ihm->btnSave);
     DessinButton(ihm->btnInvert);
 
     DessinButton(ihm->rstLuminosite);

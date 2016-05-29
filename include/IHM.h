@@ -8,7 +8,7 @@
 #include "Image.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb} BtnName;
+typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb,save} BtnName;
 
 
 typedef struct Slider{
@@ -48,15 +48,17 @@ typedef struct IHM{
     Slider*  sliderOpacite;
     Button*  btnCalque;
     Button*  btnImage;
-    Button*  btnDelete;
-    Button*  btnEffetNB;
-    Button*  btnEffetSepia;
-    Button*  btnInvert;
+    Button*  btnSave;
+
     ButtonCalque*  btnCalquesSelection;
 
     Button*  rstContraste;
     Button*  rstLuminosite;
     Button*  rstAlpha;
+    Button*  btnDelete;
+    Button*  btnEffetNB;
+    Button*  btnEffetSepia;
+    Button*  btnInvert;
 
 } IHM;
 
