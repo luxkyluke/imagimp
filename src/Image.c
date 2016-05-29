@@ -63,6 +63,7 @@ void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 		return;
 	Calque* c = getCalqueById(img->listCalques, id);
 	addLUTCalque(c, lut, val);
+
 }
 
 void drawImage(Image* img, SDL_Surface* framebuffer) {

@@ -67,7 +67,7 @@ Calque* copyCalque(Calque *c) {
 					c->pixels[j][i].g, c->pixels[j][i].b);
 		}
 	}
-	copie->listLuts = copyLUT(c->listLuts);
+	copie->listLuts = copyLUT_r(c->listLuts);
 	return copie;
 }
 
@@ -159,10 +159,9 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	case aucun:
 		break;
 	}
-	l->type = lut;
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
-	addLUT(c->listLuts, l->lut);
+	addLUT(c->listLuts, l->lut, lut);
 }
 
 void removeCalque(Calque* c) {

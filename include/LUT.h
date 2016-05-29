@@ -17,11 +17,12 @@ typedef struct LUT{
 void initLUT(int* lut);
 LUT* makeLUT();
 bool LUTIsEmpty(LUT* list);
-void addLUT(LUT* list, int lut[256]);
+void addLUT(LUT* list, int lut[256], LutOption type);
 void deleteLUT(LUT* list);
 void removeLUTByType(LUT* l, LutOption type);
 bool existLUTByType(LUT* l, LutOption type);
 LUT* copyLUT(LUT* l);
+LUT* copyLUT_r(LUT* l);
 
 void INVERT(LUT* L);
 void ADDLUM(LUT* L, int l);

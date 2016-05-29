@@ -25,8 +25,6 @@ static unsigned int WINDOW_HEIGHT = 600;
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 
-#define PATH_IMG "images/"
-
 
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen){
 	/* On copie le framebuffer ï¿½ l'ï¿½cran */
@@ -46,12 +44,12 @@ int main(int argc, char** argv) {
 	}
 	int nb_source = 6;
 	const char *tab_source_img[nb_source];
-	tab_source_img[0] = "space";
-	tab_source_img[1] = "tarte";
-	tab_source_img[2] = "coquine";
-	tab_source_img[3] = "cute";
-	tab_source_img[4] = "pink_floyd";
-	tab_source_img[5] = "lake";
+	tab_source_img[0] = "images/space.ppm";
+	tab_source_img[1] = "images/tarte.ppm";
+	tab_source_img[2] = "images/coquine.ppm";
+	tab_source_img[3] = "images/cute.ppm";
+	tab_source_img[4] = "images/pink_floyd.ppm";
+	tab_source_img[5] = "images/lake.ppm";
 	int id_source=0;
 
 	IHM*ihm = makeIHM(800, 600, 300, 200);
@@ -111,7 +109,7 @@ int main(int argc, char** argv) {
 //	addLUT(l, l->lut);
 
 
-//	addLUTCalqueById(img, idC1, dimcon, 40);
+	addLUTCalqueById(img, idC1, dimcon, 40);
 
 	//addEffetCalqueById(img, idCalqueImg2, sepia);
 //	noirEtBlanc(img->calque_resultat);
@@ -230,17 +228,11 @@ int main(int argc, char** argv) {
 				}
 				//charger image
 				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
-					char* path = PATH_IMG;
+
 					if(id_source >= nb_source)
 						break;
-					const char* name = tab_source_img[id_source++];
-					printf("%s\n",name);
-					printf("%s\n",path);
-					strcat(path, name);
-					printf("%s\n",path);
-					strcat(path, ".ppm");
-					printf("%s\n",path);
-//					int id = chargerImage(img, path, 1600, 1200, 1.);
+					const char* name_fichier = tab_source_img[id_source++];
+//					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
 
 //					addButtonCalque(ihm, id);
 //					printf("%d\n", id);
