@@ -258,10 +258,16 @@ int main(int argc, char** argv) {
 				if(isOnButton(ihm->rstContraste, posX-ihm->windowWidth, posY)) {
 					xContraste = 0;
 					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-					if(ihm->sliderLuminosite->posSlider<100) {
-						removeLUTByType(c->listLuts, dimcon);
+					if(ihm->sliderContraste->posSlider<100) {
+						if(existLUTCalqueType(c, dimcon)) {
+							printf("Il existe\n");
+							removeLUTByType(c->listLuts,dimcon);
+						}
 					} else {
-						removeLUTByType(c->listLuts, addcon);
+						if(existLUTCalqueType(c, addcon)) {
+							printf("Il existe\n");
+							removeLUTByType(c->listLuts,addcon);
+						}
 					}
 					ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos;
 					printf("reset contraste\n");
@@ -275,23 +281,9 @@ int main(int argc, char** argv) {
 					printf("ID DU CALQUE COURRANT %d\n",c->id);
 					if(c!=NULL) {
 						xLuminosite = 0;
-						LUT* l_tmp = c->listLuts;
-						while(l_tmp != NULL){
-							printf("%d \n", l_tmp->type);
-							l_tmp=l_tmp->next;
-							if(l_tmp==c->listLuts) {
-								break;
-							}
-						}
-						// removeLUTByType(c->listLuts, addlum);
-						LUT* tmp = c->listLuts;
-						freeLUT(&tmp);
-						while(tmp != NULL){
-							printf("%d \n", tmp->type);
-							tmp=tmp->next;
-							if(tmp==c->listLuts) {
-								break;
-							}
+						if(existLUTCalqueType(c, addlum)) {
+							printf("Il existe\n");
+							removeLUTByType(c->listLuts,addlum);
 						}
 
 						ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
