@@ -85,9 +85,9 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
 void eventButtonCalque(Image* img, IHM* ihm, int id);
-bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider);
-bool resetContraste(Image* img, IHM* ihm);
-void resetOpacite(Image* img, IHM* ihm, Slider* slider);
+bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider, bool resetSlider);
+bool resetContraste(Image* img, IHM* ihm, bool resetSlider);
+void resetOpacite(Image* img, IHM* ihm, Slider* slider, bool resetSlider);
 void switchInvert(Image* img, IHM* ihm);
 void switchFusion(Calque*c);
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen);

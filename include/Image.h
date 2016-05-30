@@ -26,7 +26,7 @@ void addEffetCalqueById(Image* img, int id, Effet effet);
 void appliqueAllLUTCalqueById(Image* img, int id);
 void addLUTCalqueById(Image* img, int id, LutOption lut, int val);
 void fusionnerCalquesImage(Image* img);
-void resetOpacityCalqueById(Image* img, int id);
+void resetOpacityCalqueById(Image* img, int id, bool resetSlider);
 void changeFusionClaqueToAdditive(Image* img, int id);
 void switchEffectById(Image * img, int id, Effet effet);
 void removeClaqueById(Image* img, int id);
