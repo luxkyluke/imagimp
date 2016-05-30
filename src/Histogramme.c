@@ -105,7 +105,6 @@ void drawHistogramme(Histogramme* histogramme) {
 	glTranslatef(20,120,0);
 	glRotatef(180,0,0,1);
 	glScalef(-1,1,1);
-	// glTranslatef(200,200,0);
 	for (i = 0; i < TAILLE_TAB; i++) {
 		glColor4f(0., 0., 0.,1);
 		glLineWidth(1);

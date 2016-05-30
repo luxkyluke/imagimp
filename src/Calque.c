@@ -71,36 +71,6 @@ Calque* copyCalque(Calque *c) {
 	return copie;
 }
 
-Calque* getNextCalque(Calque* c) {
-	if (!c)
-		return NULL;
-	if (!c->next)
-		return c;
-	return c->next;
-}
-
-Calque* getPrevCalque(Calque* c) {
-	if (!c)
-		return NULL;
-	if (!c->prev)
-		return c;
-	return c->prev;
-}
-
-void setCalqueAlpha(Calque* c, float alpha) {
-	c->alpha = alpha;
-}
-
-void setFusion(Calque* c, Fusion fusion) {
-	c->fusion = fusion;
-}
-
-bool calqueIsEmpty(Calque* c) {
-	if (!c)
-		return false;
-	return (c->listLuts == NULL);
-}
-
 Calque* addNewCalque(Calque* c, float op) {
 	if (c == NULL)
 		return 0;
@@ -120,12 +90,6 @@ void addCalque(Calque* c, Calque* c2) {
 	}
 	c2->prev = last;
 	last->next = c2;
-}
-
-void removeLUTCalqueByType(Calque* c, LutOption type){
-	if(!c)
-		return;
-	removeLUTByType(c->listLuts, type);
 }
 
 bool existLUTCalqueType(Calque *c, LutOption type){
@@ -177,10 +141,6 @@ void removeCalque(Calque* c) {
 	c->next = NULL;
 	c->prev = NULL;
 	c = NULL;
-
-	// je supprime le 6,
-	// prev non nul, le next du 5 devient le 7.
-	// next non nul, le prev du 5 devient le 5.
 }
 
 int chargerImageCalque(Calque* c, const char * pathImg, int width, int height,
@@ -205,20 +165,6 @@ int chargerImageCalque(Calque* c, const char * pathImg, int width, int height,
 	return calque_tmp->id;
 }
 
-//Pixel getPixelFusionMult(Calque* c, int i, int j){
-//	if(c->next == NULL){
-//		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
-//	}
-//	return addPixel(c->pixels[i][j], multiPixelFloat(getPixelFusionMult(c->next, i, j), (1. - c->alpha)));
-//}
-//
-//Pixel getPixelFusionAdd(Calque* c, int i, int j){
-//	if(c->next == NULL){
-//		return multiPixelFloat(multiPixelFloat(c->pixels[i][j],  c->alpha), c->pixels[i][j].alpha);
-//	}
-//	return addPixel(c->pixels[i][j], getPixelFusionAdd(c->next, i, j));
-//}
-
 Calque* appliquerEffet(Calque* c) {
 	if (!c)
 		return NULL;
@@ -236,12 +182,6 @@ Calque* appliquerEffet(Calque* c) {
 	ret->next = c->next;
 	ret->prev = c->prev;
 	return ret;
-}
-
-void fusionCalqueDefinitive(Calque **calque) {
-	Calque *next = (*calque)->next;
-	*calque = fusionnerCalque(*calque);
-	freeCalque_r(next);
 }
 
 void fusionnerMultiplicationCalque2a2(Calque *ret, Calque *c2) {
@@ -330,14 +270,6 @@ Calque* appliqueLUT(Calque* calque, LUT* L) {
 	return ret;
 }
 
-//Calque* appliquerLUTById(Calque* calque, int id) {
-//	if (!calque)
-//		return NULL;
-//	LUT* l = getLUTById(calque->listLuts, id);
-//	Calque *c = appliqueLUT(calque, l);
-//	return c;
-//}
-
 Calque* appliquerAllLUT(Calque* calque) {
 	if (!calque) {
 		return NULL;
@@ -382,8 +314,6 @@ void saveCalque(Calque* c, char *pathImg) {
 	if (!c)
 		return;
 	c = fusionnerCalque(c);
-//	printf("%d, %d, %d\n", c->pixels[50][50].r, c->pixels[50][50].g, c->pixels[50][50].b);
-//	fflush(stdin);
 	unsigned char *rgb = malloc(
 			c->width * c->height * 3 * sizeof(unsigned char));
 	int i, j;
@@ -408,10 +338,6 @@ void drawCalque(Calque *c) {
 			int r = c->pixels[j][i].r;
 			int g = c->pixels[j][i].g;
 			int b = c->pixels[j][i].b;
-			//Uint32  color = SDL_MapRGB(framebuffer->format, r, g, b);
-			//Uint32  color = SDL_MapRGB(framebuffer->format, 0, 0, 0);
-			// PutPixel(framebuffer, j, i, color);
-
 			glBegin(GL_POINTS);
 			glColor3f(r / 255., g / 255., b / 255.);
 			if (c->width > WINDOW_WIDTH || c->height > WINDOW_HEIGHT)

@@ -22,39 +22,11 @@ void addEffetCalqueById(Image* img, int id, Effet effet) {
 	c->effet = effet;
 }
 
-void appliqueLUTCalqueByIds(Image* img, int calque_id, int lut_id) {
-//	if (!img)
-//		return;
-//	Calque* c = copyCalque(getCalqueById(img->listCalques, calque_id));
-//	if (!c)
-//		return;
-//	appliquerLUTById(c, lut_id);
-//	if (img->calque_resultat)
-//		freeCalque(img->calque_resultat);
-//	img->calque_resultat = c;
-}
-
-void appliqueAllLUTCalqueById(Image* img, int id) {
-	if (!img || !img->listCalques)
-		return;
-
-	//Calque* c = copyCalque(getCalqueById(img->listCalques, id));
-	Calque* c = getCalqueById(img->listCalques, id);
-	appliquerAllLUT(c);
-	fusionnerCalquesImage(img);
-	//img->calque_resultat = c;
-//	addCalque(img->calque_resultat, c);
-
-}
-
 void drawImageHistogramme(Image* img) {
 	if (!img || !img->listCalques) {
 		printf("Impossible d'afficher l'image ! Image vide ou NULL\n");
 		return;
 	}
-	//if (!img->calque_resultat)
-	//updateImage(img);
-
 	drawCalqueHistogramme(img->calque_resultat);
 }
 
@@ -79,9 +51,6 @@ void drawImage(Image* img, SDL_Surface* framebuffer) {
 		printf("Impossible d'afficher l'image ! Image vide ou NULL\n");
 		return;
 	}
-//	if (!img->calque_resultat)
-//		updateImage(img);
-
 	drawCalque(img->calque_resultat);
 }
 
@@ -91,29 +60,10 @@ void freeImage(Image* img) {
 		freeCalque(img->calque_resultat);
 }
 
-//void fusionnerAllCalques(Image* img) {
-//	fusionCalqueDefinitive(&img->listCalques);
-//}
-
 void saveImage(Image* img, char* savePath) {
 	saveCalque(img->listCalques, savePath);
 }
 
-void saveCalqueById(Image *img, int id, char* savePath) {
-	if (!img)
-		return;
-	Calque* c = getCalqueById(img->listCalques, id);
-	if (c)
-		saveCalque(c, savePath);
-}
-
-void changeFusionClaqueToAdditive(Image* img, int id) {
-	if (!img)
-		return;
-	Calque* c = getCalqueById(img->listCalques, id);
-	if (c)
-		setFusion(c, additive);
-}
 
 void fusionnerCalquesImage(Image* img) {
 	if (!img)
@@ -133,7 +83,6 @@ void fusionnerCalquesImage(Image* img) {
 	}
 	else{
 		(*c) = fusionnerCalque(img->listCalques);
-		printf("fusion salope\n");
 	}
 
 }
@@ -169,7 +118,6 @@ void afficheCalqueById(Image* img, int calque_id) {
 	}
 
 	calculHistogramme(img->calque_resultat);
-
 }
 
 void removeClaqueById(Image* img, int id) {

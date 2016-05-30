@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 	tab_source_img[3] = "images/cute.ppm";
 	tab_source_img[4] = "images/pink_floyd.ppm";
 	tab_source_img[5] = "images/lake.ppm";
-	int id_source = 0;
+	int id_source = 3;
 
 	IHM*ihm = makeIHM(800, 600, 300, 200);
 
@@ -50,8 +50,7 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
-	// reshape(WINDOW_WIDTH,WINDOW_HEIGHT,0);
-	// reshape(WINDOW_WIDTH_PARAM,WINDOW_HEIGHT, WINDOW_WIDTH);
+
 	/* Ouverture d'une fenÃªtre et crÃ©ation d'un contexte OpenGL */
 	SDL_WM_SetCaption("Imagimp", NULL);
 
@@ -75,47 +74,14 @@ int main(int argc, char** argv) {
 	initGlut(argc, argv);
 
 	Image* img = makeImage(800, 600);
-	int idC1, idC2; //, idC3, idC4, idC5, idC6;
-	// Image *img;
-	// makeImage(img, 512, 512);
+	int idC1, idC2;
 
-//	idC2 = chargerImage(img, "images/lake.ppm", 800, 600, 0.5);
-//	idC1 = chargerImage(img, "images/space.ppm", 800, 600, 0.5);
-	// chargerImage(img, "images/tarte.ppm", 800, 600, 0.2);
-	// chargerImage(img, "images/pink_floyd.ppm", 800, 600, 0.2);
-//	idC4 = chargerImage(img, "images/coquine.ppm", 800, 600, 0.2);
-//	idC5 = chargerImage(img, "images/cute.ppm", 800, 600, 0.2);
-//	idC6 = chargerImage(img, "images/lake.ppm", 800, 600, 0.3);
-
-//	changeFusionClaqueToAdditive(img, idC2);
-
-//	LUT* l = makeLUT();
-//	INVERT(l);
-//	addLUT(l, l->lut);
-
-	//addLUTCalqueById(img, idC2, addcon, 40);
-
-	//addEffetCalqueById(img, idCalqueImg2, sepia);
-//	noirEtBlanc(img->calque_resultat);
-
-	//idLut2 = addLUTCalqueById(img, idCalqueImg, invert, 0);
-//	idLut1 = addLUTCalqueById(img, idCalqueImg, addlum, 100);
-//	appliqueLUTCalqueByIds(img, idCalqueImg, idLut1);
-	//appliqueAllLUTCalqueById(img, idCalqueImg);
-//	idLut2 = addLUTCalqueById(img, idCalqueImg2, invert, 0);
-//	idLut1 = addLUTCalqueById(img, idCalqueImg1, addlum, 100);
-
-
-//		for(int i= 0; i<256; i++){
-//		printf("lut[%d] = %d\n", i, LUT->lut[i]);
-//	}*/
-
-	//freeLUT(LUT)LUT* copyLUT(LUT* l);
-	// chargerImage(&img, "images/Baboon.512.ppm", 512, 512);
+	idC2 = chargerImage(img, "images/lake.ppm", 800, 600, 0.5);
+	idC1 = chargerImage(img, "images/space.ppm", 800, 600, 0.5);
+	chargerImage(img, "images/tarte.ppm", 800, 600, 0.2);
 	fusionnerCalquesImage(img);
-	// afficheCalqueById(img, 2);
 
-	int loop = 1;	//, current = 0;
+	int loop = 1;
 	int posX = 0, posY = 0;
 
 	initBtnIHM(ihm, img->listCalques);
@@ -124,7 +90,7 @@ int main(int argc, char** argv) {
 	bool change = true;
 
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
-			xContraste = 0, xOpacite = 0, opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
+			xContraste = 0, xOpacite = 0, opaciteCheck = 0;
 
 	while (loop) {
 
@@ -137,20 +103,13 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		/* Nettoyage du framebuffer */
-		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-		//if modif de l'utilisateur
-//		if()
-//		updateImage(img);
 		if (change) {
 			dessinIHM(ihm, img, framebuffer);
 			nextFrame(framebuffer, screen);
 		}
 
-		// Calque * currentCalque = img->listCalques;
 		SDL_Event e;
 		change = false;
-//		printf("Affichage\n");
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) {
 				loop = 0;
@@ -161,7 +120,6 @@ int main(int argc, char** argv) {
 			case SDL_MOUSEMOTION:
 				posX = e.button.x;
 				posY = e.button.y;
-				click = false;
 				if (luminositeCheck == 1 && posX >= WINDOW_WIDTH + 50
 						&& posX <= WINDOW_WIDTH + 250) {
 					xLuminosite = WINDOW_WIDTH + 150 - posX;
@@ -194,7 +152,7 @@ int main(int argc, char** argv) {
 
 			case SDL_MOUSEBUTTONDOWN:
 				change = true;
-				click = false;
+
 				printf("posX : %d posY : %d\n", posX, posY);
 
 				// Changer le check des sliders.
@@ -321,7 +279,6 @@ int main(int argc, char** argv) {
 
 			case SDL_MOUSEBUTTONUP:
 				//modification luminosité
-				click = false;
 				if (luminositeCheck == 1) {
 					resetLUT(img, ihm, addlum, ihm->sliderLuminosite,false);
 					addLUTCalqueById(img, ihm->currentCalque, addlum,ihm->sliderLuminosite->posSlider - 100);
@@ -338,7 +295,6 @@ int main(int argc, char** argv) {
 
 				} else if (opaciteCheck == 1) {
 					modifyOppacityCalqueById(img, ihm->currentCalque, ihm->sliderOpacite->posSlider/100.);
-					resetOpacityCalqueById(img, ihm->currentCalque);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -346,7 +302,6 @@ int main(int argc, char** argv) {
 
 				luminositeCheck = 0;
 				contrasteCheck = 0;
-//				saturationCheck = 0;
 				opaciteCheck = 0;
 				break;
 			}
@@ -358,27 +313,3 @@ int main(int argc, char** argv) {
 
 	return EXIT_SUCCESS;
 }
-
-// case SDL_KEYDOWN:
-// if(e.key.keysym.sym == ':') {
-//  keyboard[iterateurKeyboard] = 47;
-// } else if(e.key.keysym.sym == 13) {
-//  keyboard[iterateurKeyboard]=46;
-//  keyboard[iterateurKeyboard+1]=112;
-//  keyboard[iterateurKeyboard+2]=112;
-//  keyboard[iterateurKeyboard+3]=109;
-//  char *tmp = strdup(keyboard);
-//  strcpy(keyboard, "images/");
-//  strcat(keyboard, tmp);
-//  printf("%s\n",keyboard);
-//  strcpy(keyboard,"");
-//  iterateurKeyboard = 0;
-//  free(tmp);
-//  // char * nomImage = strcat("images/",keyboard);
-//  // nomImage = strcat(nomImage,".ppm");
-// } else{
-//  keyboard[iterateurKeyboard] = e.key.keysym.sym;
-// }
-// iterateurKeyboard++;
-//     break;
-// }
