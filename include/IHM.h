@@ -78,20 +78,17 @@ void changeContraste(Image *img,IHM *ihm);
 ButtonCalque* makeButtonCalque(int id, int pos);
 void addButtonCalque(IHM* ihm,int id);
 void removeButtonCalque(IHM* ihm, int id);
-
-void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,
-		int yViewport);
+void reshape(unsigned int windowWidth, unsigned int windowHeight, int xViewport,int yViewport);
 void setVideoMode(unsigned int windowWidth, unsigned int windowHeight);
-
 Slider* makeSlider(int width, int posY, int posSlider, SliderName name, char* title);
 Button* makeButton(int width, int height, int posX, int posY, char* title, BtnName name);
 IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight);
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
 void eventButtonCalque(Image* img, IHM* ihm, int id);
-bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider);
-bool resetContraste(Image* img, IHM* ihm);
-void resetOpacite(Image* img, IHM* ihm, Slider* slider);
+bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider, bool resetSlider);
+bool resetContraste(Image* img, IHM* ihm, bool resetSlider);
+void resetOpacite(Image* img, IHM* ihm, Slider* slider, bool resetSlider);
 void switchInvert(Image* img, IHM* ihm);
 void switchFusion(Calque*c);
 void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen);

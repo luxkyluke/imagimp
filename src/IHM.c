@@ -353,25 +353,27 @@ void eventButtonCalque(Image* img, IHM* ihm, int id) {
     }
 }
 
-void resetOpacite(Image* img, IHM* ihm, Slider* slider) {
+void resetOpacite(Image* img, IHM* ihm, Slider* slider, bool resetSlider) {
     Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
     c->alpha = 1;
-   slider->posSlider = slider->startPos;
+    if(resetSlider==true)
+        slider->posSlider = slider->startPos;
 }
 
-bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider){
+bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider, bool resetSlider){
     Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
 	if(existLUTCalqueType(c, lut)) {
 		removeLUTByType(c->listLuts, lut);
-		slider->posSlider = slider->startPos;
+        if(resetSlider==true)
+		    slider->posSlider = slider->startPos;
 		return true;
 	}
 	return false;
 }
 
-bool resetContraste(Image* img, IHM* ihm){
-	return (resetLUT(img, ihm, addcon, ihm->sliderContraste)
-			|| resetLUT(img, ihm, dimcon, ihm->sliderContraste));
+bool resetContraste(Image* img, IHM* ihm, bool resetSlider){
+	return (resetLUT(img, ihm, addcon, ihm->sliderContraste, resetSlider)
+    || resetLUT(img, ihm, dimcon, ihm->sliderContraste, resetSlider));
 }
 
 void switchInvert(Image* img, IHM* ihm) {

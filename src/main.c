@@ -254,7 +254,7 @@ int main(int argc, char** argv) {
 				if (isOnButton(ihm->rstContraste, posX - ihm->windowWidth,
 						posY)) {
 					xContraste = 0;
-					resetContraste(img, ihm);
+					resetContraste(img, ihm,true);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -265,7 +265,7 @@ int main(int argc, char** argv) {
 				else if (isOnButton(ihm->rstLuminosite, posX - ihm->windowWidth,
 						posY)) {
 					xLuminosite = 0;
-					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
+					resetLUT(img, ihm, addlum, ihm->sliderLuminosite,true);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -276,7 +276,7 @@ int main(int argc, char** argv) {
 				else if (isOnButton(ihm->rstAlpha, posX - ihm->windowWidth,
 						posY)) {
 					xOpacite = 0;
-					resetOpacite(img, ihm, ihm->sliderOpacite);
+					resetOpacite(img, ihm, ihm->sliderOpacite,true);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -323,9 +323,8 @@ int main(int argc, char** argv) {
 				//modification luminosité
 				click = false;
 				if (luminositeCheck == 1) {
-					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
-					addLUTCalqueById(img, ihm->currentCalque, addlum,
-							ihm->sliderLuminosite->posSlider - 100);
+					resetLUT(img, ihm, addlum, ihm->sliderLuminosite,false);
+					addLUTCalqueById(img, ihm->currentCalque, addlum,ihm->sliderLuminosite->posSlider - 100);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -333,6 +332,14 @@ int main(int argc, char** argv) {
 				}
 				//modificatoin du contraste
 				else if (contrasteCheck == 1) {
+					resetContraste(img, ihm,false);
+					int contraste = ihm->sliderContraste->posSlider - 100;
+					if (contraste < 0) {
+						addLUTCalqueById(img, ihm->currentCalque, dimcon,
+								100 - -1 * contraste);
+					} else {
+						addLUTCalqueById(img, ihm->currentCalque, addcon,contraste);
+					}
 					changeContraste(img, ihm);
 
 					eventButtonCalque(img, ihm, ihm->currentCalque);
@@ -343,7 +350,7 @@ int main(int argc, char** argv) {
 					Calque* c = getCalqueById(img->listCalques,
 							ihm->currentCalque);
 					c->alpha = (float) ihm->sliderOpacite->posSlider / 100;
-					resetOpacityCalqueById(img, ihm->currentCalque);
+					resetOpacityCalqueById(img, ihm->currentCalque,false);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
