@@ -74,6 +74,7 @@ int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnButton(Button* button, int posX, int posY);
 void initBtnIHM(IHM *ihm, Calque* c);
 void suppButton(IHM* ihm, Image *img);
+void changeContraste(Image *img,IHM *ihm);
 ButtonCalque* makeButtonCalque(int id, int pos);
 void addButtonCalque(IHM* ihm,int id);
 void removeButtonCalque(IHM* ihm, int id);

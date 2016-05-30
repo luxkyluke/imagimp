@@ -286,7 +286,18 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
     DessinButton(ihm->rstLuminosite);
     DessinButton(ihm->rstAlpha);
     DessinButton(ihm->rstContraste);
+}
 
+void changeContraste(Image *img,IHM *ihm){
+	resetContraste(img, ihm);
+	int contraste = ihm->sliderContraste->posSlider - 100;
+	if (contraste < 0) {
+		addLUTCalqueById(img, ihm->currentCalque, dimcon,
+				100 - -1 * contraste);
+	} else {
+		addLUTCalqueById(img, ihm->currentCalque, addcon,
+				contraste);
+	}
 }
 
 ButtonCalque* makeButtonCalque(int id, int pos) {

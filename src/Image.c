@@ -65,6 +65,10 @@ void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 	addLUTCalque(c, lut, val);
 }
 
+void modifyContrasteCalqueById(Image *img, int id, float alpha){
+
+}
+
 void drawImage(Image* img, SDL_Surface* framebuffer) {
 	if (!img || !img->listCalques) {
 		printf("Impossible d'afficher l'image ! Image vide ou NULL\n");

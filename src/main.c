@@ -333,15 +333,8 @@ int main(int argc, char** argv) {
 				}
 				//modificatoin du contraste
 				else if (contrasteCheck == 1) {
-					resetContraste(img, ihm);
-					int contraste = ihm->sliderContraste->posSlider - 100;
-					if (contraste < 0) {
-						addLUTCalqueById(img, ihm->currentCalque, dimcon,
-								100 - -1 * contraste);
-					} else {
-						addLUTCalqueById(img, ihm->currentCalque, addcon,
-								contraste);
-					}
+					changeContraste(img, ihm);
+
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);

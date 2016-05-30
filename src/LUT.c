@@ -111,10 +111,7 @@ void deleteLUT(LUT** list) {
 		(*list)->prev->next = (*list)->next;
 		(*list)->next->prev = (*list)->prev;
 	}
-	free(*list);
-	*list = NULL;
-
-//	freeLUT(list);
+	freeLUT(list);
 }
 
 void INVERT(LUT* L) {
