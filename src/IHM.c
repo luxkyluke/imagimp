@@ -152,11 +152,24 @@ void suppButton(IHM* ihm, Image* img) {
 		afficheCalqueById(img, prevId);
 		printf("tmp : %d\n", tmp->id);
 		removeCalque(tmp);
-		//						removeClaqueById(img, tmp->id);
 
 		freeButtonCalque(ihm, ihm->currentCalque);
-		printf("id current calque : %d\n", prevId);
 		ihm->currentCalque = prevId;
+        ihm->nbButtons-=1;
+        ButtonCalque* b = ihm->btnCalquesSelection;
+        if(b->next!=NULL) {
+            b=b->next;
+            int i=0;
+            while(b!=NULL) {
+                b->pos = i;
+                b->btn->posX = 60*i;
+                i++;
+                if(b->next!=NULL)
+                    b=b->next;
+                else
+                    break;
+            }
+        }
 	}
 }
 
@@ -211,7 +224,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	while (btc != NULL) {
 		// printf("id du button courrant : %d\n",btc->id);
 		glPushMatrix();
-			glTranslatef(btc->btn->posX, btc->btn->posY, 0);
+			glTranslatef(btc->pos*60, btc->btn->posY, 0);
 			glScalef(50, 50, 1);
 			if (btc->btn->isSelected == 0)
 				dessinCarre(0, ColorRGB(0.5, 0.5, 0.5));
@@ -223,7 +236,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 				glColor3d(1, 0, 0);
 				char str[10];
 
-				sprintf(str, "%d", btc->id);
+				sprintf(str, "%d", btc->pos);
 				if (btc->id == 1)
 					vBitmapOutput(0, 0, "F", GLUT_BITMAP_HELVETICA_18);
 				else
@@ -273,7 +286,7 @@ ButtonCalque* makeButtonCalque(int id, int pos) {
 		fprintf(stderr, "Probleme Allocation ButtonCalque\n");
 		return NULL;
 	}
-	buttonCalque->btn = makeButton(50, 50, id * 60, 10, "1", select);
+	buttonCalque->btn = makeButton(50, 50, pos * 60, 10, "1", select);
 	buttonCalque->id  = id;
     buttonCalque->pos = pos;
 	buttonCalque->next = NULL;

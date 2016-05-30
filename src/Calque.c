@@ -433,8 +433,7 @@ Calque* noirEtBlanc(Calque* C) {
 	Calque* filtre = copyCalque(C);
 	for (i = 0; i < C->height; i++) {
 		for (j = 0; j < C->width; j++) {
-			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b)
-					/ 3;
+			val = (C->pixels[j][i].r + C->pixels[j][i].g + C->pixels[j][i].b) / 3;
 			filtre->pixels[j][i].r = val;
 			filtre->pixels[j][i].g = val;
 			filtre->pixels[j][i].b = val;

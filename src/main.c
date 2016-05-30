@@ -225,23 +225,22 @@ int main(int argc, char** argv) {
 				}
 
 				// Sauvegarder une image.
-				else if (isOnButton(ihm->btnSave, posX - ihm->windowWidth, posY)
-						== 1) {
-
+				else if (isOnButton(ihm->btnSave, posX - ihm->windowWidth, posY)== 1) {
+					saveImage(img, SAVE_PATH);
 				}
 
 				// Supprimer un calque.
-				else if (isOnButton(ihm->btnDelete, posX,
-						posY - ihm->windowHeight) == 1) {
+				else if (isOnButton(ihm->btnDelete, posX,posY - ihm->windowHeight) == 1) {
 					suppButton(ihm, img);
 				}
 
 				// Évènements pour tous les boutons de calque.
 				else {
 					while (btc != NULL) {
-						if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)
-								== 1)
+						if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)== 1) {
+							printf("ID DU CAAAAAAAALQUE : %d\n",btc->id);
 							eventButtonCalque(img, ihm, btc->id);
+						}
 
 						if (btc->next != NULL)
 							btc = btc->next;
@@ -321,7 +320,7 @@ int main(int argc, char** argv) {
 				break;
 
 			case SDL_MOUSEBUTTONUP:
-				//modification luminosit�
+				//modification luminosité
 				click = false;
 				if (luminositeCheck == 1) {
 					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
@@ -366,8 +365,6 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
-
-	//saveImage(img, SAVE_PATH);
 	freeImage(img);
 
 	SDL_Quit();
