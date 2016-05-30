@@ -115,6 +115,11 @@ void fusionnerCalquesImage(Image* img) {
 	img->calque_resultat = fusionnerCalque(img->listCalques);
 }
 
+void resetOpacityCalqueById(Image* img, int id){
+	Calque *c = getCalqueById(img->listCalques, id);
+	c->alpha = 1.;
+}
+
 void afficheCalqueById(Image* img, int calque_id) {
 	Calque* calque = getCalqueById(img->listCalques, calque_id);
 

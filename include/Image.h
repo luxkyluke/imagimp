@@ -26,6 +26,7 @@ void addEffetCalqueById(Image* img, int id, Effet effet);
 void appliqueAllLUTCalqueById(Image* img, int id);
 void addLUTCalqueById(Image* img, int id, LutOption lut, int val);
 void fusionnerCalquesImage(Image* img);
+void resetOpacityCalqueById(Image* img, int id);
 void changeFusionClaqueToAdditive(Image* img, int id);
 void removeClaqueById(Image* img, int id);
 void drawImageHistogramme(Image* img);

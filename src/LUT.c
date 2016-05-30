@@ -50,7 +50,7 @@ void removeLUTByType(LUT* l, LutOption type){
 	while (tmp != NULL) {
 		if (tmp->type == type) {
 			printf("delete\n");
-			deleteLUT(tmp);
+			deleteLUT(&tmp);
 			return;
 		}
 		tmp=tmp->next;
@@ -100,21 +100,21 @@ void addLUT(LUT* list, LUT* l, LutOption type){
 //		l->lut[i] = l->lut[i];
 }
 
-void deleteLUT(LUT* list){
-	if (list == NULL)
+void deleteLUT(LUT** list){
+	if (*list == NULL)
 		return;
-	if (LUTIsEmpty(list) == true)
+	if (LUTIsEmpty(*list) == true)
 		return;
-	if ((list)->next == list){
-		list = makeLUT();
+	if ((*list)->next == *list){
+		*list = makeLUT();
 		return;
 	}
 	else{
-		(list)->prev->next = (list)->next;
-		(list)->next->prev = (list)->prev;
+		(*list)->prev->next = (*list)->next;
+		(*list)->next->prev = (*list)->prev;
 	}
-	free(list);
-	list = NULL;
+	free(*list);
+	*list = NULL;
 }
 
 void INVERT(LUT* L){
