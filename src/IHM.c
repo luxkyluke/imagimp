@@ -272,6 +272,15 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	DessinButton(ihm->btnImage);
     DessinButton(ihm->btnSave);
     DessinButton(ihm->btnInvert);
+    Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
+    glPushMatrix();
+    glTranslated(14,535,0);
+    if(c->fusion==additive) {
+    	vBitmapOutput(0, 0, "additive", GLUT_BITMAP_HELVETICA_18);
+    } else {
+    	vBitmapOutput(0, 0, "multiplicative", GLUT_BITMAP_HELVETICA_18);
+    }
+    glPopMatrix();
     DessinButton(ihm->btnFusion);
 
     DessinButton(ihm->rstLuminosite);
