@@ -138,7 +138,7 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	if (!c)
 		return;
 
-	LUT *l = c->listLuts;
+	LUT *l = makeLUT();
 
 	switch (lut) {
 	case invert:
@@ -161,7 +161,7 @@ void addLUTCalque(Calque *c, LutOption lut, int val) {
 	}
 	if (!c->listLuts)
 		c->listLuts = makeLUT();
-	addLUT(c->listLuts, l->lut, lut);
+	addLUT(c->listLuts, l, lut);
 }
 
 void removeCalque(Calque* c) {

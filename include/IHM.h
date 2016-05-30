@@ -6,6 +6,7 @@
 #include "sdl_tools.h"
 #include "LUT.h"
 #include "Image.h"
+#include "bool.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
 typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb,save} BtnName;
@@ -84,8 +85,8 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
 void drawSlider(Slider* slider);
 void freeButtonCalque(IHM* ihm, int id);
 void eventButtonCalque(Image* img, IHM* ihm, int id);
-void resetLuminosite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
-void resetOpacite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
-void resetContraste(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen);
+bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider);
+bool resetContraste(Image* img, IHM* ihm);
+void resetOpacite(Image* img, IHM* ihm, Slider* slider);
 void switchInvert(Image* img, IHM* ihm);
 #endif

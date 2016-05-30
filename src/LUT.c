@@ -43,70 +43,78 @@ bool existLUTByType(LUT* l, LutOption type){
 	return false;
 }
 
-void removeLUTByType(LUT** l, LutOption type){
-	if (!l || LUTIsEmpty(*l))
+void removeLUTByType(LUT* l, LutOption type){
+	if (!l || LUTIsEmpty(l))
 		return;
-	LUT **tmp = l;
-	while (*tmp != NULL) {
-		if ((*tmp)->type == type) {
+	LUT *tmp = l;
+	while (tmp != NULL) {
+		if (tmp->type == type) {
 			printf("delete\n");
 			deleteLUT(tmp);
 			return;
 		}
-		*tmp=(*tmp)->next;
-		if(*tmp == *l)
+		tmp=tmp->next;
+		if(tmp == l)
 			break;
 	}
 }
 
-void addLUT(LUT* list, int lut[256], LutOption type){
-	int i;
-	if (list == NULL)
+void addLUT(LUT* list, LUT* l, LutOption type){
+//	int i;
+	if (!list || !l)
 		return;
-	if (LUTIsEmpty(list)){
+	if(LUTIsEmpty(list)){
 		list->next = list;
 		list->prev = list;
-		for (i = 0; i < 256; i++)
-			list->lut[i] = lut[i];
-		list->type = type;
-		return;
 	}
-	if (list->next == list)	{
-		LUT* newNode = makeLUT();
-		newNode->type = type;
-		newNode->prev = list;
-		newNode->next = list;
-		list->next = newNode;
-		list->prev = newNode;
-		for (i = 0; i < 256; i++)
-			newNode->lut[i] = lut[i];
-		return;
-	}
-	LUT* newNode = makeLUT();
-	newNode->next = list;
-	newNode->type = type;
-	newNode->prev = list->prev;
-	list->prev->next = newNode;
-	list->prev = newNode;
-	for (i = 0; i < 256; i++)
-		newNode->lut[i] = lut[i];
+	l->prev = list;
+	l->next = list->next;
+	list->next->prev = l;
+	list->next = l;
+//	if (LUTIsEmpty(list)){
+//		list->next = list;
+//		list->prev = list;
+//		for (i = 0; i < 256; i++)
+//			list->lut[i] = lut[i];
+//		list->type = type;
+//		return;
+//	}
+//	if (list->next == list)	{
+//		LUT* newNode = makeLUT();
+//		newNode->type = type;
+//		newNode->prev = list;
+//		newNode->next = list;
+//		list->next = newNode;
+//		list->prev = newNode;
+//		for (i = 0; i < 256; i++)
+//			newNode->lut[i] = lut[i];
+//		return;
+//	}
+//	LUT* newNode = makeLUT();
+//	list->next = l;
+//	l->type = type;
+//	l->prev = list->prev;
+//	list->prev->next = l;
+//	list->prev = l;
+//	for (i = 0; i < 256; i++)
+//		l->lut[i] = l->lut[i];
 }
 
-void deleteLUT(LUT** list){
-	if (*list == NULL)
+void deleteLUT(LUT* list){
+	if (list == NULL)
 		return;
-	if (LUTIsEmpty(*list) == true)
+	if (LUTIsEmpty(list) == true)
 		return;
-	if ((*list)->next == *list){
-		*list = makeLUT();
+	if ((list)->next == list){
+		list = makeLUT();
 		return;
 	}
 	else{
-		(*list)->prev->next = (*list)->next;
-		(*list)->next->prev = (*list)->prev;
+		(list)->prev->next = (list)->next;
+		(list)->next->prev = (list)->prev;
 	}
-	free(*list);
-	*list = NULL;
+	free(list);
+	list = NULL;
 }
 
 void INVERT(LUT* L){
@@ -212,12 +220,10 @@ void freeLUT (LUT** liste){
 	printf("FreeLUT type %d OK\n", type);
 }
 
-
 void viderLUT (LUT* liste){
 	if(!liste)
 		return;
     LUT *it, *next;
-
     for ( it = liste->next; it != liste; it = next ){
     	if(it == NULL)
     		break;

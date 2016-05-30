@@ -314,45 +314,25 @@ void eventButtonCalque(Image* img, IHM* ihm, int id) {
     }
 }
 
-void resetLuminosite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen) {
-    Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-    if(c!=NULL) {
-        if(existLUTCalqueType(c, addlum))
-            removeLUTByType(c->listLuts,addlum);
-        ihm->sliderLuminosite->posSlider = ihm->sliderLuminosite->startPos;
-        eventButtonCalque(img,ihm,ihm->currentCalque);
-        dessinIHM(ihm, img, framebuffer);
-        nextFrame(framebuffer, screen);
-    }
-}
-
-void resetOpacite(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen) {
+void resetOpacite(Image* img, IHM* ihm, Slider* slider) {
     Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
     c->alpha = 1;
-    ihm->sliderOpacite->posSlider = ihm->sliderOpacite->startPos;
-    eventButtonCalque(img,ihm,ihm->currentCalque);
-    dessinIHM(ihm, img, framebuffer);
-    nextFrame(framebuffer, screen);
+   slider->posSlider = slider->startPos;
 }
 
-void resetContraste(Image* img, IHM* ihm, SDL_Surface* framebuffer, SDL_Surface* screen){
+bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider){
     Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
-    if(ihm->sliderContraste->posSlider<100) {
-        if(existLUTCalqueType(c, dimcon)) {
-            printf("Il existe\n");
-            removeLUTByType(c->listLuts,dimcon);
-        }
-    } else {
-        if(existLUTCalqueType(c, addcon)) {
-            printf("Il existe\n");
-            removeLUTByType(c->listLuts,addcon);
-        }
-    }
-    ihm->sliderContraste->posSlider = ihm->sliderContraste->startPos;
-    printf("reset contraste\n");
-    eventButtonCalque(img,ihm,ihm->currentCalque);
-    dessinIHM(ihm, img, framebuffer);
-    nextFrame(framebuffer, screen);
+	if(existLUTCalqueType(c, lut)) {
+		removeLUTByType(c->listLuts, lut);
+		slider->posSlider = slider->startPos;
+		return true;
+	}
+	return false;
+}
+
+bool resetContraste(Image* img, IHM* ihm){
+	return (resetLUT(img, ihm, addcon, ihm->sliderContraste)
+			|| resetLUT(img, ihm, dimcon, ihm->sliderContraste));
 }
 
 void switchInvert(Image* img, IHM* ihm) {

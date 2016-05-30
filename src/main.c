@@ -102,7 +102,6 @@ int main(int argc, char** argv) {
 //	INVERT(l);
 //	addLUT(l, l->lut);
 
-
 	//addLUTCalqueById(img, idC2, addcon, 40);
 
 	//addEffetCalqueById(img, idCalqueImg2, sepia);
@@ -130,7 +129,8 @@ int main(int argc, char** argv) {
 	initBtnIHM(ihm, img->listCalques);
 	ButtonCalque * btc = ihm->btnCalquesSelection;
 
-	bool change = true;
+	bool change = true, click = false;
+
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
 			xContraste = 0, xOpacite = 0, opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
 
@@ -147,7 +147,6 @@ int main(int argc, char** argv) {
 
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
-
 		//if modif de l'utilisateur
 //		if()
 //		updateImage(img);
@@ -170,13 +169,13 @@ int main(int argc, char** argv) {
 			case SDL_MOUSEMOTION:
 				posX = e.button.x;
 				posY = e.button.y;
+				click = false;
 				if (luminositeCheck == 1 && posX >= WINDOW_WIDTH + 50
 						&& posX <= WINDOW_WIDTH + 250) {
 					xLuminosite = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderLuminosite->posSlider =
 							ihm->sliderLuminosite->startPos - xLuminosite;
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+					click = true;
 				}
 
 				if (contrasteCheck == 1 && posX >= WINDOW_WIDTH + 50
@@ -184,8 +183,7 @@ int main(int argc, char** argv) {
 					xContraste = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderContraste->posSlider =
 							ihm->sliderContraste->startPos - xContraste;
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+					click = true;
 				}
 
 				if (opaciteCheck == 1 && posX >= ihm->windowWidth + 50
@@ -193,14 +191,17 @@ int main(int argc, char** argv) {
 					xOpacite = ihm->windowWidth + (ihm->paramWidth / 2) - posX;
 					ihm->sliderOpacite->posSlider =
 							((ihm->sliderOpacite->startPos) - xOpacite);
+					click = true;
+				}
+				if (click) {
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
-
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
 				change = true;
+				click = false;
 				printf("posX : %d posY : %d\n", posX, posY);
 
 				// Changer le check des sliders.
@@ -214,12 +215,14 @@ int main(int argc, char** argv) {
 					opaciteCheck = 1;
 
 				// Ajouter un nouveau calque.
-				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)== 1) {
+				if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth, posY)
+						== 1) {
 					addNewCalque(img->listCalques, 1);
 				}
 
 				// Charger une image.
-				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)== 1) {
+				if (isOnButton(ihm->btnImage, posX - ihm->windowWidth, posY)
+						== 1) {
 
 					if (id_source >= nb_source)
 						break;
@@ -230,12 +233,14 @@ int main(int argc, char** argv) {
 				}
 
 				// Sauvegarder une image.
-				if (isOnButton(ihm->btnSave, posX - ihm->windowWidth, posY)== 1) {
+				if (isOnButton(ihm->btnSave, posX - ihm->windowWidth, posY)
+						== 1) {
 
 				}
 
 				// Supprimer un calque.
-				if (isOnButton(ihm->btnDelete, posX, posY-ihm->windowHeight)== 1) {
+				if (isOnButton(ihm->btnDelete, posX, posY - ihm->windowHeight)
+						== 1) {
 					suppButton(ihm, img);
 				}
 
@@ -253,103 +258,69 @@ int main(int argc, char** argv) {
 				btc = ihm->btnCalquesSelection;
 
 				// Reset contraste.
-				if(isOnButton(ihm->rstContraste, posX-ihm->windowWidth, posY)) {
+				if (isOnButton(ihm->rstContraste, posX - ihm->windowWidth,
+						posY)) {
 					xContraste = 0;
-					resetContraste(img, ihm, framebuffer, screen);
+					resetContraste(img, ihm);
+					click = true;
 				}
 
 				// Reset luminosité.
-				if(isOnButton(ihm->rstLuminosite, posX-ihm->windowWidth, posY)) {
+				if (isOnButton(ihm->rstLuminosite, posX - ihm->windowWidth,
+						posY)) {
 					xLuminosite = 0;
-					resetLuminosite(img, ihm, framebuffer, screen);
+					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
+					click = true;
 				}
 
 				// Reset opacité.
-				if(isOnButton(ihm->rstAlpha, posX-ihm->windowWidth, posY)) {
+				if (isOnButton(ihm->rstAlpha, posX - ihm->windowWidth, posY)) {
 					xOpacite = 0;
-					resetOpacite(img, ihm, framebuffer, screen);
+					resetOpacite(img, ihm, ihm->sliderOpacite);
+					click = true;
 				}
 
 				// Mettre en Négatif.
-				if(isOnButton(ihm->btnInvert,posX-ihm->windowWidth,posY)) {
-					switchInvert(img,ihm);
-					eventButtonCalque(img,ihm,ihm->currentCalque);
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+				if (isOnButton(ihm->btnInvert, posX - ihm->windowWidth, posY)) {
+					switchInvert(img, ihm);
+					click = true;
 				}
 
 				// Ajouter l'effet Noir et blanc.
-				if(isOnButton(ihm->btnEffetNB,posX,posY-ihm->windowHeight)) {
+				if (isOnButton(ihm->btnEffetNB, posX,
+						posY - ihm->windowHeight)) {
 					addEffetCalqueById(img, ihm->currentCalque, noir_et_blanc);
-					eventButtonCalque(img,ihm,ihm->currentCalque);
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+					click = true;
 				}
 
 				// Ajouter l'effet Sepia.
-				if(isOnButton(ihm->btnEffetSepia,posX,posY-ihm->windowHeight)) {
+				if (isOnButton(ihm->btnEffetSepia, posX,
+						posY - ihm->windowHeight)) {
 					addEffetCalqueById(img, ihm->currentCalque, sepia);
-					eventButtonCalque(img,ihm,ihm->currentCalque);
+					click = true;
+				}
+				if (click) {
+					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
-
-
 				break;
 
 			case SDL_MOUSEBUTTONUP:
 				//modification luminosit�
+				click = false;
 				if (luminositeCheck == 1) {
 					Calque* c = getCalqueById(img->listCalques,
 							ihm->currentCalque);
-					if (existLUTCalqueType(c, addlum)) {
-						removeLUTByType(&(c->listLuts), addlum);
-						LUT* tmp = c->listLuts;
-						while (tmp != NULL) {
-							printf("lut lum %d\n", tmp->type);
-							tmp = tmp->next;
-							if (tmp == c->listLuts) {
-								printf("egale");
-								break;
-							}
-						}
-					}
+					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
 					addLUTCalqueById(img, ihm->currentCalque, addlum,
 							ihm->sliderLuminosite->posSlider - 100);
-					eventButtonCalque(img, ihm, ihm->currentCalque);
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
 				}
 				//modificatoin du contraste
 				if (contrasteCheck == 1) {
 					Calque* c = getCalqueById(img->listCalques,
 							ihm->currentCalque);
-					if (existLUTCalqueType(c, addcon)){
-						removeLUTByType(&(c->listLuts), addcon);
-						LUT* tmp = c->listLuts;
-						while (tmp != NULL) {
-							printf("lut addcontraste %d\n", tmp->type);
-							tmp = tmp->next;
-							if (tmp == c->listLuts) {
-								printf("egale");
-								break;
-							}
-						}
-
-					}
-					if (existLUTCalqueType(c, dimcon)){
-						removeLUTByType(&(c->listLuts), dimcon);
-						LUT* tmp = c->listLuts;
-						while (tmp != NULL) {
-							printf("lut dimcon %d\n", tmp->type);
-							tmp = tmp->next;
-							if (tmp == c->listLuts) {
-								printf("egale");
-								break;
-							}
-						}
-
-					}
+					resetContraste(img, ihm);
 					int contraste = ihm->sliderContraste->posSlider - 100;
 					if (contraste < 0) {
 						addLUTCalqueById(img, ihm->currentCalque, dimcon,
@@ -358,10 +329,7 @@ int main(int argc, char** argv) {
 						addLUTCalqueById(img, ihm->currentCalque, addcon,
 								contraste);
 					}
-
-					eventButtonCalque(img, ihm, ihm->currentCalque);
-					dessinIHM(ihm, img, framebuffer);
-					nextFrame(framebuffer, screen);
+					click=true;
 				}
 
 				if (opaciteCheck == 1) {
@@ -369,6 +337,10 @@ int main(int argc, char** argv) {
 							ihm->currentCalque);
 					c->alpha = (float) ihm->sliderOpacite->posSlider / 100;
 					printf("alpha : %f\n", c->alpha);
+					click=true;
+				}
+
+				if (click) {
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
