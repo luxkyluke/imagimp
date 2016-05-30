@@ -332,29 +332,17 @@ int main(int argc, char** argv) {
 				}
 				//modificatoin du contraste
 				else if (contrasteCheck == 1) {
-					resetContraste(img, ihm,false);
-					int contraste = ihm->sliderContraste->posSlider - 100;
-					if (contraste < 0) {
-						addLUTCalqueById(img, ihm->currentCalque, dimcon,
-								100 - -1 * contraste);
-					} else {
-						addLUTCalqueById(img, ihm->currentCalque, addcon,contraste);
-					}
 					changeContraste(img, ihm);
-
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 
 				} else if (opaciteCheck == 1) {
-					Calque* c = getCalqueById(img->listCalques,
-							ihm->currentCalque);
-					c->alpha = (float) ihm->sliderOpacite->posSlider / 100;
-					resetOpacityCalqueById(img, ihm->currentCalque,false);
+					modifyOppacityCalqueById(img, ihm->currentCalque, ihm->sliderOpacite->posSlider/100.);
+					resetOpacityCalqueById(img, ihm->currentCalque);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
-
 				}
 
 				luminositeCheck = 0;

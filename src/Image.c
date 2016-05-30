@@ -65,8 +65,9 @@ void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 	addLUTCalque(c, lut, val);
 }
 
-void modifyContrasteCalqueById(Image *img, int id, float alpha){
-
+void modifyOppacityCalqueById(Image *img, int id, float alpha){
+	Calque* c = getCalqueById(img->listCalques, id);
+	c->alpha = alpha;
 }
 
 void drawImage(Image* img, SDL_Surface* framebuffer) {
