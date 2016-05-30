@@ -24,15 +24,6 @@ static unsigned int WINDOW_HEIGHT = 600;
 static unsigned int WINDOW_WIDTH_PARAM = 300;
 static unsigned int WINDOW_HEIGHT_FILTER = 200;
 
-void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen) {
-	/* On copie le framebuffer ï¿½ l'ï¿½cran */
-	SDL_BlitSurface(framebuffer, NULL, screen, NULL);
-
-	SDL_Flip(screen);
-
-	SDL_GL_SwapBuffers();
-}
-
 int main(int argc, char** argv) {
 	if (-1 == SDL_Init(SDL_INIT_VIDEO)) {
 		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
@@ -90,8 +81,8 @@ int main(int argc, char** argv) {
 
 	idC2 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.2);
 	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
-	chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
-	chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
+	// chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
+	// chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
 //	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
 //	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
 //	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.3);
@@ -291,6 +282,11 @@ int main(int argc, char** argv) {
 						posY - ihm->windowHeight)) {
 					addEffetCalqueById(img, ihm->currentCalque, noir_et_blanc);
 					click = true;
+				}
+
+				if(isOnButton(ihm->btnFusion,posX-ihm->windowWidth,posY)) {
+					Calque* c = getCalqueById(img->listCalques,ihm->currentCalque);
+					switchFusion(c);
 				}
 
 				// Ajouter l'effet Sepia.

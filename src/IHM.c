@@ -1,6 +1,7 @@
 #include "IHM.h"
 #include "glut_tools.h"
 #include "Geometry.h"
+#include "Fusion.h"
 
 #define WIDTH_SLIDER 200
 
@@ -111,6 +112,7 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->paramWidth   = paramWidth;
     ihm->filterHeight = filterHeight;
     ihm->currentCalque = 1;
+    ihm->nbButtons = 0;
     // 100 est pour que le centre soit centré.
     ihm->sliderLuminosite    = makeSlider(200,160,100,luminosite,"luminosite");
     ihm->sliderContraste     = makeSlider(200,260,100,contraste,"contraste");
@@ -120,12 +122,13 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth, int filterHeight
     ihm->btnImage            = makeButton(190,40,50,620,"Charger image",charger);
     ihm->btnSave             = makeButton(190,40,50,680,"Enr. image",save);
     ihm->btnDelete           = makeButton(150,40,ihm->windowWidth-170,20,"Supprimer",supprimer);
-    ihm->btnCalquesSelection = makeButtonCalque(1);
+    ihm->btnCalquesSelection = makeButtonCalque(1,0);
 
     ihm->rstLuminosite       = makeButton(110,25,160,200-15,"Reset",rstLuminosite);
     ihm->rstContraste        = makeButton(110,25,160,300-15,"Reset",rstContraste);
     ihm->rstAlpha            = makeButton(110,25,160,400-15,"Reset",rstAlpha);
-    ihm->btnInvert           = makeButton(110,25,160,500-15,"INVERT",invertbtn);
+    ihm->btnInvert           = makeButton(130,25,160,500-15,"INVERT",invertbtn);
+    ihm->btnFusion           = makeButton(130,25,10,500-15,"FUSION",btnfusion);
     ihm->btnEffetSepia       = makeButton(100,25,0,100,"SEPIA",sepiabtn);
     ihm->btnEffetNB          = makeButton(100,25,100,100,"NB",nb);
 
@@ -256,6 +259,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	DessinButton(ihm->btnImage);
     DessinButton(ihm->btnSave);
     DessinButton(ihm->btnInvert);
+    DessinButton(ihm->btnFusion);
 
     DessinButton(ihm->rstLuminosite);
     DessinButton(ihm->rstAlpha);
@@ -263,21 +267,22 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 
 }
 
-ButtonCalque* makeButtonCalque(int id) {
+ButtonCalque* makeButtonCalque(int id, int pos) {
 	ButtonCalque* buttonCalque = malloc(sizeof(ButtonCalque));
 	if (!buttonCalque) {
 		fprintf(stderr, "Probleme Allocation ButtonCalque\n");
 		return NULL;
 	}
 	buttonCalque->btn = makeButton(50, 50, id * 60, 10, "1", select);
-	buttonCalque->id = id;
+	buttonCalque->id  = id;
+    buttonCalque->pos = pos;
 	buttonCalque->next = NULL;
 	return buttonCalque;
 }
 
 void addButtonCalque(IHM* ihm, int id) {
 	ButtonCalque* tmp = ihm->btnCalquesSelection;
-	ButtonCalque* newButtonCalque = makeButtonCalque(id);
+	ButtonCalque* newButtonCalque = makeButtonCalque(id,ihm->nbButtons);
 	if (!newButtonCalque)
 		return;
 //	ButtonCalque* last = newButtonCalque;
@@ -286,6 +291,7 @@ void addButtonCalque(IHM* ihm, int id) {
 		ihm->btnCalquesSelection = ihm->btnCalquesSelection->next;
 	}
 
+    ihm->nbButtons+=1;
 	ihm->btnCalquesSelection->next = newButtonCalque;
 	ihm->btnCalquesSelection = tmp;
 }
@@ -339,13 +345,31 @@ void switchInvert(Image* img, IHM* ihm) {
     Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
     if(ihm->btnInvert->isSelected == 1) {
         if(existLUTCalqueType(c, invert))
-            removeLUTByType(c->listLuts,invert);
+            removeLUTByType(&(c)->listLuts,invert);
         ihm->btnInvert->isSelected = 0;
     }
     else {
         if(existLUTCalqueType(c, invert))
-            removeLUTByType(c->listLuts,invert);
+            removeLUTByType(&(c)->listLuts,invert);
         addLUTCalqueById(img, ihm->currentCalque, invert, ihm->sliderLuminosite->posSlider-100);
         ihm->btnInvert->isSelected = 1;
+    }
+}
+
+void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen) {
+    /* On copie le framebuffer ï¿½ l'ï¿½cran */
+    SDL_BlitSurface(framebuffer, NULL, screen, NULL);
+
+    SDL_Flip(screen);
+
+    SDL_GL_SwapBuffers();
+}
+
+void switchFusion(Calque*c) {
+    if(c!=NULL) {
+        if(c->fusion == additive)
+            c->fusion = multiplicative;
+        else
+            c->fusion = additive;
     }
 }

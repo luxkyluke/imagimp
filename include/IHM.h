@@ -9,7 +9,7 @@
 #include "bool.h"
 
 typedef enum _sliderName {contraste, luminosite, saturation,opacite} SliderName;
-typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb,save} BtnName;
+typedef enum _btnName {calque, charger, select, supprimer, rstContraste, rstLuminosite, rstAlpha, switchfusion,invertbtn,sepiabtn,nb,save,btnfusion} BtnName;
 
 
 typedef struct Slider{
@@ -35,6 +35,7 @@ typedef struct ButtonCalque {
     Button* btn;
     struct ButtonCalque* next;
     int id;
+    int pos;
 } ButtonCalque;
 
 typedef struct IHM{
@@ -42,7 +43,8 @@ typedef struct IHM{
         windowHeight,
         paramWidth,
         filterHeight,
-        currentCalque;
+        currentCalque,
+        nbButtons;
     Slider*  sliderContraste;
     Slider*  sliderLuminosite;
     Slider*  sliderSaturation;
@@ -60,6 +62,7 @@ typedef struct IHM{
     Button*  btnEffetNB;
     Button*  btnEffetSepia;
     Button*  btnInvert;
+    Button*  btnFusion;
 
 } IHM;
 
@@ -71,7 +74,7 @@ int isOnOpacite(int posX, int posY, int xOpacite);
 int isOnButton(Button* button, int posX, int posY);
 void initBtnIHM(IHM *ihm, Calque* c);
 void suppButton(IHM* ihm, Image *img);
-ButtonCalque* makeButtonCalque(int id);
+ButtonCalque* makeButtonCalque(int id, int pos);
 void addButtonCalque(IHM* ihm,int id);
 void removeButtonCalque(IHM* ihm, int id);
 
@@ -89,4 +92,6 @@ bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider);
 bool resetContraste(Image* img, IHM* ihm);
 void resetOpacite(Image* img, IHM* ihm, Slider* slider);
 void switchInvert(Image* img, IHM* ihm);
+void switchFusion(Calque*c);
+void nextFrame(SDL_Surface *framebuffer, SDL_Surface *screen);
 #endif
