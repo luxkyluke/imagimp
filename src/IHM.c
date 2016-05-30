@@ -118,7 +118,6 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth,
 	ihm->sliderContraste = makeSlider(200, 260, 100, contraste, "contraste");
 	ihm->sliderSaturation = makeSlider(200, 360, 100, saturation, "saturation");
 	ihm->sliderOpacite = makeSlider(100, 360, 100, opacite, "opacite");
-	ihm->btnCalque = makeButton(190, 40, 50, 560, "Nouveau calque", calque);
 	ihm->btnImage = makeButton(190, 40, 50, 620, "Charger image", charger);
 	ihm->btnSave = makeButton(190, 40, 50, 680, "Enr. image", save);
 	ihm->btnDelete = makeButton(150, 40, ihm->windowWidth - 170, 20,"Supprimer", supprimer);
@@ -145,6 +144,17 @@ void initBtnIHM(IHM *ihm, Calque* c) {
 	}
 }
 
+void refreshButton(IHM*ihm, Image* img) {
+    ButtonCalque* btn = ihm->btnCalquesSelection;
+    ButtonCalque* next;
+    while(btn!=NULL) {
+        next = btn->next;
+        free(btn);
+        btn = next;
+    }
+    initBtnIHM(ihm,img->listCalques);
+}
+
 void suppButton(IHM* ihm, Image* img) {
 	if (ihm->currentCalque > 1) {
 		Calque* tmp = getCalqueById(img->listCalques, ihm->currentCalque);
@@ -157,20 +167,24 @@ void suppButton(IHM* ihm, Image* img) {
 		freeButtonCalque(ihm, ihm->currentCalque);
 		ihm->currentCalque = prevId;
 		ihm->nbButtons -= 1;
-		ButtonCalque* b = ihm->btnCalquesSelection;
-		if (b->next != NULL) {
-			b = b->next;
-			int i = 0;
-			while (b != NULL) {
-				b->pos = i;
-				b->btn->posX = 60 * i;
-				i++;
-				if (b->next != NULL)
-					b = b->next;
-				else
-					break;
-			}
-		}
+
+        initBtnIHM(ihm,img);
+		// ButtonCalque* b = ihm->btnCalquesSelection;
+		// if (b->next != NULL) {
+  //           printf("ldsifgndfijgndjgndijfgndfljgndfijgndf %d \n",b->id);
+		// 	b = b->next;
+  //           printf("ldsifgndfijgndjgndijfgndfljgndfijgndf %d \n",b->id);
+		// 	int i = 0;
+		// 	while (b != NULL) {
+		// 		b->pos = i;
+		// 		b->btn->posX = 60*i+20;
+		// 		i++;
+		// 		if (b->next != NULL)
+		// 			b = b->next;
+		// 		else
+		// 			break;
+		// 	}
+		// }
 	}
 }
 
@@ -269,7 +283,6 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	drawSlider(ihm->sliderContraste);
 	// drawSlider(ihm->sliderSaturation);
 	drawSlider(ihm->sliderOpacite);
-	DessinButton(ihm->btnCalque);
 	DessinButton(ihm->btnImage);
 	DessinButton(ihm->btnSave);
 	DessinButton(ihm->btnInvert);

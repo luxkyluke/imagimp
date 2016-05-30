@@ -49,7 +49,6 @@ typedef struct IHM{
     Slider*  sliderLuminosite;
     Slider*  sliderSaturation;
     Slider*  sliderOpacite;
-    Button*  btnCalque;
     Button*  btnImage;
     Button*  btnSave;
 

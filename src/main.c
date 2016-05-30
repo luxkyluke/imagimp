@@ -137,6 +137,7 @@ int main(int argc, char** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+
 		/* Nettoyage du framebuffer */
 		// SDL_FillRect(framebuffer, NULL, SDL_MapRGB(framebuffer->format, 0, 0, 0));
 		//if modif de l'utilisateur
@@ -207,12 +208,6 @@ int main(int argc, char** argv) {
 				else if (isOnOpacite(posX, posY, xOpacite) == 1)
 					opaciteCheck = 1;
 
-				// Ajouter un nouveau calque.
-				else if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth,
-						posY) == 1) {
-					addNewCalque(img->listCalques, 1);
-				}
-
 				// Charger une image.
 				else if (isOnButton(ihm->btnImage, posX - ihm->windowWidth,
 						posY) == 1) {
@@ -220,9 +215,16 @@ int main(int argc, char** argv) {
 					if (id_source >= nb_source)
 						break;
 					const char* name_fichier = tab_source_img[id_source++];
+					// char namefile[100];
+					// printf("Nom du calque dans le dossier image (commence par images/): \n");
+					// scanf("%s", namefile);
 					int id = chargerImage(img, name_fichier, 800, 600, 1.);
-
-					addButtonCalque(ihm, id);
+					if(id!=0) {
+						ihm->currentCalque = id;
+						afficheCalqueById(img, id);
+						printf("SUIUUUUPAS ID %d\n",id);
+						addButtonCalque(ihm, id);
+					}
 				}
 
 				// Sauvegarder une image.
@@ -238,8 +240,7 @@ int main(int argc, char** argv) {
 				// Évènements pour tous les boutons de calque.
 				else {
 					while (btc != NULL) {
-						if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)== 1) {
-							printf("ID DU CAAAAAAAALQUE : %d\n",btc->id);
+						if (isOnButton(btc->btn, posX - 20, posY - ihm->windowHeight)== 1) {
 							eventButtonCalque(img, ihm, btc->id);
 						}
 
