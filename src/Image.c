@@ -61,7 +61,11 @@ void drawImageHistogramme(Image* img) {
 void addLUTCalqueById(Image* img, int id, LutOption lut, int val) {
 	if (!img)
 		return;
-	Calque* c = getCalqueById(img->listCalques, id);
+	Calque* c ;
+	if(id>1)
+		c= getCalqueById(img->listCalques, id);
+	else
+		c=img->calque_resultat;
 	addLUTCalque(c, lut, val);
 }
 
@@ -114,9 +118,24 @@ void changeFusionClaqueToAdditive(Image* img, int id) {
 void fusionnerCalquesImage(Image* img) {
 	if (!img)
 		return;
-	if (img->calque_resultat)
-		freeCalque(img->calque_resultat);
-	img->calque_resultat = fusionnerCalque(img->listCalques);
+	Calque **c = &( img->calque_resultat);
+	bool effectToResult =false;
+	if (*c != NULL){
+		if((*c)->effet != none || ((*c)->listLuts != NULL && !LUTIsEmpty((*c)->listLuts)))
+			effectToResult = true;
+		else
+			freeCalque(img->calque_resultat);
+	}
+	if(effectToResult){
+		(*c) = appliquerEffet(*c);
+		(*c) = appliquerAllLUT(*c);
+		calculHistogramme(*c);
+	}
+	else{
+		(*c) = fusionnerCalque(img->listCalques);
+		printf("fusion salope\n");
+	}
+
 }
 
 void resetOpacityCalqueById(Image* img, int id){
@@ -125,7 +144,11 @@ void resetOpacityCalqueById(Image* img, int id){
 }
 
 void switchEffectById(Image * img, int id, Effet effet){
-	Calque *c= getCalqueById(img->listCalques, id);
+	Calque *c;
+	if(id >1)
+		c= getCalqueById(img->listCalques, id);
+	else
+		c = img->calque_resultat;
 	if(isOnEffect(c))
 		resetEffet(c);
 	else

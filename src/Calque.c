@@ -231,7 +231,7 @@ Calque* appliquerEffet(Calque* c) {
 		ret = appliquerSepia(c);
 		break;
 	case none :
-		break;
+		return c;
 	}
 	ret->next = c->next;
 	ret->prev = c->prev;

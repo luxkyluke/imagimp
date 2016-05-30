@@ -361,14 +361,15 @@ void resetOpacite(Image* img, IHM* ihm, Slider* slider, bool resetSlider) {
 
 bool resetLUT(Image* img, IHM* ihm, LutOption lut, Slider* slider,
 		bool resetSlider) {
+	bool ret = false;
 	Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
 	if (existLUTCalqueType(c, lut)) {
 		removeLUTByType(c->listLuts, lut);
-		if (resetSlider == true)
-			slider->posSlider = slider->startPos;
-		return true;
+		ret= true;
 	}
-	return false;
+	if (resetSlider == true)
+		slider->posSlider = slider->startPos;
+	return ret;
 }
 
 bool resetContraste(Image* img, IHM* ihm, bool resetSlider) {

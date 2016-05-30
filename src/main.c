@@ -79,8 +79,8 @@ int main(int argc, char** argv) {
 	// Image *img;
 	// makeImage(img, 512, 512);
 
-	idC2 = chargerImage(img, "images/lake.ppm", 800, 600, 0.5);
-	idC1 = chargerImage(img, "images/space.ppm", 800, 600, 0.5);
+//	idC2 = chargerImage(img, "images/lake.ppm", 800, 600, 0.5);
+//	idC1 = chargerImage(img, "images/space.ppm", 800, 600, 0.5);
 	// chargerImage(img, "images/tarte.ppm", 800, 600, 0.2);
 	// chargerImage(img, "images/pink_floyd.ppm", 800, 600, 0.2);
 //	idC4 = chargerImage(img, "images/coquine.ppm", 800, 600, 0.2);
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
 	initBtnIHM(ihm, img->listCalques);
 	ButtonCalque * btc = ihm->btnCalquesSelection;
 
-	bool change = true, click = false;
+	bool change = true;
 
 	int luminositeCheck = 0, xLuminosite = 0, contrasteCheck = 0,
 			xContraste = 0, xOpacite = 0, opaciteCheck = 0; //saturationCheck = 0, xSaturation = 0,
@@ -315,7 +315,6 @@ int main(int argc, char** argv) {
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
-
 				}
 				break;
 
@@ -328,7 +327,6 @@ int main(int argc, char** argv) {
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
-
 				}
 				//modificatoin du contraste
 				else if (contrasteCheck == 1) {
