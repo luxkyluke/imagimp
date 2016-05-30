@@ -341,7 +341,6 @@ int main(int argc, char** argv) {
 
 				} else if (opaciteCheck == 1) {
 					modifyOppacityCalqueById(img, ihm->currentCalque, ihm->sliderOpacite->posSlider/100.);
-					resetOpacityCalqueById(img, ihm->currentCalque);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);

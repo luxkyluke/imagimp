@@ -51,7 +51,6 @@ int isOnLuminosite(int posX, int posY, int xLuminosite) {
 }
 
 int isOnOpacite(int posX, int posY, int xOpacite) {
-	printf("posXOpac %d, posYOpac %d\n", posX, posY);
 	if (posX >= 940 - xOpacite && posX <= 960 - xOpacite && posY >= 353
 			&& posY <= 368) {
 		printf("in\n");
