@@ -30,7 +30,7 @@ void DessinButton(Button* button) {
 	glTranslatef(button->posX, button->posY, 0);
 	glScalef(button->width, button->height, 1);
 	glColor3f(1, 1, 0);
-	if (button->name == supprimer)
+	if (button->name == supprimer || button->name == sepiabtn || button->name == nb)
 		dessinCarre(0, ColorRGB(0, 0, 0));
 	else
 		dessinCarre(1, ColorRGB(1, 1, 1));
@@ -121,19 +121,18 @@ IHM* makeIHM(int windowWidth, int windowHeight, int paramWidth,
 	ihm->btnCalque = makeButton(190, 40, 50, 560, "Nouveau calque", calque);
 	ihm->btnImage = makeButton(190, 40, 50, 620, "Charger image", charger);
 	ihm->btnSave = makeButton(190, 40, 50, 680, "Enr. image", save);
-	ihm->btnDelete = makeButton(150, 40, ihm->windowWidth - 170, 20,
-			"Supprimer", supprimer);
+	ihm->btnDelete = makeButton(150, 40, ihm->windowWidth - 170, 20,"Supprimer", supprimer);
 	ihm->btnCalquesSelection = makeButtonCalque(1, 0);
 
-	ihm->rstLuminosite = makeButton(110, 25, 160, 200 - 15, "Reset",
+	ihm->rstLuminosite = makeButton(110, 30, 160, 200 - 15, "Reset",
 			rstLuminosite);
-	ihm->rstContraste = makeButton(110, 25, 160, 300 - 15, "Reset",
+	ihm->rstContraste = makeButton(110, 30, 160, 300 - 15, "Reset",
 			rstContraste);
-	ihm->rstAlpha = makeButton(110, 25, 160, 400 - 15, "Reset", rstAlpha);
-	ihm->btnInvert = makeButton(130, 25, 160, 500 - 15, "INVERT", invertbtn);
-	ihm->btnFusion = makeButton(130, 25, 10, 500 - 15, "FUSION", btnfusion);
-	ihm->btnEffetSepia = makeButton(100, 25, 0, 100, "SEPIA", sepiabtn);
-	ihm->btnEffetNB = makeButton(100, 25, 100, 100, "NB", nb);
+	ihm->rstAlpha = makeButton(110, 30, 160, 400 - 15, "Reset", rstAlpha);
+	ihm->btnInvert = makeButton(130, 30, 160, 500 - 15, "INVERT", invertbtn);
+	ihm->btnFusion = makeButton(130, 30, 10, 500 - 15, "FUSION", btnfusion);
+	ihm->btnEffetSepia = makeButton(100, 40, 20, 100, "SEPIA", sepiabtn);
+	ihm->btnEffetNB = makeButton(100, 40, 140, 100, "N & B", nb);
 
 	return ihm;
 }
@@ -226,7 +225,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 	while (btc != NULL) {
 		// printf("id du button courrant : %d\n",btc->id);
 		glPushMatrix();
-		glTranslatef(btc->pos * 60, btc->btn->posY, 0);
+		glTranslatef(btc->pos * 60 + 20, btc->btn->posY, 0);
 		glScalef(50, 50, 1);
 		if (btc->btn->isSelected == 0)
 			dessinCarre(0, ColorRGB(0.5, 0.5, 0.5));
@@ -235,7 +234,7 @@ void dessinIHM(IHM* ihm, Image* img, SDL_Surface* framebuffer) {
 
 		glPushMatrix();
 		glTranslatef(0.4, 0.5, 0);
-		glColor3d(1, 0, 0);
+		glColor3d(0, 0, 0);
 		char str[10];
 
 		sprintf(str, "%d", btc->pos);

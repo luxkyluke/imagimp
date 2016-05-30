@@ -105,6 +105,7 @@ int main(int argc, char** argv) {
 //	idLut2 = addLUTCalqueById(img, idCalqueImg2, invert, 0);
 //	idLut1 = addLUTCalqueById(img, idCalqueImg1, addlum, 100);
 
+
 //		for(int i= 0; i<256; i++){
 //		printf("lut[%d] = %d\n", i, LUT->lut[i]);
 //	}*/
