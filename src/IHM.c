@@ -345,12 +345,12 @@ void switchInvert(Image* img, IHM* ihm) {
     Calque* c = getCalqueById(img->listCalques, ihm->currentCalque);
     if(ihm->btnInvert->isSelected == 1) {
         if(existLUTCalqueType(c, invert))
-            removeLUTByType(&(c)->listLuts,invert);
+            removeLUTByType(c->listLuts, invert);
         ihm->btnInvert->isSelected = 0;
     }
     else {
         if(existLUTCalqueType(c, invert))
-            removeLUTByType(&(c)->listLuts,invert);
+            removeLUTByType(c->listLuts, invert);
         addLUTCalqueById(img, ihm->currentCalque, invert, ihm->sliderLuminosite->posSlider-100);
         ihm->btnInvert->isSelected = 1;
     }

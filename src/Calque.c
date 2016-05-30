@@ -266,6 +266,14 @@ void fusionnerMultiplicationCalque2a2(Calque *ret, Calque *c2) {
 	}
 }
 
+bool isOnEffect(Calque *c){
+	return (c->effet != none);
+}
+
+void resetEffet(Calque *c){
+	c->effet = none;
+}
+
 void fusionnerAdditiveCalque2a2(Calque *ret, Calque *c2) {
 	ret->listLuts = fusionnerLut(c2->listLuts);
 	printf("effet %d\n", c2->effet);
@@ -351,7 +359,7 @@ void freeCalque(Calque* c) {
 		free(c->pixels);
 		c->pixels = NULL;
 	}
-	freeLUT(&(c->listLuts));
+	freeLUT_r(&(c->listLuts));
 	printf("FreeCalque numero : %d OK\n", id);
 }
 
