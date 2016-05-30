@@ -31,6 +31,7 @@ void ADDCON(LUT* L, int c);
 void DIMCON(LUT* L, int c);
 
 LUT* fusionnerLut(LUT* l);
+void freeLUT_r(LUT** L);
 void freeLUT(LUT** L);
 void viderLUT (LUT* liste);
 

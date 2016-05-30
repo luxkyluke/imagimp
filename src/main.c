@@ -74,18 +74,18 @@ int main(int argc, char** argv) {
 
 	initGlut(argc, argv);
 
-	Image* img = makeImage(1600, 1200);
+	Image* img = makeImage(800, 600);
 	int idC1, idC2; //, idC3, idC4, idC5, idC6;
 	// Image *img;
 	// makeImage(img, 512, 512);
 
-	idC2 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.2);
-	idC1 = chargerImage(img, "images/space.ppm", 1600, 1200, 0.2);
-	chargerImage(img, "images/tarte.ppm", 1600, 1200, 0.2);
-	// chargerImage(img, "images/pink_floyd.ppm", 1600, 1200, 0.2);
-//	idC4 = chargerImage(img, "images/coquine.ppm", 1600, 1200, 0.2);
-//	idC5 = chargerImage(img, "images/cute.ppm", 1600, 1200, 0.2);
-//	idC6 = chargerImage(img, "images/lake.ppm", 1600, 1200, 0.3);
+	idC2 = chargerImage(img, "images/lake.ppm", 800, 600, 0.5);
+	idC1 = chargerImage(img, "images/space.ppm", 800, 600, 0.5);
+	// chargerImage(img, "images/tarte.ppm", 800, 600, 0.2);
+	// chargerImage(img, "images/pink_floyd.ppm", 800, 600, 0.2);
+//	idC4 = chargerImage(img, "images/coquine.ppm", 800, 600, 0.2);
+//	idC5 = chargerImage(img, "images/cute.ppm", 800, 600, 0.2);
+//	idC6 = chargerImage(img, "images/lake.ppm", 800, 600, 0.3);
 
 //	changeFusionClaqueToAdditive(img, idC2);
 
@@ -166,7 +166,6 @@ int main(int argc, char** argv) {
 					xLuminosite = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderLuminosite->posSlider =
 							ihm->sliderLuminosite->startPos - xLuminosite;
-					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 				}
@@ -176,7 +175,6 @@ int main(int argc, char** argv) {
 					xContraste = WINDOW_WIDTH + 150 - posX;
 					ihm->sliderContraste->posSlider =
 							ihm->sliderContraste->startPos - xContraste;
-					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 
@@ -187,7 +185,6 @@ int main(int argc, char** argv) {
 					xOpacite = ihm->windowWidth + (ihm->paramWidth / 2) - posX;
 					ihm->sliderOpacite->posSlider =
 							((ihm->sliderOpacite->startPos) - xOpacite);
-					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
 
@@ -222,7 +219,7 @@ int main(int argc, char** argv) {
 					if (id_source >= nb_source)
 						break;
 					const char* name_fichier = tab_source_img[id_source++];
-					int id = chargerImage(img, name_fichier, 1600, 1200, 1.);
+					int id = chargerImage(img, name_fichier, 800, 600, 1.);
 
 					addButtonCalque(ihm, id);
 				}
@@ -293,17 +290,15 @@ int main(int argc, char** argv) {
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
-
 				}
 
 				// Ajouter l'effet Noir et blanc.
 				else if (isOnButton(ihm->btnEffetNB, posX,
 						posY - ihm->windowHeight)) {
-					addEffetCalqueById(img, ihm->currentCalque, noir_et_blanc);
+					switchEffectById(img, ihm->currentCalque, noir_et_blanc);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
-
 				}
 
 				else if (isOnButton(ihm->btnFusion, posX - ihm->windowWidth,
@@ -316,7 +311,7 @@ int main(int argc, char** argv) {
 				// Ajouter l'effet Sepia.
 				else if (isOnButton(ihm->btnEffetSepia, posX,
 						posY - ihm->windowHeight)) {
-					addEffetCalqueById(img, ihm->currentCalque, sepia);
+					switchEffectById(img, ihm->currentCalque, sepia);
 					eventButtonCalque(img, ihm, ihm->currentCalque);
 					dessinIHM(ihm, img, framebuffer);
 					nextFrame(framebuffer, screen);
@@ -331,6 +326,10 @@ int main(int argc, char** argv) {
 					resetLUT(img, ihm, addlum, ihm->sliderLuminosite);
 					addLUTCalqueById(img, ihm->currentCalque, addlum,
 							ihm->sliderLuminosite->posSlider - 100);
+					eventButtonCalque(img, ihm, ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+
 				}
 				//modificatoin du contraste
 				else if (contrasteCheck == 1) {
@@ -343,7 +342,10 @@ int main(int argc, char** argv) {
 						addLUTCalqueById(img, ihm->currentCalque, addcon,
 								contraste);
 					}
-					click = true;
+					eventButtonCalque(img, ihm, ihm->currentCalque);
+					dessinIHM(ihm, img, framebuffer);
+					nextFrame(framebuffer, screen);
+
 				} else if (opaciteCheck == 1) {
 					Calque* c = getCalqueById(img->listCalques,
 							ihm->currentCalque);
