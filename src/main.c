@@ -166,9 +166,14 @@ int main(int argc, char** argv) {
 					opaciteCheck = 1;
 
 				// Ajouter un nouveau calque.
-				else if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth,
-						posY) == 1) {
-					addNewCalque(img->listCalques, 1);
+				else if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth,posY) == 1) {
+					const char* name_fichier = tab_source_img[id_source++];
+					int id = chargerImage(img, name_fichier, 800, 600, 1.);
+					if(id!=0) {
+						afficheCalqueById(img, id);
+						addButtonCalque(ihm, id);
+						ihm->currentCalque = id;
+					}
 				}
 
 				// Charger une image.
@@ -177,10 +182,15 @@ int main(int argc, char** argv) {
 
 					if (id_source >= nb_source)
 						break;
-					const char* name_fichier = tab_source_img[id_source++];
-					int id = chargerImage(img, name_fichier, 800, 600, 1.);
-
-					addButtonCalque(ihm, id);
+					char insert_fichier[100];
+					printf("\nTaper le nom de l'image precede de images/ : ");
+					scanf("%s", insert_fichier);
+					int id = chargerImage(img, insert_fichier, 800, 600, 1.);
+					if(id!=0) {
+						afficheCalqueById(img, id);
+						addButtonCalque(ihm, id);
+						ihm->currentCalque = id;
+					}
 				}
 
 				// Sauvegarder une image.
@@ -197,7 +207,6 @@ int main(int argc, char** argv) {
 				else {
 					while (btc != NULL) {
 						if (isOnButton(btc->btn, posX, posY - ihm->windowHeight)== 1) {
-							printf("ID DU CAAAAAAAALQUE : %d\n",btc->id);
 							eventButtonCalque(img, ihm, btc->id);
 						}
 

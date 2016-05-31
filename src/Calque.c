@@ -186,7 +186,6 @@ Calque* appliquerEffet(Calque* c) {
 
 void fusionnerMultiplicationCalque2a2(Calque *ret, Calque *c2) {
 	ret->listLuts = fusionnerLut(c2->listLuts);
-	printf("effet %d\n", c2->effet);
 	if (c2->effet != none)
 		c2 = appliquerEffet(c2);
 	int i, j;
@@ -216,7 +215,6 @@ void resetEffet(Calque *c){
 
 void fusionnerAdditiveCalque2a2(Calque *ret, Calque *c2) {
 	ret->listLuts = fusionnerLut(c2->listLuts);
-	printf("effet %d\n", c2->effet);
 	if (c2->effet != none)
 		c2 = appliquerEffet(c2);
 	int i, j;
