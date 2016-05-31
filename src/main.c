@@ -29,14 +29,12 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
 		return EXIT_FAILURE;
 	}
-	int nb_source = 6;
+	int nb_source = 4;
 	const char *tab_source_img[nb_source];
 	tab_source_img[0] = "images/space.ppm";
 	tab_source_img[1] = "images/tarte.ppm";
-	tab_source_img[2] = "images/coquine.ppm";
-	tab_source_img[3] = "images/cute.ppm";
-	tab_source_img[4] = "images/pink_floyd.ppm";
-	tab_source_img[5] = "images/lake.ppm";
+	tab_source_img[2] = "images/cute.ppm";
+	tab_source_img[3] = "images/lake.ppm";
 	int id_source = 3;
 
 	IHM*ihm = makeIHM(800, 600, 300, 200);
@@ -167,7 +165,9 @@ int main(int argc, char** argv) {
 
 				// Ajouter un nouveau calque.
 				else if (isOnButton(ihm->btnCalque, posX - ihm->windowWidth,posY) == 1) {
-					const char* name_fichier = tab_source_img[id_source++];
+					int i = id_source++;
+					i = i%nb_source;
+					const char* name_fichier = tab_source_img[i];
 					int id = chargerImage(img, name_fichier, 800, 600, 1.);
 					if(id!=0) {
 						afficheCalqueById(img, id);
