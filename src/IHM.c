@@ -51,7 +51,6 @@ int isOnLuminosite(int posX, int posY, int xLuminosite) {
 }
 
 int isOnOpacite(int posX, int posY, int xOpacite) {
-	printf("posXOpac %d, posYOpac %d\n", posX, posY);
 	if (posX >= 940 - xOpacite && posX <= 960 - xOpacite && posY >= 353
 			&& posY <= 368) {
 		printf("in\n");
@@ -149,9 +148,7 @@ void suppButton(IHM* ihm, Image* img) {
 	if (ihm->currentCalque > 1) {
 		Calque* tmp = getCalqueById(img->listCalques, ihm->currentCalque);
 		int prevId = tmp->prev->id;
-		printf("L'id a affiche %d\n", prevId);
 		afficheCalqueById(img, prevId);
-		printf("tmp : %d\n", tmp->id);
 		removeCalque(tmp);
 
 		freeButtonCalque(ihm, ihm->currentCalque);
