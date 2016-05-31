@@ -163,7 +163,7 @@ void suppButton(IHM* ihm, Image* img) {
 			int i = 0;
 			while (b != NULL) {
 				b->pos = i;
-				b->btn->posX = 60 * i;
+				b->btn->posX = 60 * i + 20;
 				i++;
 				if (b->next != NULL)
 					b = b->next;
@@ -305,7 +305,7 @@ ButtonCalque* makeButtonCalque(int id, int pos) {
 		fprintf(stderr, "Probleme Allocation ButtonCalque\n");
 		return NULL;
 	}
-	buttonCalque->btn = makeButton(50, 50, pos * 60, 10, "1", select);
+	buttonCalque->btn = makeButton(50, 50, pos * 60 + 20, 10, "1", select);
 	buttonCalque->id = id;
 	buttonCalque->pos = pos;
 	buttonCalque->next = NULL;

@@ -179,8 +179,8 @@ int main(int argc, char** argv) {
 						break;
 					const char* name_fichier = tab_source_img[id_source++];
 					int id = chargerImage(img, name_fichier, 800, 600, 1.);
-
-					addButtonCalque(ihm, id);
+					if(id!=0)
+						addButtonCalque(ihm, id);
 				}
 
 				// Sauvegarder une image.
